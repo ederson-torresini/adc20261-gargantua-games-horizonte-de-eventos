@@ -4,19 +4,43 @@ class scene0 extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("sky", "assets/sky.png");
-    this.load.image("ground", "assets/platform.png");
-    this.load.image("star", "assets/star.png");
-    this.load.image("bomb", "assets/bomb.png");
-    this.load.spritesheet("dude", "assets/dude.png",
-      {
-        frameWidth: 32,
-        frameHeight: 48,
-      });
+    this.load.spritesheet("player", "assets/player.png", {
+      frameWidth: 64,
+      frameHeight: 64,
+
+    });
   }
 
-  create() {}
-  update() {}
+  create() {
+        this.anims.create({
+          key: "walk-right",
+          frames: this.anims.generateFrameNumbers("player", {start: 87,end: 95,}),
+          frameRate: 10,
+          repeat: -1,
+        });
+
+    this.anims.create({
+      key: "idle",
+      frames: this.anims.generateFrameNumbers("player", { start: 20, end: 20 }),
+      frameRate: 10,
+      repeat: -1,
+    });
+    
+    this.player = this.physics.add.sprite(400, 300, "player", 20)
+      .setInteractive()
+      .on("pointerdown", () => { 
+        if (this.player.body.velocity.x === 0) {
+          this.player.play("walk-right");
+          this.player.setVelocityX(100);
+        } else {
+          this.player.play("idle");
+          this.player.setVelocityX(0);
+        }
+      });
+    /*this.player.setCollideWorldBounds(true);*/
+  }
 }
+
+
 
 export default scene0;
