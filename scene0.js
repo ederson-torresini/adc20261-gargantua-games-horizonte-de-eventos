@@ -132,6 +132,8 @@ class scene0 extends Phaser.Scene {
     setInterval(() => { 
       this.timer -= 1;
       this.textTime.setText(`Time: ${this.timer}`);
+      this.money += 1;
+      this.textMoney.setText(`Money: ${this.money}`);
       /*if (this.timer <= 0 && this.money < 1000) {
         this.scene.stop();
       }*/
