@@ -11,6 +11,20 @@ class scene0 extends Phaser.Scene {
   }
 
   preload() {
+
+    this.load.setPath("assets/");
+
+    this.load.tilemapTiledJSON("fase1e2v3", "mapav3/fase1e2v3.json");
+
+    this.load.image("remasterized", "assets-usados/remasterized.png");
+    this.load.image("remasterizedEnfeites", "assets-usados/remasterizedEnfeites.png");
+    this.load.image("starrySpace", "assets-usados/Starry Space - 32x22.jpg");
+    this.load.image("newPiskel", "assets-usados/New Piskel.png");
+    this.load.image("consoles", "assets-usados/console_s.png");
+    this.load.image("consolew", "assets-usados/console_w.png");
+    this.load.image("tileset", "assets-usados/tileset x1.png");
+    this.load.image("unnamed", "assets-usados/unnamed.png");
+
     this.load.spritesheet("player", "assets/player.png", {
       frameWidth: 64,
       frameHeight: 64,
@@ -31,8 +45,22 @@ class scene0 extends Phaser.Scene {
 
   create() {
 
-    this.epic = this.sound.add("epic", { loop: true }).play();
-    this.dindin = this.sound.add("dindin");
+    this.tilemap = this.make.tilemap({ key: "fase1e2v3" });
+    
+    this.tilesetRemasterized = this.tilemap.addTilesetImage("remasterized");
+    this.tilesetRemasterizedEnfeites = this.tilemap.addTilesetImage("remasterizedEnfeites");
+
+
+    /*this.epic = this.sound.add("epic", { loop: true }).play();
+    this.dindin = this.sound.add("dindin");*/
+
+    this.layerFundo = this.tilemap.createLayer("fundo", [this.tilesetRemasterized,]);
+    this.layerEnfeites = this.tilemap.createLayer("enfeites", [this.tilesetRemasterizedEnfeites,]);
+    this.layerVidro = this.tilemap.createLayer("vidro", [this.tilesetRemasterized,]);
+    this.layerVidroH = this.tilemap.createLayer("vidroH", [this.tilesetRemasterized,]);
+    this.layerPiso = this.tilemap.createLayer("piso", [this.tilesetRemasterized,]);
+
+
 
     this.anims.create({
       key: "walk-up",
@@ -115,31 +143,11 @@ class scene0 extends Phaser.Scene {
         this.player.anims.play("idle",true);
       }
     });
-
-    this.buttons = this.add.sprite(700, 450, "buttons", 10)
-      .setInteractive()
-      .on("pointerdown", () => { this.buttons.setFrame(11); })
-      .on("pointerup", () => {
-        this.buttons.setFrame(10);
-        this.money += 10;
-        this.textMoney.setText(`Money: ${this.money}`);
-        this.dindin.play();
-       });
-
-    this.textMoney = this.add.text(16, 16, `Money: ${this.money}`, { fontSize: '32px', fill: '#17bd20' });
-
-    this.textTime = this.add.text(16, 50, `Time: ${this.timer}`, { fontSize: '32px', fill: '#1764bd' });
-    setInterval(() => { 
-      this.timer -= 1;
-      this.textTime.setText(`Time: ${this.timer}`);
-      this.money += 1;
-      this.textMoney.setText(`Money: ${this.money}`);
-      /*if (this.timer <= 0 && this.money < 1000) {
-        this.scene.stop();
-      }*/
-    }, 500);
     
     this.player.setCollideWorldBounds(true);
+
+    this.layerPiso.setCollisionByProperty({ collides: true });
+    this.physics.add.collider(this.player, this.layerPiso);
   }
 }
 
