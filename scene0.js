@@ -7,14 +7,16 @@ class scene0 extends Phaser.Scene {
     this.direction = undefined;
     this.money = 0;
     this.timer = 40;
-
+    
   }
-
+  
   preload() {
 
+    this.load.plugin("rexvirtualjoystickplugin", "./rexvirtualjoystickplugin.min.js", true);
+    
     this.load.setPath("assets/");
 
-    this.load.tilemapTiledJSON("fase1e2v3", "mapav3/fase1e2v3.json");
+    this.load.tilemapTiledJSON("fase1e2v3", "mapasv3/fase1e2v3.json");
 
     this.load.image("remasterized", "assets-usados/remasterized.png");
     this.load.image("remasterizedEnfeites", "assets-usados/remasterizedEnfeites.png");
@@ -25,20 +27,19 @@ class scene0 extends Phaser.Scene {
     this.load.image("tileset", "assets-usados/tileset x1.png");
     this.load.image("unnamed", "assets-usados/unnamed.png");
 
-    this.load.spritesheet("player", "assets/player.png", {
+    this.load.spritesheet("player", "player.png", {
       frameWidth: 64,
       frameHeight: 64,
     });
 
-    this.load.spritesheet("buttons", "assets/buttons.png", {
+    this.load.spritesheet("buttons", "buttons.png", {
       frameWidth: 32,
       frameHeight: 32,
     });
 
-    this.load.plugin("rexvirtualjoystickplugin", "./rexvirtualjoystickplugin.min.js", true);
 
-    this.load.audio("epic", "assets/epic.mp3");
-    this.load.audio("dindin", "assets/dindin.mp3");
+    /*this.load.audio("epic", "assets/epic.mp3");
+    this.load.audio("dindin", "assets/dindin.mp3");*/
 
   }
 
@@ -54,12 +55,18 @@ class scene0 extends Phaser.Scene {
     /*this.epic = this.sound.add("epic", { loop: true }).play();
     this.dindin = this.sound.add("dindin");*/
 
-    this.layerFundo = this.tilemap.createLayer("fundo", [this.tilesetRemasterized,]);
+    this.layerFundo = this.tilemap.createLayer("fundo", [this.tilesetRemasterized, this.tilesetRemasterizedEnfeites,]);
     this.layerEnfeites = this.tilemap.createLayer("enfeites", [this.tilesetRemasterizedEnfeites,]);
     this.layerVidro = this.tilemap.createLayer("vidro", [this.tilesetRemasterized,]);
     this.layerVidroH = this.tilemap.createLayer("vidroH", [this.tilesetRemasterized,]);
     this.layerPiso = this.tilemap.createLayer("piso", [this.tilesetRemasterized,]);
 
+    this.physics.world.setBounds(
+      0,
+      0,
+      this.tilemap.widthInPixels,
+      this.tilemap.heightInPixels,
+    );
 
 
     this.anims.create({
