@@ -32,6 +32,11 @@ class scene0 extends Phaser.Scene {
       frameHeight: 64,
     });
 
+    this.load.spritesheet("plataform", "plataform.png", {
+      frameWidth: 64,
+      frameHeight: 32,
+    });
+
     this.load.spritesheet("buttons", "buttons.png", {
       frameWidth: 32,
       frameHeight: 32,
@@ -67,15 +72,23 @@ class scene0 extends Phaser.Scene {
       this.tilemap.widthInPixels,
       this.tilemap.heightInPixels,
     );
+    
+    this.cameras.main.setBounds(
+      0,
+      0,
+      this.tilemap.widthInPixels,
+      this.tilemap.heightInPixels,
+    );
 
-
+    
+    
     this.anims.create({
       key: "walk-up",
       frames: this.anims.generateFrameNumbers("player", { start: 0, end: 5 }),
       frameRate: 10,
       repeat: -1,
     });
-
+    
     this.anims.create({
       key: "walk-left",
       frames: this.anims.generateFrameNumbers("player", { start: 44, end: 51 }),
@@ -85,27 +98,35 @@ class scene0 extends Phaser.Scene {
 
     this.anims.create({
       key: "walk-right",
-      frames: this.anims.generateFrameNumbers("player", { start: 59, end: 66, }),
+      frames: this.anims.generateFrameNumbers("player", { start: 60, end: 66, }),
       frameRate: 10,
       repeat: -1,
     });
-
+    
     this.anims.create({
       key: "walk-down",
       frames: this.anims.generateFrameNumbers("player", { start: 52, end: 59 }),
       frameRate: 10,
       repeat: -1,
     });
-
+    
     this.anims.create({
       key: "idle",
       frames: this.anims.generateFrameNumbers("player", { start: 10, end: 10 }),
       frameRate: 10,
       repeat: -1,
     });
-    
-    this.player = this.physics.add.sprite(400, 300, "player", 10)
 
+    this.plataform = this.physics.add.sprite(360, 720, "plataform");
+    
+      //setImterval
+    
+    
+    
+    
+    this.player = this.physics.add.sprite(92, 672, "player", 10)
+    this.cameras.main.startFollow(this.player);
+    
     this.joystick = this.plugins.get("rexvirtualjoystickplugin").add(this, {
       x: 100,
       y: 350,
@@ -117,42 +138,43 @@ class scene0 extends Phaser.Scene {
     this.joystick.on("update", () => {
       const angle = Phaser.Math.DegToRad(this.joystick.angle);
       const force = this.joystick.force;
-
+      
       if (force > this.threshold) {
         this.direction = new Phaser.Math.Vector2(
           Math.cos(angle),
           Math.sin(angle)
         ).normalize();
       }
-    
+      
       if (this.joystick.force > 0) {
         this.player.setVelocity(
           this.direction.x * this.speed,
           this.direction.y * this.speed
         );
-
+        
         switch (true) {
           case this.joystick.angle >= -135 && this.joystick.angle < -45:
             this.player.anims.play("walk-up", true);
             break;
-          case this.joystick.angle >= -45 && this.joystick.angle < 45:
+            case this.joystick.angle >= -45 && this.joystick.angle < 45:
             this.player.anims.play("walk-right", true);
             break;
           case this.joystick.angle >= 45 && this.joystick.angle < 135:
             this.player.anims.play("walk-down", true);
             break;
-          case this.joystick.angle >= 135 || this.joystick.angle < -135:
-            this.player.anims.play("walk-left", true);
-            break;
-        }
-      } else {
-        this.player.setVelocity(0, 0);
-        this.player.anims.play("idle",true);
-      }
-    });
-    
+            case this.joystick.angle >= 135 || this.joystick.angle < -135:
+              this.player.anims.play("walk-left", true);
+              break;
+            }
+          } else {
+            this.player.setVelocity(0, 0);
+            this.player.anims.play("idle",true);
+          }
+        });
+        
     this.player.setCollideWorldBounds(true);
-
+    
+        
     this.layerPiso.setCollisionByProperty({ collides: true });
     this.physics.add.collider(this.player, this.layerPiso);
   }
