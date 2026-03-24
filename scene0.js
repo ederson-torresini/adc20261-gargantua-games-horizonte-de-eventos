@@ -84,36 +84,36 @@ class scene0 extends Phaser.Scene {
     
     this.anims.create({
       key: "walk-up",
-      frames: this.anims.generateFrameNumbers("player", { start: 0, end: 5 }),
+      frames: this.anims.generateFrameNumbers("player", { start: 28, end: 35 }),
       frameRate: 10,
       repeat: -1,
     });
     
     this.anims.create({
       key: "walk-left",
-      frames: this.anims.generateFrameNumbers("player", { start: 44, end: 51 }),
+      frames: this.anims.generateFrameNumbers("player", { start: 36, end: 43 }),
       frameRate: 10,
       repeat: -1,
     });
 
     this.anims.create({
       key: "walk-right",
-      frames: this.anims.generateFrameNumbers("player", { start: 60, end: 66, }),
+      frames: this.anims.generateFrameNumbers("player", { start: 55, end: 59, }),
       frameRate: 10,
       repeat: -1,
     });
     
     this.anims.create({
       key: "walk-down",
-      frames: this.anims.generateFrameNumbers("player", { start: 52, end: 59 }),
+      frames: this.anims.generateFrameNumbers("player", { start: 44, end: 51 }),
       frameRate: 10,
       repeat: -1,
     });
     
     this.anims.create({
       key: "idle",
-      frames: this.anims.generateFrameNumbers("player", { start: 10, end: 10 }),
-      frameRate: 10,
+      frames: this.anims.generateFrameNumbers("player", { start: 4, end: 5 }),
+      frameRate: 2,
       repeat: -1,
     });
 
