@@ -16,7 +16,7 @@ class scene0 extends Phaser.Scene {
     
     this.load.setPath("assets/");
 
-    this.load.tilemapTiledJSON("fase1e2v3", "mapasv3/fase1e2v3.json");
+    this.load.tilemapTiledJSON("todasfases", "mapasv4/todasfases.json");
 
     this.load.image("remasterized", "assets-usados/remasterized.png");
     this.load.image("remasterizedEnfeites", "assets-usados/remasterizedEnfeites.png");
@@ -50,13 +50,13 @@ class scene0 extends Phaser.Scene {
 
 
   create() {
-
-    this.tilemap = this.make.tilemap({ key: "fase1e2v3" });
+    
+    this.tilemap = this.make.tilemap({ key: "todasfases" });
     
     this.tilesetRemasterized = this.tilemap.addTilesetImage("remasterized");
     this.tilesetRemasterizedEnfeites = this.tilemap.addTilesetImage("remasterizedEnfeites");
 
-
+    
     /*this.epic = this.sound.add("epic", { loop: true }).play();
     this.dindin = this.sound.add("dindin");*/
 
@@ -65,7 +65,7 @@ class scene0 extends Phaser.Scene {
     this.layerVidro = this.tilemap.createLayer("vidro", [this.tilesetRemasterized,]);
     this.layerVidroH = this.tilemap.createLayer("vidroH", [this.tilesetRemasterized,]);
     this.layerPiso = this.tilemap.createLayer("piso", [this.tilesetRemasterized,]);
-
+    
     this.physics.world.setBounds(
       0,
       0,
@@ -73,12 +73,12 @@ class scene0 extends Phaser.Scene {
       this.tilemap.heightInPixels,
     );
     
-    this.cameras.main.setBounds(
+    /*this.cameras.main.setBounds(
       0,
       0,
       this.tilemap.widthInPixels,
       this.tilemap.heightInPixels,
-    );
+    );*/
 
     
     
@@ -139,8 +139,8 @@ class scene0 extends Phaser.Scene {
     }, 4000);
 
     this.player = this.physics.add.sprite(92, 672, "player", 5);
-    this.player.anims.play("idle",true);
     this.cameras.main.startFollow(this.player);
+    this.player.anims.play("idle",true);
 
     // Texto de posição do player atualizado a cada segundo
     this.positionText = this.add.text(10, 10, "X: 0 Y: 0", {
@@ -207,14 +207,14 @@ class scene0 extends Phaser.Scene {
     
 
         
-    this.player.setCollideWorldBounds(true);
+    /*this.player.setCollideWorldBounds(true);
     this.plataform1.setCollideWorldBounds(true);
     this.physics.add.collider(this.player, this.plataform1);
     this.physics.add.collider(this.plataform1, this.layerPiso);
     
         
     this.layerPiso.setCollisionByProperty({ collides: true });
-    this.physics.add.collider(this.player, this.layerPiso);
+    this.physics.add.collider(this.player, this.layerPiso);*/
   }
 }
 
