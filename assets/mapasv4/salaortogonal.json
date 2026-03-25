@@ -466,7 +466,7 @@
         {
          "columns":9,
          "firstgid":1,
-         "image":"..\/assets-usados\/remasterized.png",
+         "image":"../assets-usados/remasterized.png",
          "imageheight":300,
          "imagewidth":300,
          "margin":0,
@@ -1220,7 +1220,7 @@
         {
          "columns":72,
          "firstgid":82,
-         "image":"..\/assets-usados\/Starry Space - 32x22.jpg",
+         "image":"../assets-usados/Starry Space - 32x22.jpg",
          "imageheight":1584,
          "imagewidth":2304,
          "margin":0,
@@ -1233,7 +1233,7 @@
         {
          "columns":56,
          "firstgid":3610,
-         "image":"..\/assets-usados\/Sci-Fi Interior - Informant - 6x5.png",
+         "image":"../assets-usados/Sci-Fi Interior - Informant - 6x5.png",
          "imageheight":1500,
          "imagewidth":1800,
          "margin":0,
@@ -1246,7 +1246,7 @@
         {
          "columns":37,
          "firstgid":3610,
-         "image":"..\/assets-usados\/tileset x1.png",
+         "image":"../assets-usados/tileset x1.png",
          "imageheight":736,
          "imagewidth":1184,
          "margin":0,
@@ -1259,7 +1259,7 @@
         {
          "columns":4,
          "firstgid":4461,
-         "image":"..\/assets-usados\/console_s.png",
+         "image":"../assets-usados/console_s.png",
          "imageheight":64,
          "imagewidth":128,
          "margin":0,
@@ -1345,7 +1345,7 @@
         {
          "columns":2,
          "firstgid":4469,
-         "image":"..\/assets-usados\/console_w.png",
+         "image":"../assets-usados/console_w.png",
          "imageheight":64,
          "imagewidth":64,
          "margin":0,
@@ -1401,7 +1401,7 @@
         {
          "columns":9,
          "firstgid":4473,
-         "image":"..\/assets-usados\/remasterizedEnfeites.png",
+         "image":"../assets-usados/remasterizedEnfeites.png",
          "imageheight":300,
          "imagewidth":300,
          "margin":0,
@@ -2149,7 +2149,7 @@
         {
          "columns":1,
          "firstgid":4554,
-         "image":"..\/assets-usados\/New Piskel.png",
+         "image":"../assets-usados/New Piskel.png",
          "imageheight":32,
          "imagewidth":32,
          "margin":0,
