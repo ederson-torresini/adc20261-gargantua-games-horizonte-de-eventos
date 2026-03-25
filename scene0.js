@@ -98,7 +98,7 @@ class scene0 extends Phaser.Scene {
 
     this.anims.create({
       key: "walk-right",
-      frames: this.anims.generateFrameNumbers("player", { start: 55, end: 59, }),
+      frames: this.anims.generateFrameNumbers("player", { start: 52, end: 59, }),
       frameRate: 10,
       repeat: -1,
     });
