@@ -5,8 +5,6 @@ class scene0 extends Phaser.Scene {
     this.threshold = 0.1;
     this.speed = 200;
     this.direction = undefined;
-    this.money = 0;
-    this.timer = 40;
 
   }
 
@@ -41,8 +39,6 @@ class scene0 extends Phaser.Scene {
       frameWidth: 96,
       frameHeight: 8,
     });    
-
-
 
     /*this.load.audio("epic", "assets/epic.mp3");
     this.load.audio("dindin", "assets/dindin.mp3");*/
@@ -81,8 +77,6 @@ class scene0 extends Phaser.Scene {
       this.tilemap.heightInPixels,
     );*/
 
-
-
     this.anims.create({
       key: "walk-up",
       frames: this.anims.generateFrameNumbers("player", { start: 28, end: 35 }),
@@ -119,24 +113,30 @@ class scene0 extends Phaser.Scene {
     });
 
     this.plataformG = this.physics.add.sprite(431, 930, "plataformG");
-    this.plataformG.setImmovable(true).setIgnoreGravityY(true);
+    this.plataformG.setImmovable(true)
+    this.plataformG.body.allowGravity = false;
 
+    //cria plataforma 1 e defne como iovível e de velocidade x = 100 além de fazê-la ignorar a gravidade
     this.plataform1 = this.physics.add.sprite(360, 1094, "plataform");
-    this.plataform1.setImmovable(true).setIgnoreGravityY(true).setVelocityX(100);
+    this.plataform1.setImmovable(true).setVelocityX(100);
+    this.plataform1.body.allowGravity = false;
 
+    //num intervalo de 3400ms, inverte a velocidade da plataforma 1
     setInterval(() => {
       this.plataform1.setVelocityX(this.plataform1.body.velocity.x * -1);
     }, 3400);
 
     this.plataform2 = this.physics.add.sprite(1092, 960, "plataform");
-    this.plataform2.setImmovable(true).setIgnoreGravityY(true).setVelocityY(-90);
+    this.plataform2.setImmovable(true).setVelocityY(-90);
+    this.plataform2.body.allowGravity = false;
 
     setInterval(() => {
       this.plataform2.setVelocityY(this.plataform2.body.velocity.y * -1);
     }, 1045);
 
     this.plataform3 = this.physics.add.sprite(963, 910, "plataform");
-    this.plataform3.setImmovable(true).setIgnoreGravity(true).setVelocityX(-100);
+    this.plataform3.setImmovable(true).setVelocityX(-100);
+    this.plataform3.body.allowGravity = false;
 
     setInterval(() => {
       this.plataform3.setVelocityX(this.plataform3.body.velocity.x * -1);
