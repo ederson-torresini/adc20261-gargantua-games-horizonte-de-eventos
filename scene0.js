@@ -148,14 +148,17 @@ class scene0 extends Phaser.Scene {
     }, 4000);
 
     this.player = this.physics.add.sprite(92, 1052, "player", 5);
-    this.cameras.main.startFollow(this.player);
+    this.cameras.main.startFollow(this.player)
+      //.zoom = 1.5
+      ;
     this.player.anims.play("idle", true);
     
-     this.buttons = this.add.sprite(455, 1056, "buttons", 10)//.setScrollFactor(0)
+    this.buttons = this.add.sprite(700, 350, "buttons", 10)
+      .setScrollFactor(0)
       .setInteractive()
       .on("pointerdown", () => { this.buttons.setFrame(11); })
        .on("pointerup", () => {
-        this.player.setVelocityY(-150);
+        this.player.setVelocityY(-200);
         this.buttons.setFrame(10);
       });
 
