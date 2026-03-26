@@ -40,6 +40,11 @@ class scene0 extends Phaser.Scene {
       frameHeight: 8,
     });    
 
+    this.load.spritesheet("buttons", "buttons.png", {
+      frameWidth: 32,  
+      frameHeight: 32,
+    });
+
     /*this.load.audio("epic", "assets/epic.mp3");
     this.load.audio("dindin", "assets/dindin.mp3");*/
 
@@ -144,7 +149,16 @@ class scene0 extends Phaser.Scene {
 
     this.player = this.physics.add.sprite(92, 1052, "player", 5);
     this.cameras.main.startFollow(this.player);
-    this.player.anims.play("idle",true);
+    this.player.anims.play("idle", true);
+    
+     this.buttons = this.add.sprite(455, 1056, "buttons", 10)//.setScrollFactor(0)
+      .setInteractive()
+      .on("pointerdown", () => { this.buttons.setFrame(11); })
+       .on("pointerup", () => {
+        this.player.setVelocityY(-150);
+        this.buttons.setFrame(10);
+      });
+
 
     // Texto de posição do player atualizado a cada segundo
     this.positionText = this.add.text(10, 10, "X: 0 Y: 0", {
