@@ -11,6 +11,11 @@ class scene0 extends Phaser.Scene {
   preload() {
     this.load.setPath("assets/");
 
+    this.load.spritesheet("gargantua", "assets-usados/gargantuac.png", {
+      frameWidth: 150,
+      frameHeight: 150,
+    });
+
     this.load.tilemapTiledJSON("todasfases", "mapasv4/todasfases.json");
 
     this.load.image("remasterized", "assets-usados/remasterized.png");
@@ -26,8 +31,8 @@ class scene0 extends Phaser.Scene {
     this.load.image("unnamed", "assets-usados/unnamed.png");
 
     this.load.spritesheet("player", "player.png", {
-      frameWidth: 64,
-      frameHeight: 64,
+      frameWidth: 44,
+      frameHeight: 50,
     });
 
     this.load.spritesheet("plataform", "plataform.png", {
@@ -50,6 +55,19 @@ class scene0 extends Phaser.Scene {
   }
 
   create() {
+
+    this.anims.create({
+      key: "gargantua-idle",
+      frames: this.anims.generateFrameNumbers("gargantua", { start: 0, end: 50 }),
+      frameRate: 7,
+      repeat: -1,
+    });
+
+    this.gargantua = this.add.sprite(873, 950, "gargantua")
+      .setScale(3)
+      .play("gargantua-idle");
+    this.gargantua.allowGravity = false;
+
     this.tilemap = this.make.tilemap({ key: "todasfases" });
 
     this.tilesetRemasterized = this.tilemap.addTilesetImage("remasterized");
@@ -128,13 +146,27 @@ class scene0 extends Phaser.Scene {
     this.anims.create({
       key: "idle",
       frames: this.anims.generateFrameNumbers("player", { start: 4, end: 5 }),
-      frameRate: 2,
+      frameRate: 3,
       repeat: -1,
     });
 
     this.anims.create({
       key: "idleRight",
       frames: this.anims.generateFrameNumbers("player", { start: 6, end: 7 }),
+      frameRate: 3,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "idleLeft",
+      frames: this.anims.generateFrameNumbers("player", { start: 2, end: 3 }),
+      frameRate: 5,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "jump",
+      frames: this.anims.generateFrameNumbers("player", { start: 27, end: 29 }),
       frameRate: 3,
       repeat: -1,
     });
@@ -159,25 +191,25 @@ class scene0 extends Phaser.Scene {
       this.plataform1.setVelocityX(this.plataform1.body.velocity.x * -1);
     }, 3400);
 
-    this.plataform2 = this.physics.add.sprite(1092, 990, "plataform");
+    this.plataform2 = this.physics.add.sprite(1140, 975, "plataform");
     this.plataform2.setImmovable(true).setVelocityY(-90);
     this.plataform2.body.allowGravity = false;
 
     setInterval(() => {
       this.plataform2.setVelocityY(this.plataform2.body.velocity.y * -1);
-    }, 1050);
+    }, 1100);
 
-    this.plataform3 = this.physics.add.sprite(963, 910, "plataform");
+    this.plataform3 = this.physics.add.sprite(995, 930, "plataform");
     this.plataform3.setImmovable(true).setVelocityX(-100);
     this.plataform3.body.allowGravity = false;
 
     setInterval(() => {
       this.plataform3.setVelocityX(this.plataform3.body.velocity.x * -1);
-    }, 4000);
+    }, 4600);
 
     this.player = this.physics.add.sprite(92, 1052, "player", 7).setScale(0.9);
-    this.cameras.main.startFollow(this.player);
-    //zoom = 1.0
+    this.cameras.main.startFollow(this.player)
+    //.zoom = 1.2;
     this.player.anims.play("idleRight", true);
     this.doubleJump = false;
 
@@ -222,9 +254,11 @@ class scene0 extends Phaser.Scene {
 
         if (horizontal > 0) {
           this.player.setVelocityX(200);
+          this.direction = true;
           this.player.anims.play("walk-right", true);
         } else if (horizontal < 0) {
           this.player.setVelocityX(-200);
+          this.direction = false;
           this.player.anims.play("walk-left", true);
         } else {
           this.player.setVelocityX(0);
@@ -233,15 +267,21 @@ class scene0 extends Phaser.Scene {
 
       if (this.player.body.blocked.down) {
         this.doubleJump = false;
-        if (pad.X) this.player.setVelocityY(-300);
+        if (pad.X)
+          this.player.setVelocityY(-300)
       }
 
       if (this.player.body.blocked.left || this.player.body.blocked.right) {
         if (this.player.body.velocity.x != 0 && pad.X && !this.doubleJump) {
-          this.player.setVelocityY(-400);
+          this.player.setVelocityY(-415);
           this.doubleJump = true;
         }
       }
+    }
+    if (this.player.body.velocity.x === 0 && this.direction === true) {
+      this.player.anims.play("idleRight", true);
+    } else if (this.player.body.velocity.x === 0 && this.direction === false) {
+      this.player.anims.play("idleLeft", true);
     }
   }
 }
