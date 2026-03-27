@@ -12,8 +12,8 @@ class scene0 extends Phaser.Scene {
     this.load.setPath("assets/");
 
     this.load.spritesheet("gargantua", "assets-usados/gargantuac.png", {
-      frameWidth: 150,
-      frameHeight: 150,
+      frameWidth: 220,
+      frameHeight: 160,
     });
 
     this.load.tilemapTiledJSON("todasfases", "mapasv4/todasfases.json");
@@ -58,13 +58,13 @@ class scene0 extends Phaser.Scene {
 
     this.anims.create({
       key: "gargantua-idle",
-      frames: this.anims.generateFrameNumbers("gargantua", { start: 0, end: 50 }),
-      frameRate: 7,
+      frames: this.anims.generateFrameNumbers("gargantua", { start: 0, end: 49 }),
+      frameRate: 14,
       repeat: -1,
     });
 
-    this.gargantua = this.add.sprite(873, 2000, "gargantua")
-      .setScale(6)
+    this.gargantua = this.add.sprite(873, 950, "gargantua")
+      .setScale(2)
       .play("gargantua-idle");
     this.gargantua.allowGravity = false;
 
@@ -153,14 +153,14 @@ class scene0 extends Phaser.Scene {
     this.anims.create({
       key: "idleRight",
       frames: this.anims.generateFrameNumbers("player", { start: 6, end: 7 }),
-      frameRate: 5,
+      frameRate: 3,
       repeat: -1,
     });
 
     this.anims.create({
       key: "idleLeft",
       frames: this.anims.generateFrameNumbers("player", { start: 2, end: 3 }),
-      frameRate: 5,
+      frameRate: 3,
       repeat: -1,
     });
 
@@ -182,17 +182,17 @@ class scene0 extends Phaser.Scene {
     this.plataformG.body.allowGravity = false;
 
     //cria plataforma 1 e defne como iovível e de velocidade x = 100 além de fazê-la ignorar a gravidade
-    this.plataform1 = this.physics.add.sprite(360, 1094, "plataform");
+    this.plataform1 = this.physics.add.sprite(380, 1094, "plataform");
     this.plataform1.setImmovable(true).setVelocityX(100);
     this.plataform1.body.allowGravity = false;
 
     //num intervalo de 3400ms, inverte a velocidade da plataforma 1
     setInterval(() => {
       this.plataform1.setVelocityX(this.plataform1.body.velocity.x * -1);
-    }, 3400);
+    }, 3000);
 
     this.plataform2 = this.physics.add.sprite(1140, 975, "plataform");
-    this.plataform2.setImmovable(true).setVelocityY(-90);
+    this.plataform2.setImmovable(true).setVelocityY(-85);
     this.plataform2.body.allowGravity = false;
 
     setInterval(() => {
