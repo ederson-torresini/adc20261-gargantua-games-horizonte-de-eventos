@@ -63,8 +63,8 @@ class scene0 extends Phaser.Scene {
       repeat: -1,
     });
 
-    this.gargantua = this.add.sprite(873, 950, "gargantua")
-      .setScale(3)
+    this.gargantua = this.add.sprite(873, 2000, "gargantua")
+      .setScale(6)
       .play("gargantua-idle");
     this.gargantua.allowGravity = false;
 
@@ -153,7 +153,7 @@ class scene0 extends Phaser.Scene {
     this.anims.create({
       key: "idleRight",
       frames: this.anims.generateFrameNumbers("player", { start: 6, end: 7 }),
-      frameRate: 3,
+      frameRate: 5,
       repeat: -1,
     });
 
@@ -199,13 +199,13 @@ class scene0 extends Phaser.Scene {
       this.plataform2.setVelocityY(this.plataform2.body.velocity.y * -1);
     }, 1100);
 
-    this.plataform3 = this.physics.add.sprite(995, 930, "plataform");
-    this.plataform3.setImmovable(true).setVelocityX(-100);
+    this.plataform3 = this.physics.add.sprite(1050, 930, "plataform");
+    this.plataform3.setImmovable(true).setVelocityX(-150);
     this.plataform3.body.allowGravity = false;
 
     setInterval(() => {
       this.plataform3.setVelocityX(this.plataform3.body.velocity.x * -1);
-    }, 4600);
+    }, 3490);
 
     this.player = this.physics.add.sprite(92, 1052, "player", 7).setScale(0.9);
     this.cameras.main.startFollow(this.player)
