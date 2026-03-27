@@ -5,19 +5,15 @@ class scene0 extends Phaser.Scene {
     this.threshold = 0.1;
     this.speed = 200;
     this.direction = undefined;
-
   }
 
   preload() {
-
-    this.load.plugin("rexvirtualjoystickplugin", "./rexvirtualjoystickplugin.min.js", true);
-
     this.load.setPath("assets/");
 
     this.load.tilemapTiledJSON("todasfases", "mapasv4/todasfases.json");
 
     this.load.image("remasterized", "assets-usados/remasterized.png");
-    this.load.image("remasterizedEnfeites", "assets-usados/remasterizedEnfeites.png");
+    this.load.image("remasterizedEnfeites","assets-usados/remasterizedEnfeites.png",);
     this.load.image("starrySpace", "assets-usados/Starry Space - 32x22.jpg");
     this.load.image("newPiskel", "assets-usados/New Piskel.png");
     this.load.image("consoles", "assets-usados/console_s.png");
@@ -38,35 +34,44 @@ class scene0 extends Phaser.Scene {
     this.load.spritesheet("plataformG", "plataformG.png", {
       frameWidth: 96,
       frameHeight: 8,
-    });    
+    });
 
-    this.load.spritesheet("buttons", "buttons.png", {
-      frameWidth: 32,  
-      frameHeight: 32,
+    this.load.spritesheet("door", "porta64x64.png", {
+      frameHeight: 64,
+      frameWidth: 64,
     });
 
     /*this.load.audio("epic", "assets/epic.mp3");
     this.load.audio("dindin", "assets/dindin.mp3");*/
-
   }
 
-
   create() {
-
     this.tilemap = this.make.tilemap({ key: "todasfases" });
 
     this.tilesetRemasterized = this.tilemap.addTilesetImage("remasterized");
-    this.tilesetRemasterizedEnfeites = this.tilemap.addTilesetImage("remasterizedEnfeites");
-
+    this.tilesetRemasterizedEnfeites = this.tilemap.addTilesetImage(
+      "remasterizedEnfeites",
+    );
 
     /*this.epic = this.sound.add("epic", { loop: true }).play();
     this.dindin = this.sound.add("dindin");*/
 
-    this.layerFundo = this.tilemap.createLayer("fundo", [this.tilesetRemasterized, this.tilesetRemasterizedEnfeites,]);
-    this.layerEnfeites = this.tilemap.createLayer("enfeites", [this.tilesetRemasterizedEnfeites,]);
-    this.layerVidro = this.tilemap.createLayer("vidro", [this.tilesetRemasterized,]);
-    this.layerVidroH = this.tilemap.createLayer("vidroH", [this.tilesetRemasterized,]);
-    this.layerPiso = this.tilemap.createLayer("piso", [this.tilesetRemasterized,]);
+    this.layerFundo = this.tilemap.createLayer("fundo", [
+      this.tilesetRemasterized,
+      this.tilesetRemasterizedEnfeites,
+    ]);
+    this.layerEnfeites = this.tilemap.createLayer("enfeites", [
+      this.tilesetRemasterizedEnfeites,
+    ]);
+    this.layerVidro = this.tilemap.createLayer("vidro", [
+      this.tilesetRemasterized,
+    ]);
+    this.layerVidroH = this.tilemap.createLayer("vidroH", [
+      this.tilesetRemasterized,
+    ]);
+    this.layerPiso = this.tilemap.createLayer("piso", [
+      this.tilesetRemasterized,
+    ]);
 
     this.physics.world.setBounds(
       0,
@@ -98,7 +103,7 @@ class scene0 extends Phaser.Scene {
 
     this.anims.create({
       key: "walk-right",
-      frames: this.anims.generateFrameNumbers("player", { start: 52, end: 59, }),
+      frames: this.anims.generateFrameNumbers("player", { start: 61, end: 65 }),
       frameRate: 10,
       repeat: -1,
     });
@@ -117,8 +122,19 @@ class scene0 extends Phaser.Scene {
       repeat: -1,
     });
 
+    this.anims.create({
+      key: "idleRight",
+      frames: this.anims.generateFrameNumbers("player", { start: 6, end: 7 }),
+      frameRate: 3,
+      repeat: -1,
+    });
+
+    this.door = this.physics.add.sprite(92, 1059, "door", 0);
+    //this.door.setImmovable(true);
+    this.door.body.allowGravity = false;
+
     this.plataformG = this.physics.add.sprite(431, 930, "plataformG");
-    this.plataformG.setImmovable(true)
+    this.plataformG.setImmovable(true);
     this.plataformG.body.allowGravity = false;
 
     //cria plataforma 1 e defne como iovível e de velocidade x = 100 além de fazê-la ignorar a gravidade
@@ -131,7 +147,7 @@ class scene0 extends Phaser.Scene {
       this.plataform1.setVelocityX(this.plataform1.body.velocity.x * -1);
     }, 3400);
 
-    this.plataform2 = this.physics.add.sprite(1092, 960, "plataform");
+    this.plataform2 = this.physics.add.sprite(1092, 980, "plataform");
     this.plataform2.setImmovable(true).setVelocityY(-90);
     this.plataform2.body.allowGravity = false;
 
@@ -147,100 +163,66 @@ class scene0 extends Phaser.Scene {
       this.plataform3.setVelocityX(this.plataform3.body.velocity.x * -1);
     }, 4000);
 
-    this.player = this.physics.add.sprite(92, 1052, "player", 5);
-    this.cameras.main.startFollow(this.player)
-      //.zoom = 1.5
-      ;
-    this.player.anims.play("idle", true);
-    
-    this.buttons = this.add.sprite(700, 350, "buttons", 10)
-      .setScrollFactor(0)
-      .setInteractive()
-      .on("pointerdown", () => { this.buttons.setFrame(11); })
-       .on("pointerup", () => {
-        this.player.setVelocityY(-200);
-        this.buttons.setFrame(10);
-      });
+    this.player = this.physics.add.sprite(92, 1052, "player", 7).setScale(0.9);
+    this.cameras.main.startFollow(this.player);
+    //.zoom = 1.5
+    this.player.anims.play("idleRight", true);
 
+    this.physics.add.collider(this.player, this.plataformG);
+    this.physics.add.collider(this.player, this.plataform1);
+    this.physics.add.collider(this.player, this.plataform2);
+    this.physics.add.collider(this.player, this.plataform3);
+    //this.player.setCollideWorldBounds(true);
+    /*this.plataform1.setCollideWorldBounds(true);*/
+    this.physics.add.collider(this.plataform1, this.layerPiso);
+
+    this.layerPiso.setCollisionByProperty({ collides: true });
+    this.physics.add.collider(this.player, this.layerPiso);
 
     // Texto de posição do player atualizado a cada segundo
-    this.positionText = this.add.text(10, 10, "X: 0 Y: 0", {
-      fontSize: "18px",
-      fill: "#ffffff",
-      backgroundColor: "rgba(0,0,0,0.5)",
-      padding: { x: 6, y: 4 },
-    }).setScrollFactor(0);
+    this.positionText = this.add
+      .text(10, 10, "X: 0 Y: 0", {
+        fontSize: "18px",
+        fill: "#ffffff",
+        backgroundColor: "rgba(0,0,0,0.5)",
+        padding: { x: 6, y: 4 },
+      })
+      .setScrollFactor(0);
 
     this.time.addEvent({
       delay: 1000,
       loop: true,
       callback: () => {
         this.positionText.setText(
-          `X: ${Math.round(this.player.x)} Y: ${Math.round(this.player.y)}`
+          `X: ${Math.round(this.player.x)} Y: ${Math.round(this.player.y)}`,
         );
       },
     });
-
-    this.joystick = this.plugins.get("rexvirtualjoystickplugin").add(this, {
-      x: 100,
-      y: 350,
-      radius: 50,
-      base: this.add.circle(0, 0, 50, 0x6acac2),
-      thumb: this.add.circle(0, 0, 25, 0x3fa789),
-    });
-
-    this.joystick.on("update", () => {
-      const angle = Phaser.Math.DegToRad(this.joystick.angle);
-      const force = this.joystick.force;
-
-      if (force > this.threshold) {
-        this.direction = new Phaser.Math.Vector2(
-          Math.cos(angle),
-          Math.sin(angle)
-        ).normalize();
-      }
-
-      if (this.joystick.force > 0) {
-        this.player.setVelocity(
-          this.direction.x * this.speed,
-          this.direction.y * this.speed
-        );
-
-        switch (true) {
-          case this.joystick.angle >= -135 && this.joystick.angle < -45:
-            this.player.anims.play("walk-up", true);
-            break;
-            case this.joystick.angle >= -45 && this.joystick.angle < 45:
-              this.player.anims.play("walk-right", true);
-              break;
-              case this.joystick.angle >= 45 && this.joystick.angle < 135:
-                this.player.anims.play("walk-down", true);
-                break;
-                case this.joystick.angle >= 135 || this.joystick.angle < -135:
-                  this.player.anims.play("walk-left", true);
-                  break;
-                }
-              } else {
-                this.player.setVelocity(0, 0);
-                this.player.anims.play("idle",true);
-              }
-            });
-
-
-            this.physics.add.collider(this.player, this.plataformG);
-            this.physics.add.collider(this.player, this.plataform1);
-            this.physics.add.collider(this.player, this.plataform2);
-            this.physics.add.collider(this.player, this.plataform3);
-            //this.player.setCollideWorldBounds(true);
-            /*this.plataform1.setCollideWorldBounds(true);
-            this.physics.add.collider(this.plataform1, this.layerPiso);*/
-
-
-            this.layerPiso.setCollisionByProperty({ collides: true });
-            this.physics.add.collider(this.player, this.layerPiso);
   }
 
+  update() {
+    if (this.input.gamepad && this.input.gamepad.total > 0) {
+      const pad = this.input.gamepad.getPad(0);
 
+      if (pad.axes.length > 0) {
+        const horizontal = pad.axes[0].getValue();
+
+        if (horizontal > 0) {
+          this.player.setVelocityX(200);
+          this.player.anims.play("walk-right", true);
+        } else if (horizontal < 0) {
+          this.player.setVelocityX(-200);
+          this.player.anims.play("walk-left", true);
+        } else {
+          this.player.setVelocityX(0);
+        }
+      }
+
+      if (pad.X) {
+        this.player.setVelocityY(-200);
+      }
+    }
+  }
 }
 
 export default scene0;
