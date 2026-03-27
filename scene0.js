@@ -14,7 +14,7 @@ class scene0 extends Phaser.Scene {
 
     this.load.image("remasterized", "assets-usados/remasterized.png");
     this.load.image("remasterizedEnfeites","assets-usados/remasterizedEnfeites.png",);
-    this.load.image("starrySpace", "assets-usados/Starry Space - 32x22.jpg");
+    this.load.image("space", "assets-usados/space.jpg");
     this.load.image("newPiskel", "assets-usados/New Piskel.png");
     this.load.image("consoles", "assets-usados/console_s.png");
     this.load.image("consolew", "assets-usados/console_w.png");
@@ -86,6 +86,12 @@ class scene0 extends Phaser.Scene {
       this.tilemap.widthInPixels,
       this.tilemap.heightInPixels,
     );*/
+    this.anims.create({
+      key: "open-door",
+      frames: this.anims.generateFrameNumbers("door", { start: 0, end: 7 }),
+      frameRate: 7,
+      repeat: 0,
+    });
 
     this.anims.create({
       key: "walk-up",
@@ -96,14 +102,14 @@ class scene0 extends Phaser.Scene {
 
     this.anims.create({
       key: "walk-left",
-      frames: this.anims.generateFrameNumbers("player", { start: 36, end: 43 }),
+      frames: this.anims.generateFrameNumbers("player", { start: 40, end: 45 }),
       frameRate: 10,
       repeat: -1,
     });
 
     this.anims.create({
       key: "walk-right",
-      frames: this.anims.generateFrameNumbers("player", { start: 61, end: 65 }),
+      frames: this.anims.generateFrameNumbers("player", { start: 55, end: 60 }),
       frameRate: 10,
       repeat: -1,
     });
@@ -129,9 +135,11 @@ class scene0 extends Phaser.Scene {
       repeat: -1,
     });
 
-    this.door = this.physics.add.sprite(92, 1059, "door", 0);
-    //this.door.setImmovable(true);
-    this.door.body.allowGravity = false;
+    this.door11 = this.physics.add.sprite(92, 1059, "door", 0);
+    this.door11.body.allowGravity = false;
+
+    this.door21 = this.physics.add.sprite(430, 897, "door", 0);
+    this.door21.body.allowGravity = false;
 
     this.plataformG = this.physics.add.sprite(431, 930, "plataformG");
     this.plataformG.setImmovable(true);
