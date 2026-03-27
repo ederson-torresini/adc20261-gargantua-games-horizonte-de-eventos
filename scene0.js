@@ -5,6 +5,7 @@ class scene0 extends Phaser.Scene {
     this.threshold = 0.1;
     this.speed = 200;
     this.direction = undefined;
+    this.doubleJump = false;
   }
 
   preload() {
@@ -13,7 +14,10 @@ class scene0 extends Phaser.Scene {
     this.load.tilemapTiledJSON("todasfases", "mapasv4/todasfases.json");
 
     this.load.image("remasterized", "assets-usados/remasterized.png");
-    this.load.image("remasterizedEnfeites","assets-usados/remasterizedEnfeites.png",);
+    this.load.image(
+      "remasterizedEnfeites",
+      "assets-usados/remasterizedEnfeites.png",
+    );
     this.load.image("space", "assets-usados/space.jpg");
     this.load.image("newPiskel", "assets-usados/New Piskel.png");
     this.load.image("consoles", "assets-usados/console_s.png");
@@ -155,13 +159,13 @@ class scene0 extends Phaser.Scene {
       this.plataform1.setVelocityX(this.plataform1.body.velocity.x * -1);
     }, 3400);
 
-    this.plataform2 = this.physics.add.sprite(1092, 980, "plataform");
+    this.plataform2 = this.physics.add.sprite(1092, 990, "plataform");
     this.plataform2.setImmovable(true).setVelocityY(-90);
     this.plataform2.body.allowGravity = false;
 
     setInterval(() => {
       this.plataform2.setVelocityY(this.plataform2.body.velocity.y * -1);
-    }, 1045);
+    }, 1050);
 
     this.plataform3 = this.physics.add.sprite(963, 910, "plataform");
     this.plataform3.setImmovable(true).setVelocityX(-100);
@@ -173,8 +177,9 @@ class scene0 extends Phaser.Scene {
 
     this.player = this.physics.add.sprite(92, 1052, "player", 7).setScale(0.9);
     this.cameras.main.startFollow(this.player);
-    //.zoom = 1.5
+    //zoom = 1.0
     this.player.anims.play("idleRight", true);
+    this.doubleJump = false;
 
     this.physics.add.collider(this.player, this.plataformG);
     this.physics.add.collider(this.player, this.plataform1);
@@ -226,8 +231,16 @@ class scene0 extends Phaser.Scene {
         }
       }
 
-      if (pad.X) {
-        this.player.setVelocityY(-200);
+      if (this.player.body.blocked.down) {
+        this.doubleJump = false;
+        if (pad.X) this.player.setVelocityY(-300);
+      }
+
+      if (this.player.body.blocked.left || this.player.body.blocked.right) {
+        if (this.player.body.velocity.x != 0 && pad.X && !this.doubleJump) {
+          this.player.setVelocityY(-400);
+          this.doubleJump = true;
+        }
       }
     }
   }
