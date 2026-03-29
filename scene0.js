@@ -171,7 +171,7 @@ class scene0 extends Phaser.Scene {
       repeat: -1,
     });
 
-    this.door11 = this.physics.add.sprite(92, 1059, "door", 0);
+    this.door11 = this.physics.add.sprite(92, 1056, "door", 0);
     this.door11.body.allowGravity = false;
 
     this.door21 = this.physics.add.sprite(430, 897, "door", 0);
@@ -191,13 +191,13 @@ class scene0 extends Phaser.Scene {
       this.plataform1.setVelocityX(this.plataform1.body.velocity.x * -1);
     }, 3000);
 
-    this.plataform2 = this.physics.add.sprite(1140, 985, "plataform");
+    this.plataform2 = this.physics.add.sprite(1140, 930, "plataform");
     this.plataform2.setImmovable(true).setVelocityY(-85);
     this.plataform2.body.allowGravity = false;
 
-    setInterval(() => {
+    /*setInterval(() => {
       this.plataform2.setVelocityY(this.plataform2.body.velocity.y * -1);
-    }, 1100);
+    }, 1100);*/
 
     this.plataform3 = this.physics.add.sprite(1050, 930, "plataform");
     this.plataform3.setImmovable(true).setVelocityX(-150);
