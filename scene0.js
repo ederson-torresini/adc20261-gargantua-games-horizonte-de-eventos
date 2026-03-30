@@ -4,7 +4,7 @@ class scene0 extends Phaser.Scene {
 
     this.threshold = 0.1;
     this.speed = 200;
-    this.direction = undefined;
+    this.direction = true;
     this.doubleJump = false;
   }
 
@@ -112,12 +112,12 @@ class scene0 extends Phaser.Scene {
       this.tilemap.heightInPixels,
     );
 
-    /*this.cameras.main.setBounds(
+    this.cameras.main.setBounds(
       0,
       0,
-      this.tilemap.widthInPixels,
+      //this.tilemap.widthInPixels,
       this.tilemap.heightInPixels,
-    );*/
+    );
     this.anims.create({
       key: "open-door",
       frames: this.anims.generateFrameNumbers("door", { start: 0, end: 7 }),
@@ -176,14 +176,14 @@ class scene0 extends Phaser.Scene {
 
     this.anims.create({
       key: "jump",
-      frames: this.anims.generateFrameNumbers("player", { start: 27, end: 32 }),
+      frames: this.anims.generateFrameNumbers("player", { start: 27, end: 30 }),
       frameRate: 6,
       repeat: -1,
     });
 
     this.anims.create({
       key: "jumpL",
-      frames: this.anims.generateFrameNumbers("player", { start: 13, end: 18 }),
+      frames: this.anims.generateFrameNumbers("player", { start: 14, end: 17 }),
       frameRate: 6,
       repeat: -1,
     });
@@ -226,7 +226,8 @@ class scene0 extends Phaser.Scene {
 
     this.player = this.physics.add.sprite(92, 1052, "player", 7).setScale(0.9);//fase1:92, 1052//fase2:108, 1834//
     this.cameras.main.startFollow(this.player)
-    //.zoom = 1.2;
+    .zoom = 1.5;
+    this.cameras.main.followOffset.set(0, 145);
     this.player.anims.play("idleRight", true);
     this.doubleJump = false;
 
