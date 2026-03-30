@@ -191,8 +191,8 @@ class scene0 extends Phaser.Scene {
       this.plataform1.setVelocityX(this.plataform1.body.velocity.x * -1);
     }, 3000);
 
-    this.plataform2 = this.physics.add.sprite(1140, 930, "plataform");
-    this.plataform2.setImmovable(true).setVelocityY(-85);
+    this.plataform2 = this.physics.add.sprite(1140, 980, "plataform");
+    this.plataform2.setImmovable(true)//.setVelocityY(-85);
     this.plataform2.body.allowGravity = false;
 
     /*setInterval(() => {
@@ -207,7 +207,7 @@ class scene0 extends Phaser.Scene {
       this.plataform3.setVelocityX(this.plataform3.body.velocity.x * -1);
     }, 3490);
 
-    this.player = this.physics.add.sprite(92, 1052, "player", 7).setScale(0.9);
+    this.player = this.physics.add.sprite(108, 1834, "player", 7).setScale(0.9);//fase1:92, 1052
     this.cameras.main.startFollow(this.player)
     //.zoom = 1.2;
     this.player.anims.play("idleRight", true);
