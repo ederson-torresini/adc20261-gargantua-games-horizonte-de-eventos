@@ -11,6 +11,8 @@ class scene0 extends Phaser.Scene {
   preload() {
     this.load.setPath("assets/");
 
+    this.load.image("space", "assets-usados/space1.png");
+
     this.load.spritesheet("gargantua", "assets-usados/gargantuac.png", {
       frameWidth: 220,
       frameHeight: 160,
@@ -56,6 +58,8 @@ class scene0 extends Phaser.Scene {
 
   create() {
 
+    this.space = this.add.image(699, 1514, "space")
+
     this.anims.create({
       key: "gargantua-idle",
       frames: this.anims.generateFrameNumbers("gargantua", { start: 0, end: 49 }),
@@ -89,6 +93,12 @@ class scene0 extends Phaser.Scene {
       this.tilesetRemasterized,
     ]);
     this.layerVidroH = this.tilemap.createLayer("vidroH", [
+      this.tilesetRemasterized,
+    ]);
+    this.layerVidroh = this.tilemap.createLayer("vidroh", [
+      this.tilesetUnnamed,
+    ]);
+    this.layerCadeira = this.tilemap.createLayer("cadeira", [
       this.tilesetRemasterized,
     ]);
     this.layerPiso = this.tilemap.createLayer("piso", [
@@ -166,8 +176,15 @@ class scene0 extends Phaser.Scene {
 
     this.anims.create({
       key: "jump",
-      frames: this.anims.generateFrameNumbers("player", { start: 27, end: 29 }),
-      frameRate: 3,
+      frames: this.anims.generateFrameNumbers("player", { start: 27, end: 32 }),
+      frameRate: 6,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "jumpL",
+      frames: this.anims.generateFrameNumbers("player", { start: 13, end: 18 }),
+      frameRate: 6,
       repeat: -1,
     });
 
@@ -207,7 +224,7 @@ class scene0 extends Phaser.Scene {
       this.plataform3.setVelocityX(this.plataform3.body.velocity.x * -1);
     }, 3490);
 
-    this.player = this.physics.add.sprite(108, 1834, "player", 7).setScale(0.9);//fase1:92, 1052
+    this.player = this.physics.add.sprite(92, 1052, "player", 7).setScale(0.9);//fase1:92, 1052//fase2:108, 1834//
     this.cameras.main.startFollow(this.player)
     //.zoom = 1.2;
     this.player.anims.play("idleRight", true);
@@ -255,11 +272,15 @@ class scene0 extends Phaser.Scene {
         if (horizontal > 0) {
           this.player.setVelocityX(200);
           this.direction = true;
-          this.player.anims.play("walk-right", true);
+          if (this.player.body.velocity.y === 0) {
+            this.player.anims.play("walk-right", true);
+          }
         } else if (horizontal < 0) {
           this.player.setVelocityX(-200);
           this.direction = false;
-          this.player.anims.play("walk-left", true);
+          if (this.player.body.velocity.y === 0) {
+            this.player.anims.play("walk-left", true);
+          }
         } else {
           this.player.setVelocityX(0);
         }
@@ -271,6 +292,7 @@ class scene0 extends Phaser.Scene {
           this.player.setVelocityY(-300)
       }
 
+      
       if (this.player.body.blocked.left || this.player.body.blocked.right) {
         if (this.player.body.velocity.x != 0 && pad.X && !this.doubleJump) {
           this.player.setVelocityY(-415);
@@ -278,11 +300,23 @@ class scene0 extends Phaser.Scene {
         }
       }
     }
-    if (this.player.body.velocity.x === 0 && this.direction === true) {
-      this.player.anims.play("idleRight", true);
-    } else if (this.player.body.velocity.x === 0 && this.direction === false) {
-      this.player.anims.play("idleLeft", true);
+    if (this.direction === true &&
+      this.player.body.velocity.x === 0 &&
+      this.player.body.velocity.y === 0 &&
+      (this.player.body.blocked.down || this.player.body.blocked.up)) {
+        this.player.anims.play("idleRight", true);
+      } else if (this.direction === false &&
+        this.player.body.velocity.x === 0 &&
+        this.player.body.velocity.y === 0 &&
+        (this.player.body.blocked.down || this.player.body.blocked.up)) {
+          this.player.anims.play("idleLeft", true);
     }
+    
+        if(this.player.body.velocity.y < 0 && this.direction === true) {
+           this.player.anims.play("jump", true);
+        }else if(this.player.body.velocity.y < 0 && this.direction === false) {
+          this.player.anims.play("jumpL", true);
+        }
   }
 }
 

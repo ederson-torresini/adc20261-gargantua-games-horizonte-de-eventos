@@ -461,7 +461,7 @@
          "encoding":"base64",
          "height":16,
          "id":10,
-         "name":"Camada de Blocos 6",
+         "name":"cadeira",
          "opacity":1,
          "startx":16,
          "starty":48,
@@ -703,7 +703,7 @@
         {
          "columns":9,
          "firstgid":1,
-         "image":"..\/assets-usados\/remasterized.png",
+         "image":"../assets-usados/remasterized.png",
          "imageheight":300,
          "imagewidth":300,
          "margin":0,
@@ -1451,7 +1451,7 @@
         {
          "columns":72,
          "firstgid":82,
-         "image":"..\/assets-usados\/Starry Space - 32x22.jpg",
+         "image":"../assets-usados/Starry Space - 32x22.jpg",
          "imageheight":1584,
          "imagewidth":2304,
          "margin":0,
@@ -1464,7 +1464,7 @@
         {
          "columns":9,
          "firstgid":3610,
-         "image":"..\/assets-usados\/remasterizedEnfeites.png",
+         "image":"../assets-usados/remasterizedEnfeites.png",
          "imageheight":300,
          "imagewidth":300,
          "margin":0,
@@ -1477,7 +1477,7 @@
         {
          "columns":32,
          "firstgid":3691,
-         "image":"..\/assets-usados\/unnamed.png",
+         "image":"../assets-usados/unnamed.png",
          "imageheight":1024,
          "imagewidth":1024,
          "margin":0,
