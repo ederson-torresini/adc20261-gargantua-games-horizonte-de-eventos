@@ -57,6 +57,11 @@ class scene0 extends Phaser.Scene {
       frameHeight: 8,
     });
 
+    this.load.spritesheet("engrenagem", "engrenagem.png", {
+      frameWidth: 64,
+      frameHeight: 64,
+    });
+
     /*this.load.audio("epic", "assets/epic.mp3");
     this.load.audio("dindin", "assets/dindin.mp3");*/
   }
@@ -84,6 +89,7 @@ class scene0 extends Phaser.Scene {
       "remasterizedEnfeites",
     );
 
+    
     /*this.epic = this.sound.add("epic", { loop: true }).play();
     this.dindin = this.sound.add("dindin");*/
 
@@ -109,14 +115,14 @@ class scene0 extends Phaser.Scene {
     this.layerPiso = this.tilemap.createLayer("piso", [
       this.tilesetRemasterized,
     ]);
-
+    
     this.physics.world.setBounds(
       0,
       0,
       this.tilemap.widthInPixels,
       this.tilemap.heightInPixels,
     );
-
+    
     this.cameras.main.setBounds(
       0,
       0,
@@ -129,42 +135,42 @@ class scene0 extends Phaser.Scene {
       frameRate: 7,
       repeat: 0,
     });
-
+    
     this.anims.create({
       key: "walk-up",
       frames: this.anims.generateFrameNumbers("player", { start: 28, end: 35 }),
       frameRate: 10,
       repeat: -1,
     });
-
+    
     this.anims.create({
       key: "walk-left",
       frames: this.anims.generateFrameNumbers("player", { start: 40, end: 45 }),
       frameRate: 10,
       repeat: -1,
     });
-
+    
     this.anims.create({
       key: "walk-right",
       frames: this.anims.generateFrameNumbers("player", { start: 55, end: 60 }),
       frameRate: 10,
       repeat: -1,
     });
-
+    
     this.anims.create({
       key: "walk-down",
       frames: this.anims.generateFrameNumbers("player", { start: 44, end: 51 }),
       frameRate: 10,
       repeat: -1,
     });
-
+    
     this.anims.create({
       key: "idle",
       frames: this.anims.generateFrameNumbers("player", { start: 4, end: 5 }),
       frameRate: 3,
       repeat: -1,
     });
-
+    
     this.anims.create({
       key: "idleRight",
       frames: this.anims.generateFrameNumbers("player", { start: 6, end: 7 }),
@@ -185,13 +191,25 @@ class scene0 extends Phaser.Scene {
       frameRate: 6,
       repeat: -1,
     });
-
+    
     this.anims.create({
       key: "jumpL",
       frames: this.anims.generateFrameNumbers("player", { start: 14, end: 17 }),
       frameRate: 6,
       repeat: -1,
     });
+
+    this.anims.create({
+      key: "engrenagem-idle",
+      frames: this.anims.generateFrameNumbers("engrenagem", { start: 0, end: 1 }),
+      frameRate: 2,
+      repeat: -1,
+    });
+
+    this.engrenagem = this.physics.add.sprite(1138, 968, "engrenagem").setScale(0.3);
+    this.engrenagem.anims.play("engrenagem-idle", true);
+    this.engrenagem.setImmovable(true);
+    this.engrenagem.body.allowGravity = false;
 
     this.cai = this.physics.add.sprite(500, 1150, "cai");
     this.cai.body.allowGravity = false;
@@ -202,11 +220,11 @@ class scene0 extends Phaser.Scene {
 
     this.door21 = this.physics.add.sprite(430, 897, "door", 0);
     this.door21.body.allowGravity = false;
-
+    
     this.plataformG = this.physics.add.sprite(431, 930, "plataformG");
     this.plataformG.setImmovable(true);
     this.plataformG.body.allowGravity = false;
-
+    
     //cria plataforma 1 e defne como iovível e de velocidade x = 100 além de fazê-la ignorar a gravidade
     this.plataform1 = this.physics.add.sprite(380, 1094, "plataform");
     this.plataform1.setImmovable(true).setVelocityX(100);
@@ -216,19 +234,19 @@ class scene0 extends Phaser.Scene {
     setInterval(() => {
       this.plataform1.setVelocityX(this.plataform1.body.velocity.x * -1);
     }, 3000);
-
+    
     this.plataform2 = this.physics.add.sprite(1140, 980, "plataform");
     this.plataform2.setImmovable(true)//.setVelocityY(-85);
     this.plataform2.body.allowGravity = false;
-
+    
     /*setInterval(() => {
       this.plataform2.setVelocityY(this.plataform2.body.velocity.y * -1);
     }, 1100);*/
-
+    
     this.plataform3 = this.physics.add.sprite(1050, 930, "plataform");
     this.plataform3.setImmovable(true).setVelocityX(-150);
     this.plataform3.body.allowGravity = false;
-
+    
     setInterval(() => {
       this.plataform3.setVelocityX(this.plataform3.body.velocity.x * -1);
     }, 3490);
@@ -236,12 +254,13 @@ class scene0 extends Phaser.Scene {
     this.player = this.physics.add.sprite(92, 1066, "player", 7).setScale(0.9);//fase1:92, 1052//fase2:108, 1834//
     //this.cameras.main.followOffset.set(0, 200);
     this.cameras.main.startFollow(this.player, false, 1, 0)
-      .zoom = 1.2;/*
+    .zoom = 1.2;/*
     this.cameras.main.lockTo(this.player, true, 1, 1);*/
     this.cameras.main.scrollY = this.player.y - this.cameras.main.height / 2 - 120; // Ajuste para começar mais para cima (100 pixels acima do centro do jogador)
     this.player.anims.play("idleRight", true);
     this.doubleJump = false;
-      
+    //this.physics.add.overlap(this.player, this.engrenagem, this.collectEng, null, this);
+      this.physics.add.collider(this.engrenagem, this.plataform2);
       this.physics.add.collider(this.player, this.layerPiso);
       this.physics.add.collider(this.player, this.plataformG);
       this.physics.add.collider(this.player, this.plataform1);
@@ -280,6 +299,31 @@ class scene0 extends Phaser.Scene {
   }
 
     update() {
+
+      /*collectEng(player, engrenagem){
+        star.disableBody(true, true);
+
+        this.score += 10;
+        this.scoreText.setText("Score: " + this.score);
+
+        if (this.stars.countActive(true) === 0) {
+      this.stars.children.iterate(function (child) {
+        child.enableBody(true, child.x, 0, true, true);
+      });
+
+      var x =
+        this.player.x < 400
+          ? Phaser.Math.Between(400, 800)
+          : Phaser.Math.Between(0, 400);
+
+      var bomb = this.bombs.create(x, 16, "bomb");
+      bomb.setBounce(1);
+      bomb.setCollideWorldBounds(true);
+      bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+      bomb.allowGravity = false;
+    }
+  }*/
+
       if (this.input.gamepad && this.input.gamepad.total > 0) {
         const pad = this.input.gamepad.getPad(0);
 
