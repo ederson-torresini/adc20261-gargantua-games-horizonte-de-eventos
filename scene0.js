@@ -81,15 +81,14 @@ class scene0 extends Phaser.Scene {
 
     this.gargantua = this.add.sprite(873, 950, "gargantua")
       .setScale(2)
-      .play("gargantua-idle");
+      .play("gargantua-idle")
+      .setPipeline("Light2D");
     this.gargantua.allowGravity = false;
 
     this.tilemap = this.make.tilemap({ key: "todasfases" });
 
     this.tilesetRemasterized = this.tilemap.addTilesetImage("remasterized");
-    this.tilesetRemasterizedEnfeites = this.tilemap.addTilesetImage(
-      "remasterizedEnfeites",
-    );
+    this.tilesetRemasterizedEnfeites = this.tilemap.addTilesetImage( "remasterizedEnfeites", );
 
     
     /*this.epic = this.sound.add("epic", { loop: true }).play();
@@ -98,25 +97,25 @@ class scene0 extends Phaser.Scene {
     this.layerFundo = this.tilemap.createLayer("fundo", [
       this.tilesetRemasterized,
       this.tilesetRemasterizedEnfeites,
-    ]);
+    ]).setPipeline("Light2D") ;
     this.layerEnfeites = this.tilemap.createLayer("enfeites", [
       this.tilesetRemasterizedEnfeites,
-    ]);
+    ]).setPipeline("Light2D");
     this.layerVidro = this.tilemap.createLayer("vidro", [
       this.tilesetRemasterized,
-    ]);
+    ]).setPipeline("Light2D");
     this.layerVidroH = this.tilemap.createLayer("vidroH", [
       this.tilesetRemasterized,
-    ]);
+    ]).setPipeline("Light2D");
     this.layerVidroh = this.tilemap.createLayer("vidroh", [
-      this.tilesetUnnamed,
-    ]);
-    this.layerCadeira = this.tilemap.createLayer("cadeira", [
       this.tilesetRemasterized,
-    ]);
+    ]).setPipeline("Light2D");
+    this.layerCadeira = this.tilemap.createLayer("cadeira", [
+      this.tilesetUnnamed,
+    ]).setPipeline("Light2D");
     this.layerPiso = this.tilemap.createLayer("piso", [
       this.tilesetRemasterized,
-    ]);
+    ]).setPipeline("Light2D");
     
     this.physics.world.setBounds(
       0,
@@ -214,13 +213,15 @@ class scene0 extends Phaser.Scene {
     }).setScrollFactor(0);
 
     this.engrenagem = this.physics.add.sprite(1138, 968, "engrenagem").setScale(0.3);
-    this.engrenagem.anims.play("engrenagem-idle", true);
-    this.engrenagem.setImmovable(true);
-    this.engrenagem.body.allowGravity = false;
+    this.engrenagem.anims.play("engrenagem-idle", true)
+      .setImmovable(true)
+      .setPipeline("Light2D")
+      .body.allowGravity = false;
 
-    this.cai = this.physics.add.sprite(500, 1150, "cai");
-    this.cai.body.allowGravity = false;
-    this.cai.setImmovable(true);
+      this.cai = this.physics.add.sprite(500, 1150, "cai");
+    this.cai.setImmovable(true)
+     .setPipeline("Light2D")
+      .body.allowGravity = false;
 
     this.door11 = this.physics.add.sprite(92, 1056, "door", 0);
     this.door11.body.allowGravity = false;
