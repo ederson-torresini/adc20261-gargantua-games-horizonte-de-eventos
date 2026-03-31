@@ -6,6 +6,8 @@ class scene0 extends Phaser.Scene {
     this.speed = 200;
     this.direction = true;
     this.doubleJump = false;
+    this.score = 0;
+    this.scoreText;
   }
 
   preload() {
@@ -206,6 +208,11 @@ class scene0 extends Phaser.Scene {
       repeat: -1,
     });
 
+    this.scoreText = this.add.text(100, 28, "Engrenagens: 0/5", {
+      fontSize: "32px",
+      fill: "#000",
+    }).setScrollFactor(0);
+
     this.engrenagem = this.physics.add.sprite(1138, 968, "engrenagem").setScale(0.3);
     this.engrenagem.anims.play("engrenagem-idle", true);
     this.engrenagem.setImmovable(true);
@@ -259,7 +266,7 @@ class scene0 extends Phaser.Scene {
     this.cameras.main.scrollY = this.player.y - this.cameras.main.height / 2 - 120; // Ajuste para começar mais para cima (100 pixels acima do centro do jogador)
     this.player.anims.play("idleRight", true);
     this.doubleJump = false;
-    //this.physics.add.overlap(this.player, this.engrenagem, this.collectEng, null, this);
+    this.physics.add.overlap(this.player, this.engrenagem, this.collectEng, null, this);
       this.physics.add.collider(this.engrenagem, this.plataform2);
       this.physics.add.collider(this.player, this.layerPiso);
       this.physics.add.collider(this.player, this.plataformG);
@@ -300,30 +307,7 @@ class scene0 extends Phaser.Scene {
 
     update() {
 
-      /*collectEng(player, engrenagem){
-        star.disableBody(true, true);
-
-        this.score += 10;
-        this.scoreText.setText("Score: " + this.score);
-
-        if (this.stars.countActive(true) === 0) {
-      this.stars.children.iterate(function (child) {
-        child.enableBody(true, child.x, 0, true, true);
-      });
-
-      var x =
-        this.player.x < 400
-          ? Phaser.Math.Between(400, 800)
-          : Phaser.Math.Between(0, 400);
-
-      var bomb = this.bombs.create(x, 16, "bomb");
-      bomb.setBounce(1);
-      bomb.setCollideWorldBounds(true);
-      bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-      bomb.allowGravity = false;
-    }
-  }*/
-
+      
       if (this.input.gamepad && this.input.gamepad.total > 0) {
         const pad = this.input.gamepad.getPad(0);
 
@@ -346,13 +330,13 @@ class scene0 extends Phaser.Scene {
             this.player.setVelocityX(0);
           }
         }
-
+        
         if (this.player.body.blocked.down) {
           this.doubleJump = false;
           if (pad.X)
             this.player.setVelocityY(-300)
         }
-
+        
       
         if (this.player.body.blocked.left || this.player.body.blocked.right) {
           if (this.player.body.velocity.x != 0 && pad.X && !this.doubleJump) {
@@ -379,5 +363,29 @@ class scene0 extends Phaser.Scene {
         this.player.anims.play("jumpL", true);
       }
     }
+  
+    collectEng(player, engrenagem){
+      engrenagem.disableBody(true, true);
+  
+      this.score += 1;
+      this.scoreText.setText("Engrenagens: " + this.score + "/5");
+  
+    }/*if (this.stars.countActive(true) === 0) {
+    this.stars.children.iterate(function (child) {
+      child.enableBody(true, child.x, 0, true, true);
+    });
+  
+    var x =
+      this.player.x < 400
+        ? Phaser.Math.Between(400, 800)
+        : Phaser.Math.Between(0, 400);
+  
+    var bomb = this.bombs.create(x, 16, "bomb");
+    bomb.setBounce(1);
+    bomb.setCollideWorldBounds(true);
+    bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+    bomb.allowGravity = false;
   }
-export default scene0;
+  }*/
+  }
+  export default scene0;
