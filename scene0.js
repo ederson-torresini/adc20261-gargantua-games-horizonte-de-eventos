@@ -52,6 +52,11 @@ class scene0 extends Phaser.Scene {
       frameWidth: 64,
     });
 
+    this.load.image("cai", "buttons.png", {
+      frameWidth: 416,
+      frameHeight: 8,
+    });
+
     /*this.load.audio("epic", "assets/epic.mp3");
     this.load.audio("dindin", "assets/dindin.mp3");*/
   }
@@ -115,8 +120,8 @@ class scene0 extends Phaser.Scene {
     this.cameras.main.setBounds(
       0,
       0,
-      //this.tilemap.widthInPixels,
-      this.tilemap.heightInPixels,
+      this.tilemap.widthInPixels,
+      //this.tilemap.heightInPixels,
     );
     this.anims.create({
       key: "open-door",
@@ -188,6 +193,10 @@ class scene0 extends Phaser.Scene {
       repeat: -1,
     });
 
+    this.cai = this.physics.add.sprite(500, 1150, "cai");
+    this.cai.body.allowGravity = false;
+    this.cai.setImmovable(true);
+
     this.door11 = this.physics.add.sprite(92, 1056, "door", 0);
     this.door11.body.allowGravity = false;
 
@@ -224,101 +233,107 @@ class scene0 extends Phaser.Scene {
       this.plataform3.setVelocityX(this.plataform3.body.velocity.x * -1);
     }, 3490);
 
-    this.player = this.physics.add.sprite(92, 1052, "player", 7).setScale(0.9);//fase1:92, 1052//fase2:108, 1834//
-    this.cameras.main.startFollow(this.player)
-    .zoom = 1.5;
-    this.cameras.main.followOffset.set(0, 145);
+    this.player = this.physics.add.sprite(92, 1066, "player", 7).setScale(0.9);//fase1:92, 1052//fase2:108, 1834//
+    //this.cameras.main.followOffset.set(0, 200);
+    this.cameras.main.startFollow(this.player, false, 1, 0)
+      .zoom = 1.2;/*
+    this.cameras.main.lockTo(this.player, true, 1, 1);*/
+    this.cameras.main.scrollY = this.player.y - this.cameras.main.height / 2 - 120; // Ajuste para começar mais para cima (100 pixels acima do centro do jogador)
     this.player.anims.play("idleRight", true);
     this.doubleJump = false;
+      
+      this.physics.add.collider(this.player, this.layerPiso);
+      this.physics.add.collider(this.player, this.plataformG);
+      this.physics.add.collider(this.player, this.plataform1);
+      this.physics.add.collider(this.player, this.plataform2);
+      this.physics.add.collider(this.player, this.plataform3);
+      this.physics.add.overlap(this.player, this.cai, () => {
+        this.player.setPosition(92, 1066);
+        this.player.setVelocity(0, 0);
+      });
+      //this.player.setCollideWorldBounds(true);
+      /*this.plataform1.setCollideWorldBounds(true);*/
+      this.physics.add.collider(this.plataform1, this.layerPiso);
 
-    this.physics.add.collider(this.player, this.plataformG);
-    this.physics.add.collider(this.player, this.plataform1);
-    this.physics.add.collider(this.player, this.plataform2);
-    this.physics.add.collider(this.player, this.plataform3);
-    //this.player.setCollideWorldBounds(true);
-    /*this.plataform1.setCollideWorldBounds(true);*/
-    this.physics.add.collider(this.plataform1, this.layerPiso);
+      this.layerPiso.setCollisionByProperty({ collides: true });
 
-    this.layerPiso.setCollisionByProperty({ collides: true });
-    this.physics.add.collider(this.player, this.layerPiso);
+      // Texto de posição do player atualizado a cada segundo
+      this.positionText = this.add
+        .text(100, 50, "X: 0 Y: 0", {
+          fontSize: "18px",
+          fill: "#ffffff",
+          backgroundColor: "rgba(0,0,0,0.5)",
+          padding: { x: 6, y: 4 },
+        })
+        .setScrollFactor(0);
 
-    // Texto de posição do player atualizado a cada segundo
-    this.positionText = this.add
-      .text(10, 10, "X: 0 Y: 0", {
-        fontSize: "18px",
-        fill: "#ffffff",
-        backgroundColor: "rgba(0,0,0,0.5)",
-        padding: { x: 6, y: 4 },
-      })
-      .setScrollFactor(0);
-
-    this.time.addEvent({
-      delay: 1000,
-      loop: true,
-      callback: () => {
-        this.positionText.setText(
-          `X: ${Math.round(this.player.x)} Y: ${Math.round(this.player.y)}`,
-        );
-      },
-    });
+      this.time.addEvent({
+        delay: 1000,
+        loop: true,
+        callback: () => {
+          this.positionText.setText(
+            `X: ${Math.round(this.player.x)} Y: ${Math.round(this.player.y)}`,
+          );
+        },
+      });
+    
   }
 
-  update() {
-    if (this.input.gamepad && this.input.gamepad.total > 0) {
-      const pad = this.input.gamepad.getPad(0);
+    update() {
+      if (this.input.gamepad && this.input.gamepad.total > 0) {
+        const pad = this.input.gamepad.getPad(0);
 
-      if (pad.axes.length > 0) {
-        const horizontal = pad.axes[0].getValue();
+        if (pad.axes.length > 0) {
+          const horizontal = pad.axes[0].getValue();
 
-        if (horizontal > 0) {
-          this.player.setVelocityX(200);
-          this.direction = true;
-          if (this.player.body.velocity.y === 0) {
-            this.player.anims.play("walk-right", true);
+          if (horizontal > 0) {
+            this.player.setVelocityX(200);
+            this.direction = true;
+            if (this.player.body.velocity.y === 0) {
+              this.player.anims.play("walk-right", true);
+            }
+          } else if (horizontal < 0) {
+            this.player.setVelocityX(-200);
+            this.direction = false;
+            if (this.player.body.velocity.y === 0) {
+              this.player.anims.play("walk-left", true);
+            }
+          } else {
+            this.player.setVelocityX(0);
           }
-        } else if (horizontal < 0) {
-          this.player.setVelocityX(-200);
-          this.direction = false;
-          if (this.player.body.velocity.y === 0) {
-            this.player.anims.play("walk-left", true);
-          }
-        } else {
-          this.player.setVelocityX(0);
         }
-      }
 
-      if (this.player.body.blocked.down) {
-        this.doubleJump = false;
-        if (pad.X)
-          this.player.setVelocityY(-300)
-      }
+        if (this.player.body.blocked.down) {
+          this.doubleJump = false;
+          if (pad.X)
+            this.player.setVelocityY(-300)
+        }
 
       
-      if (this.player.body.blocked.left || this.player.body.blocked.right) {
-        if (this.player.body.velocity.x != 0 && pad.X && !this.doubleJump) {
-          this.player.setVelocityY(-415);
-          this.doubleJump = true;
+        if (this.player.body.blocked.left || this.player.body.blocked.right) {
+          if (this.player.body.velocity.x != 0 && pad.X && !this.doubleJump) {
+            this.player.setVelocityY(-415);
+            this.doubleJump = true;
+          }
         }
       }
-    }
-    if (this.direction === true &&
-      this.player.body.velocity.x === 0 &&
-      this.player.body.velocity.y === 0 &&
-      (this.player.body.blocked.down || this.player.body.blocked.up)) {
+      if (this.direction === true &&
+        this.player.body.velocity.x === 0 &&
+        this.player.body.velocity.y === 0 &&
+        (this.player.body.blocked.down || this.player.body.blocked.up)) {
         this.player.anims.play("idleRight", true);
       } else if (this.direction === false &&
         this.player.body.velocity.x === 0 &&
         this.player.body.velocity.y === 0 &&
         (this.player.body.blocked.down || this.player.body.blocked.up)) {
-          this.player.anims.play("idleLeft", true);
-    }
+        this.player.anims.play("idleLeft", true);
+      }
     
-        if(this.player.body.velocity.y < 0 && this.direction === true) {
-           this.player.anims.play("jump", true);
-        }else if(this.player.body.velocity.y < 0 && this.direction === false) {
-          this.player.anims.play("jumpL", true);
-        }
+      if (this.player.body.velocity.y < 0 && this.direction === true) {
+        this.player.anims.play("jump", true);
+      } else if (this.player.body.velocity.y < 0 && this.direction === false) {
+        this.player.anims.play("jumpL", true);
+      }
+    }
   }
-}
-
 export default scene0;
