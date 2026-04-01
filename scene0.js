@@ -270,13 +270,13 @@ class scene0 extends Phaser.Scene {
     this.doubleJump = false;
     
     this.lights.enable()
-    .setAmbientColor(0x666666)
+    .setAmbientColor(0xE0F7FF) // 0xE0F7FF
     .addLight(1040, 995, 80)
       .setIntensity(1)
       .setColor(0xffa500);
-    this.lamp = this.lights
+    /*this.lamp = this.lights
     .addLight(this.player.x, this.player.y, 40)
-    .setIntensity(1.2);
+    .setIntensity(1.2);*/
     
     this.physics.add.overlap(this.player, this.engrenagem, this.collectEng, null, this);
       this.physics.add.collider(this.engrenagem, this.plataform2);
@@ -316,8 +316,8 @@ class scene0 extends Phaser.Scene {
 
     update() {
 
-      this.lamp.x = this.player.x;
-      this.lamp.y = this.player.y;
+      //this.lamp.x = this.player.x;
+      //this.lamp.y = this.player.y;
       
       if (this.input.gamepad && this.input.gamepad.total > 0) {
         const pad = this.input.gamepad.getPad(0);
