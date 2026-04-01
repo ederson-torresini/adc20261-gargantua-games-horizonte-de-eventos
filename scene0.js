@@ -275,7 +275,7 @@ class scene0 extends Phaser.Scene {
       .setIntensity(1)
       .setColor(0xffa500);
     this.lamp = this.lights
-    .addLight(this.player.x, this.player.y, 50)
+    .addLight(this.player.x, this.player.y, 40)
     .setIntensity(1.2);
     
     this.physics.add.overlap(this.player, this.engrenagem, this.collectEng, null, this);
