@@ -12,6 +12,8 @@ class scene0 extends Phaser.Scene {
   preload() {
     this.load.setPath("assets/");
 
+    this.load.audio("passos", "walkamongus.mp3"); 
+
     this.load.image("space", "assets-usados/space1.png");
 
     this.load.spritesheet("gargantua", "assets-usados/gargantuac.png", {
@@ -68,6 +70,8 @@ class scene0 extends Phaser.Scene {
   }
 
   create() {
+
+    this.passos = this.sound.add("passos", { loop: true, volume: 0.5 });
 
     this.space = this.add.image(699, 1514, "space")
 
@@ -274,6 +278,30 @@ class scene0 extends Phaser.Scene {
     .addLight(1040, 995, 80)
       .setIntensity(1)
       .setColor(0xffa500);
+    this.lights
+      .addLight(921, 1032, 80)
+      .setIntensity(1)
+        .setColor(0xffa500);
+    this.lights
+      .addLight(900, 1032, 80)
+      .setIntensity(1)
+      .setColor(0xffa500);
+    this.lights
+      .addLight(860, 1020, 80)
+      .setIntensity(1)
+      .setColor(0xffa500);
+    this.lights
+      .addLight(860, 950, 80)
+      .setIntensity(1)
+      .setColor(0xffa500);
+    this.lights
+      .addLight(735, 1050, 50)
+      .setIntensity(1)
+      .setColor(0xffa500);
+    this.lights
+      .addLight(784, 1025, 60)
+      .setIntensity(1)
+      .setColor(0xffa500);
     /*this.lamp = this.lights
     .addLight(this.player.x, this.player.y, 40)
     .setIntensity(1.2);*/
@@ -330,12 +358,14 @@ class scene0 extends Phaser.Scene {
             this.direction = true;
             if (this.player.body.velocity.y === 0) {
               this.player.anims.play("walk-right", true);
+              this.passos.play();
             }
           } else if (horizontal < 0) {
-            this.player.setVelocityX(-200);
+            this.player.setVelocityX(-200)
             this.direction = false;
             if (this.player.body.velocity.y === 0) {
               this.player.anims.play("walk-left", true);
+              this.passos.play();
             }
           } else {
             this.player.setVelocityX(0);
