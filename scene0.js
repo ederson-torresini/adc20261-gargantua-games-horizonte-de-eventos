@@ -302,6 +302,10 @@ class scene0 extends Phaser.Scene {
       .addLight(784, 1025, 60)
       .setIntensity(1)
       .setColor(0xffa500);
+    this.lights
+      .addLight(this.door11.x, 1035, 40)
+      .setIntensity(1)
+      .setColor(0xffa500);
     /*this.lamp = this.lights
     .addLight(this.player.x, this.player.y, 40)
     .setIntensity(1.2);*/
