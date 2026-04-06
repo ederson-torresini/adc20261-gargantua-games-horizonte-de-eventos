@@ -36,8 +36,8 @@ class scene0 extends Phaser.Scene {
     this.load.image("unnamed", "assets-usados/unnamed.png");
 
     this.load.spritesheet("player", "player.png", {
-      frameWidth: 44,
-      frameHeight: 50,
+      frameWidth: 36,
+      frameHeight: 48,
     });
 
     this.load.spritesheet("plataform", "plataform.png", {
@@ -144,65 +144,65 @@ class scene0 extends Phaser.Scene {
       repeat: 0,
     });
 
-    this.anims.create({
+   /* this.anims.create({
       key: "walk-up",
       frames: this.anims.generateFrameNumbers("player", { start: 28, end: 35 }),
       frameRate: 10,
       repeat: -1,
-    });
+    });*/
 
     this.anims.create({
       key: "walk-left",
-      frames: this.anims.generateFrameNumbers("player", { start: 40, end: 45 }),
+      frames: this.anims.generateFrameNumbers("player", { start: 15, end: 20 }),
       frameRate: 10,
       repeat: -1,
     });
 
     this.anims.create({
       key: "walk-right",
-      frames: this.anims.generateFrameNumbers("player", { start: 55, end: 60 }),
+      frames: this.anims.generateFrameNumbers("player", { start: 22, end: 26 }),
       frameRate: 10,
       repeat: -1,
     });
 
-    this.anims.create({
+    /*this.anims.create({
       key: "walk-down",
       frames: this.anims.generateFrameNumbers("player", { start: 44, end: 51 }),
       frameRate: 10,
       repeat: -1,
     });
 
-    this.anims.create({
+    /*this.anims.create({
       key: "idle",
       frames: this.anims.generateFrameNumbers("player", { start: 4, end: 5 }),
       frameRate: 3,
       repeat: -1,
-    });
+    });*/
 
     this.anims.create({
       key: "idleRight",
-      frames: this.anims.generateFrameNumbers("player", { start: 6, end: 7 }),
-      frameRate: 3,
-      repeat: -1,
-    });
-
-    this.anims.create({
-      key: "idleLeft",
       frames: this.anims.generateFrameNumbers("player", { start: 2, end: 3 }),
       frameRate: 3,
       repeat: -1,
     });
 
     this.anims.create({
+      key: "idleLeft",
+      frames: this.anims.generateFrameNumbers("player", { start: 0, end: 1 }),
+      frameRate: 3,
+      repeat: -1,
+    });
+
+    this.anims.create({
       key: "jump",
-      frames: this.anims.generateFrameNumbers("player", { start: 27, end: 30 }),
+      frames: this.anims.generateFrameNumbers("player", { start: 10, end: 13 }),
       frameRate: 6,
       repeat: -1,
     });
 
     this.anims.create({
       key: "jumpL",
-      frames: this.anims.generateFrameNumbers("player", { start: 14, end: 17 }),
+      frames: this.anims.generateFrameNumbers("player", { start: 5, end: 8 }),
       frameRate: 6,
       repeat: -1,
     });
@@ -230,29 +230,38 @@ class scene0 extends Phaser.Scene {
     this.engrenagem.anims
       .play("engrenagem-idle", true)
       .setImmovable(true)
-      .setPipeline("Light2D").body.allowGravity = false;
+      .setPipeline("Light2D")
+      .body.allowGravity = false;
 
     this.cai = this.physics.add.sprite(500, 1150, "cai");
-    this.cai.setImmovable(true).setPipeline("Light2D").body.allowGravity =
-      false;
+    this.cai
+      .setImmovable(true)
+      .setPipeline("Light2D")
+      .body.allowGravity = false;
 
     this.door11 = this.physics.add.sprite(92, 1056, "door", 0);
-    this.door11.setPipeline("Light2D").body.allowGravity = false;
+    this.door11
+      .setPipeline("Light2D")
+      .body.allowGravity = false;
 
     this.door21 = this.physics.add.sprite(430, 897, "door", 0);
-    this.door21.setPipeline("Light2D").body.allowGravity = false;
+    this.door21
+      .setPipeline("Light2D")
+      .body.allowGravity = false;
 
     this.plataformG = this.physics.add.sprite(431, 930, "plataformG");
     this.plataformG
       .setImmovable(true)
-      .setPipeline("Light2D").body.allowGravity = false;
+      .setPipeline("Light2D")
+      .body.allowGravity = false;
 
     //cria plataforma 1 e defne como imovível e de velocidade x = 100 além de fazê-la ignorar a gravidade
     this.plataform1 = this.physics.add.sprite(380, 1094, "plataform");
     this.plataform1
       .setImmovable(true)
       .setVelocityX(100)
-      .setPipeline("Light2D").body.allowGravity = false;
+      .setPipeline("Light2D")
+      .body.allowGravity = false;
 
     //num intervalo de 3400ms, inverte a velocidade da plataforma 1
     setInterval(() => {
@@ -262,28 +271,31 @@ class scene0 extends Phaser.Scene {
     this.plataform2 = this.physics.add.sprite(1140, 980, "plataform");
     this.plataform2
       .setImmovable(true)
-      .setPipeline("Light2D").body.allowGravity = false;
+      .setPipeline("Light2D")
+      .body.allowGravity = false;
 
     this.plataform3 = this.physics.add.sprite(1050, 930, "plataform");
     this.plataform3
       .setImmovable(true)
       .setVelocityX(-150)
-      .setPipeline("Light2D").body.allowGravity = false;
+      .setPipeline("Light2D")
+      .body.allowGravity = false;
 
     setInterval(() => {
       this.plataform3.setVelocityX(this.plataform3.body.velocity.x * -1);
     }, 3490);
 
-    this.player = this.physics.add.sprite(92, 1066, "player", 7).setScale(0.9); //fase1:92, 1052//fase2:108, 1834//
+    this.player = this.physics.add.sprite(92, 1066, "player", 3).setScale(0.9); //fase1:92, 1052//fase2:108, 1834//
     this.cameras.main.startFollow(this.player, false, 1, 0).zoom = 1.2;
     this.cameras.main.scrollY =
       this.player.y - this.cameras.main.height / 2 - 120; // Ajuste para começar mais para cima (100 pixels acima do centro do jogador)
-    this.player.anims.play("idleRight", true).setPipeline("Light2D");
+    this.player.anims.play("idleRight", true)
+      .setPipeline("Light2D");
     this.doubleJump = false;
 
     this.lights
       .enable()
-      .setAmbientColor(0xe0f7ff) // 0xE0F7FF
+      .setAmbientColor(0xe0f7ff) 
       .addLight(1040, 995, 80)
       .setIntensity(1)
       .setColor(0xffa500);
@@ -293,6 +305,7 @@ class scene0 extends Phaser.Scene {
     this.lights.addLight(860, 950, 80).setIntensity(1).setColor(0xffa500);
     this.lights.addLight(735, 1050, 50).setIntensity(1).setColor(0xffa500);
     this.lights.addLight(784, 1025, 60).setIntensity(1).setColor(0xffa500);
+    this.lights.addLight(852, 954, 60).setIntensity(1).setColor(0xffa500);
     this.lights
       .addLight(this.door11.x, 1040, 40)
       .setIntensity(1.5)
@@ -301,9 +314,22 @@ class scene0 extends Phaser.Scene {
       .addLight(this.door21.x, 880, 40)
       .setIntensity(1.5)
       .setColor(0xff0000);
-    this.lights
+    /*this.lights
       .addLight(this.engrenagem.x, this.engrenagem.y, 40)
+      .setIntensity(1.5);*/
+    this.lights
+      .addLight(this.plataform2.x, this.plataform2.y, 40)
+      .setIntensity(0.5);
+    this.lampP1 = this.lights
+      .addLight(this.plataform1.x, this.plataform1.y, 40)
+      .setIntensity(0.5);
+    this.lampP3 = this.lights
+      .addLight(this.plataform3.x, this.plataform3.y, 40)
+      .setIntensity(0.5);
+    this.lights
+      .addLight(238, 1066, 60)
       .setIntensity(1.5);
+
     /*this.lamp = this.lights
     .addLight(this.player.x, this.player.y, 35)
     .setIntensity(1);*/
@@ -351,7 +377,13 @@ class scene0 extends Phaser.Scene {
   update() {
     /*this.lamp.x = this.player.x;
     this.lamp.y = this.player.y;*/
-
+      this.lampP1.x = this.plataform1.x;
+      this.lampP1.y = this.plataform1.y;
+      /*this.lampP2.x = this.plataform2.x;
+      this.lampP2.y = this.plataform2.y;*/
+      this.lampP3.x = this.plataform3.x;
+      this.lampP3.y = this.plataform3.y;
+      
     if (this.input.gamepad && this.input.gamepad.total > 0) {
       const pad = this.input.gamepad.getPad(0);
 
@@ -363,14 +395,14 @@ class scene0 extends Phaser.Scene {
           this.direction = true;
           if (this.player.body.velocity.y === 0) {
             this.player.anims.play("walk-right", true);
-            this.passos.play();
+            //this.passos.play();
           }
         } else if (horizontal < 0) {
           this.player.setVelocityX(-200);
           this.direction = false;
           if (this.player.body.velocity.y === 0) {
             this.player.anims.play("walk-left", true);
-            this.passos.play();
+            //this.passos.play();
           }
         } else {
           this.player.setVelocityX(0);
