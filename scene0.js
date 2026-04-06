@@ -303,9 +303,14 @@ class scene0 extends Phaser.Scene {
     this.lights.addLight(900, 1032, 80).setIntensity(1).setColor(0xffa500);
     this.lights.addLight(860, 1020, 80).setIntensity(1).setColor(0xffa500);
     this.lights.addLight(860, 950, 80).setIntensity(1).setColor(0xffa500);
-    this.lights.addLight(735, 1050, 50).setIntensity(1).setColor(0xffa500);
-    this.lights.addLight(784, 1025, 60).setIntensity(1).setColor(0xffa500);
-    this.lights.addLight(852, 954, 60).setIntensity(1).setColor(0xffa500);
+    this.lights.addLight(784, 1025, 40).setIntensity(1).setColor(0xffa500);
+    this.lights.addLight(852, 954, 40).setIntensity(1).setColor(0xffa500);
+    this.lights.addLight(700, 1050, 30).setIntensity(1).setColor(0xffa500);
+    this.lights.addLight(717, 1050, 30).setIntensity(1).setColor(0xffa500);
+    this.lights.addLight(735, 1050, 30).setIntensity(1).setColor(0xffa500);
+    this.lights.addLight(765, 1040, 40).setIntensity(1).setColor(0xffa500);
+
+
     this.lights
       .addLight(this.door11.x, 1040, 40)
       .setIntensity(1.5)
@@ -326,7 +331,7 @@ class scene0 extends Phaser.Scene {
     this.lampP3 = this.lights
       .addLight(this.plataform3.x, this.plataform3.y, 40)
       .setIntensity(0.5);
-    this.lights
+    /*this.lights
       .addLight(238, 1066, 60)
       .setIntensity(1.5);
 
