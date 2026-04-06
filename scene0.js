@@ -299,12 +299,13 @@ class scene0 extends Phaser.Scene {
       .addLight(1040, 995, 80)
       .setIntensity(1)
       .setColor(0xffa500);
-    this.lights.addLight(921, 1032, 80).setIntensity(1).setColor(0xffa500);
-    this.lights.addLight(900, 1032, 80).setIntensity(1).setColor(0xffa500);
-    this.lights.addLight(860, 1020, 80).setIntensity(1).setColor(0xffa500);
-    this.lights.addLight(860, 950, 80).setIntensity(1).setColor(0xffa500);
-    this.lights.addLight(784, 1025, 40).setIntensity(1).setColor(0xffa500);
-    this.lights.addLight(852, 954, 40).setIntensity(1).setColor(0xffa500);
+    
+    this.lights.addLight(924, 1020, 50).setIntensity(1).setColor(0xffa500);
+    this.lights.addLight(1062, 1010, 50).setIntensity(1).setColor(0xffa500);
+    this.lights.addLight(975, 1030, 50).setIntensity(1).setColor(0xffa500);
+    this.lights.addLight(872, 1024, 55).setIntensity(1).setColor(0xffa500);
+    this.lights.addLight(835, 1040, 40).setIntensity(1).setColor(0xffa500);
+    this.lights.addLight(797, 1040, 40).setIntensity(1).setColor(0xffa500);
     this.lights.addLight(700, 1050, 30).setIntensity(1).setColor(0xffa500);
     this.lights.addLight(717, 1050, 30).setIntensity(1).setColor(0xffa500);
     this.lights.addLight(735, 1050, 30).setIntensity(1).setColor(0xffa500);
