@@ -67,7 +67,6 @@ class scene0 extends Phaser.Scene {
   }
 
   create() {
-
     this.passos = this.sound.add("passos", { loop: true, volume: 0.5 });
 
     this.space = this.add.image(699, 1514, "space");
@@ -148,7 +147,7 @@ class scene0 extends Phaser.Scene {
       frameRate: 7,
       repeat: 0,
     });
-    
+
     this.anims.create({
       key: "close-door",
       frames: this.anims.generateFrameNumbers("door", { start: 7, end: 0 }),
@@ -156,7 +155,7 @@ class scene0 extends Phaser.Scene {
       repeat: 0,
     });
 
-   /* this.anims.create({
+    /* this.anims.create({
       key: "walk-up",
       frames: this.anims.generateFrameNumbers("player", { start: 28, end: 35 }),
       frameRate: 10,
@@ -242,43 +241,32 @@ class scene0 extends Phaser.Scene {
     this.engrenagem.anims
       .play("engrenagem-idle", true)
       .setImmovable(true)
-      .setPipeline("Light2D")
-      .body.allowGravity = false;
+      .setPipeline("Light2D").body.allowGravity = false;
 
     this.cai = this.physics.add.sprite(500, 1150, "cai");
-    this.cai
-      .setImmovable(true)
-      .setPipeline("Light2D")
-      .body.allowGravity = false;
+    this.cai.setImmovable(true).setPipeline("Light2D").body.allowGravity =
+      false;
 
     this.door11 = this.physics.add.sprite(92, 1056, "door", 0);
-    this.door11
-      .setPipeline("Light2D")
-      .body.allowGravity = false;
+    this.door11.setPipeline("Light2D").body.allowGravity = false;
 
     this.door21 = this.physics.add.sprite(430, 897, "door", 0);
-    this.door21
-      .setPipeline("Light2D")
-      .body.allowGravity = false;
+    this.door21.setPipeline("Light2D").body.allowGravity = false;
 
     this.door12 = this.physics.add.sprite(108, 1825, "door", 7);
-    this.door12
-      .setPipeline("Light2D")
-      .body.allowGravity = false;
+    this.door12.setPipeline("Light2D").body.allowGravity = false;
 
     this.plataformG = this.physics.add.sprite(431, 930, "plataformG");
     this.plataformG
       .setImmovable(true)
-      .setPipeline("Light2D")
-      .body.allowGravity = false;
+      .setPipeline("Light2D").body.allowGravity = false;
 
     //cria plataforma 1 e defne como imovível e de velocidade x = 100 além de fazê-la ignorar a gravidade
-    this.plataform1 = this.physics.add.sprite(380, 1094, "plataform");
+    this.plataform1 = this.physics.add.sprite(680, 1094, "plataform");
     this.plataform1
       .setImmovable(true)
-      .setVelocityX(100)
-      .setPipeline("Light2D")
-      .body.allowGravity = false;
+      .setVelocityX(-100)
+      .setPipeline("Light2D").body.allowGravity = false;
 
     //num intervalo de 3400ms, inverte a velocidade da plataforma 1
     setInterval(() => {
@@ -288,15 +276,13 @@ class scene0 extends Phaser.Scene {
     this.plataform2 = this.physics.add.sprite(1140, 980, "plataform");
     this.plataform2
       .setImmovable(true)
-      .setPipeline("Light2D")
-      .body.allowGravity = false;
+      .setPipeline("Light2D").body.allowGravity = false;
 
-    this.plataform3 = this.physics.add.sprite(1050, 930, "plataform");
+    this.plataform3 = this.physics.add.sprite(1050, 935, "plataform");
     this.plataform3
       .setImmovable(true)
       .setVelocityX(-150)
-      .setPipeline("Light2D")
-      .body.allowGravity = false;
+      .setPipeline("Light2D").body.allowGravity = false;
 
     setInterval(() => {
       this.plataform3.setVelocityX(this.plataform3.body.velocity.x * -1);
@@ -306,8 +292,7 @@ class scene0 extends Phaser.Scene {
     this.plataform4
       .setImmovable(true)
       .setVelocityX(120)
-      .setPipeline("Light2D")
-      .body.allowGravity = false;
+      .setPipeline("Light2D").body.allowGravity = false;
 
     setInterval(() => {
       this.plataform4.setVelocityX(this.plataform4.body.velocity.x * -1);
@@ -317,27 +302,55 @@ class scene0 extends Phaser.Scene {
     this.plataform5
       .setImmovable(true)
       .setVelocityX(-150)
-      .setPipeline("Light2D")
-      .body.allowGravity = false;
+      .setPipeline("Light2D").body.allowGravity = false;
     setInterval(() => {
       this.plataform5.setVelocityX(this.plataform5.body.velocity.x * -1);
-    }, 830);
+    }, 1000);
+
+    this.plataform6 = this.physics.add.sprite(640, 1732, "plataform");
+    this.plataform6
+      .setImmovable(true)
+      .setPipeline("Light2D")
+      .setVelocityX(-150).body.allowGravity = false;
+    setInterval(() => {
+      this.plataform6.setVelocityX(this.plataform6.body.velocity.x * -1);
+    }, 2300);
+
+    this.plataform7 = this.physics.add.sprite(160, 1710, "plataform");
+    this.plataform7
+      .setImmovable(true)
+      .setPipeline("Light2D").body.allowGravity = false;
+
+    this.plataform8 = this.physics.add.sprite(112, 1640, "plataform");
+    this.plataform8
+      .setImmovable(true)
+      .setPipeline("Light2D")
+      .setVelocityX(150)
+      .body.allowGravity = false;
+    setInterval(() => {
+      this.plataform8.setVelocityX(this.plataform8.body.velocity.x * -1);
+    }, 3000);
+
+    this.plataform9 = this.physics.add.sprite(616, 1640, "plataform");
+    this.plataform9
+      .setImmovable(true)
+      .setPipeline("Light2D")
+      .body.allowGravity = false;
 
     this.player = this.physics.add.sprite(92, 1066, "player", 3).setScale(0.9); //fase1:92, 1052//fase2:108, 1834//
     this.cameras.main.startFollow(this.player, false, 1, 0).zoom = 1.2;
     this.cameras.main.scrollY =
       this.player.y - this.cameras.main.height / 2 - 120; // Ajuste para começar mais para cima (100 pixels acima do centro do jogador)
-    this.player.anims.play("idleRight", true)
-      .setPipeline("Light2D");
+    this.player.anims.play("idleRight", true).setPipeline("Light2D");
     this.doubleJump = false;
 
     this.lights
       .enable()
-      .setAmbientColor(0xe0f7ff) 
+      .setAmbientColor(0xe0f7ff)
       .addLight(1040, 995, 80)
       .setIntensity(1)
       .setColor(0xffa500);
-    
+
     this.lights.addLight(924, 1020, 50).setIntensity(1).setColor(0xffa500);
     this.lights.addLight(1062, 1010, 50).setIntensity(1).setColor(0xffa500);
     this.lights.addLight(975, 1030, 50).setIntensity(1).setColor(0xffa500);
@@ -350,14 +363,14 @@ class scene0 extends Phaser.Scene {
     this.lights.addLight(765, 1040, 40).setIntensity(1).setColor(0xffa500);
 
     this.lights
-     .addLight(this.engrenagem.x, this.engrenagem.y, 40)
-     .setIntensity(1.5);
-    
+      .addLight(this.engrenagem.x, this.engrenagem.y, 40)
+      .setIntensity(1.5);
+
     this.lights
-     .addLight(this.door21.x, 880, 40)
-     .setIntensity(1.5)
-     .setColor(0xff0000);
-      
+      .addLight(this.door21.x, 880, 40)
+      .setIntensity(1.5)
+      .setColor(0xff0000);
+
     this.lights
       .addLight(this.door11.x, 1040, 40)
       .setIntensity(1.5)
@@ -372,34 +385,36 @@ class scene0 extends Phaser.Scene {
     );
     this.physics.add.collider(this.engrenagem, this.plataform2);
     this.physics.add.collider(this.player, this.layerPiso);
+
     this.physics.add.collider(this.player, this.plataformG);
     this.physics.add.collider(this.player, this.plataform1);
     this.physics.add.collider(this.player, this.plataform2);
     this.physics.add.collider(this.player, this.plataform3);
     this.physics.add.collider(this.player, this.plataform4);
     this.physics.add.collider(this.player, this.plataform5);
+    this.physics.add.collider(this.player, this.plataform6);
+    this.physics.add.collider(this.player, this.plataform7);
+    this.physics.add.collider(this.player, this.plataform8);
 
-    this.physics.add.overlap(this.player,
-      this.cai, () => {
+    this.physics.add.overlap(this.player, this.cai, () => {
       this.player.setPosition(92, 1066).setVelocity(0, 0);
     });
 
-    this.physics.add.overlap(this.player,
-      this.door21, () => {
-        if (this.score === 1) {
-          this.door21.anims.play("open-door", true);
-          this.door21.once('animationcomplete', (anim, frame) => {
-            if (anim.key === 'open-door') {
-              this.player.setPosition(108, 1834).setVelocity(0, 0);
-              this.cameras.main.scrollY =
+    this.physics.add.overlap(this.player, this.door21, () => {
+      if (this.score === 1) {
+        this.door21.anims.play("open-door", true);
+        this.door21.once("animationcomplete", (anim, frame) => {
+          if (anim.key === "open-door") {
+            this.player.setPosition(108, 1834).setVelocity(0, 0);
+            this.cameras.main.scrollY =
               this.player.y - this.cameras.main.height / 2 - 120;
-              this.door12.anims.play("close-door", true);
-              this.gargantua.anims.stop();
-              this.gargantua1.anims.play("gargantua-idle", true);
-            }
-          });
-        }
-      });
+            this.door12.anims.play("close-door", true);
+            this.gargantua.anims.stop();
+            this.gargantua1.anims.play("gargantua-idle", true);
+          }
+        });
+      }
+    });
 
     this.layerPiso.setCollisionByProperty({ collides: true });
 
@@ -425,7 +440,7 @@ class scene0 extends Phaser.Scene {
   }
 
   update() {
-  
+
     if (this.input.gamepad && this.input.gamepad.total > 0) {
       const pad = this.input.gamepad.getPad(0);
 
@@ -455,13 +470,14 @@ class scene0 extends Phaser.Scene {
         this.doubleJump = false;
         if (pad.X) this.player.setVelocityY(-300);
       }
-
+      
       if (this.player.body.blocked.left || this.player.body.blocked.right) {
         if (this.player.body.velocity.x != 0 && pad.X && !this.doubleJump) {
           this.player.setVelocityY(-415);
           this.doubleJump = true;
         }
       }
+
     }
     if (
       this.direction === true &&
@@ -485,6 +501,8 @@ class scene0 extends Phaser.Scene {
       this.player.anims.play("jumpL", true);
     }
   }
+
+ 
 
   collectEng(player, engrenagem) {
     engrenagem.disableBody(true, true);
