@@ -311,34 +311,19 @@ class scene0 extends Phaser.Scene {
     this.lights.addLight(735, 1050, 30).setIntensity(1).setColor(0xffa500);
     this.lights.addLight(765, 1040, 40).setIntensity(1).setColor(0xffa500);
 
-
+    this.lights
+     .addLight(this.engrenagem.x, this.engrenagem.y, 40)
+     .setIntensity(1.5);
+    
+    this.lights
+     .addLight(this.door21.x, 880, 40)
+     .setIntensity(1.5)
+     .setColor(0xff0000);
+      
     this.lights
       .addLight(this.door11.x, 1040, 40)
       .setIntensity(1.5)
       .setColor(0xff0000);
-    this.lights
-      .addLight(this.door21.x, 880, 40)
-      .setIntensity(1.5)
-      .setColor(0xff0000);
-    /*this.lights
-      .addLight(this.engrenagem.x, this.engrenagem.y, 40)
-      .setIntensity(1.5);*/
-    this.lights
-      .addLight(this.plataform2.x, this.plataform2.y, 40)
-      .setIntensity(0.5);
-    this.lampP1 = this.lights
-      .addLight(this.plataform1.x, this.plataform1.y, 40)
-      .setIntensity(0.5);
-    this.lampP3 = this.lights
-      .addLight(this.plataform3.x, this.plataform3.y, 40)
-      .setIntensity(0.5);
-    /*this.lights
-      .addLight(238, 1066, 60)
-      .setIntensity(1.5);
-
-    /*this.lamp = this.lights
-    .addLight(this.player.x, this.player.y, 35)
-    .setIntensity(1);*/
 
     this.physics.add.overlap(
       this.player,
@@ -381,15 +366,7 @@ class scene0 extends Phaser.Scene {
   }
 
   update() {
-    /*this.lamp.x = this.player.x;
-    this.lamp.y = this.player.y;*/
-      this.lampP1.x = this.plataform1.x;
-      this.lampP1.y = this.plataform1.y;
-      /*this.lampP2.x = this.plataform2.x;
-      this.lampP2.y = this.plataform2.y;*/
-      this.lampP3.x = this.plataform3.x;
-      this.lampP3.y = this.plataform3.y;
-      
+  
     if (this.input.gamepad && this.input.gamepad.total > 0) {
       const pad = this.input.gamepad.getPad(0);
 
