@@ -64,12 +64,10 @@ class scene0 extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64,
     });
-
-    /*this.load.audio("epic", "assets/epic.mp3");
-    this.load.audio("dindin", "assets/dindin.mp3");*/
   }
 
   create() {
+
     this.passos = this.sound.add("passos", { loop: true, volume: 0.5 });
 
     this.space = this.add.image(699, 1514, "space");
@@ -90,6 +88,13 @@ class scene0 extends Phaser.Scene {
       .play("gargantua-idle")
       .setPipeline("Light2D");
     this.gargantua.allowGravity = false;
+
+    this.gargantua1 = this.add
+      .sprite(455, 1750, "gargantua")
+      .setScale(2)
+      //.play("gargantua-idle")
+      .setPipeline("Light2D");
+    this.gargantua1.allowGravity = false;
 
     this.tilemap = this.make.tilemap({ key: "todasfases" });
 
@@ -140,6 +145,13 @@ class scene0 extends Phaser.Scene {
     this.anims.create({
       key: "open-door",
       frames: this.anims.generateFrameNumbers("door", { start: 0, end: 7 }),
+      frameRate: 7,
+      repeat: 0,
+    });
+    
+    this.anims.create({
+      key: "close-door",
+      frames: this.anims.generateFrameNumbers("door", { start: 7, end: 0 }),
       frameRate: 7,
       repeat: 0,
     });
@@ -249,6 +261,11 @@ class scene0 extends Phaser.Scene {
       .setPipeline("Light2D")
       .body.allowGravity = false;
 
+    this.door12 = this.physics.add.sprite(108, 1825, "door", 7);
+    this.door12
+      .setPipeline("Light2D")
+      .body.allowGravity = false;
+
     this.plataformG = this.physics.add.sprite(431, 930, "plataformG");
     this.plataformG
       .setImmovable(true)
@@ -284,6 +301,27 @@ class scene0 extends Phaser.Scene {
     setInterval(() => {
       this.plataform3.setVelocityX(this.plataform3.body.velocity.x * -1);
     }, 3490);
+
+    this.plataform4 = this.physics.add.sprite(855, 1796, "plataform");
+    this.plataform4
+      .setImmovable(true)
+      .setVelocityX(120)
+      .setPipeline("Light2D")
+      .body.allowGravity = false;
+
+    setInterval(() => {
+      this.plataform4.setVelocityX(this.plataform4.body.velocity.x * -1);
+    }, 1500);
+
+    this.plataform5 = this.physics.add.sprite(802, 1764, "plataform");
+    this.plataform5
+      .setImmovable(true)
+      .setVelocityX(-150)
+      .setPipeline("Light2D")
+      .body.allowGravity = false;
+    setInterval(() => {
+      this.plataform5.setVelocityX(this.plataform5.body.velocity.x * -1);
+    }, 830);
 
     this.player = this.physics.add.sprite(92, 1066, "player", 3).setScale(0.9); //fase1:92, 1052//fase2:108, 1834//
     this.cameras.main.startFollow(this.player, false, 1, 0).zoom = 1.2;
@@ -338,9 +376,30 @@ class scene0 extends Phaser.Scene {
     this.physics.add.collider(this.player, this.plataform1);
     this.physics.add.collider(this.player, this.plataform2);
     this.physics.add.collider(this.player, this.plataform3);
-    this.physics.add.overlap(this.player, this.cai, () => {
+    this.physics.add.collider(this.player, this.plataform4);
+    this.physics.add.collider(this.player, this.plataform5);
+
+    this.physics.add.overlap(this.player,
+      this.cai, () => {
       this.player.setPosition(92, 1066).setVelocity(0, 0);
     });
+
+    this.physics.add.overlap(this.player,
+      this.door21, () => {
+        if (this.score === 1) {
+          this.door21.anims.play("open-door", true);
+          this.door21.once('animationcomplete', (anim, frame) => {
+            if (anim.key === 'open-door') {
+              this.player.setPosition(108, 1834).setVelocity(0, 0);
+              this.cameras.main.scrollY =
+              this.player.y - this.cameras.main.height / 2 - 120;
+              this.door12.anims.play("close-door", true);
+              this.gargantua.anims.stop();
+              this.gargantua1.anims.play("gargantua-idle", true);
+            }
+          });
+        }
+      });
 
     this.layerPiso.setCollisionByProperty({ collides: true });
 
