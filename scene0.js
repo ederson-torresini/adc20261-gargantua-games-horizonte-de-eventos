@@ -7,9 +7,9 @@ class scene0 extends Phaser.Scene {
     this.doubleJump = false;
     this.score = 0;
     this.scoreText;
-    this.fase = 1;
+    /*this.fase = 1;
     this.fase1 = true;
-    this.fase2 = false;
+    this.fase2 = false;*/
   }
 
   preload() {
@@ -87,7 +87,7 @@ class scene0 extends Phaser.Scene {
     this.gargantua = this.add
       .sprite(873, 950, "gargantua")
       .setScale(2)
-      
+      .play("gargantua-idle", true)
       .setPipeline("Light2D");
     this.gargantua.allowGravity = false;
 
@@ -233,7 +233,7 @@ class scene0 extends Phaser.Scene {
     });
 
     this.scoreText = this.add
-      .text(100, 28, "Engrenagens: " + this.fase + "/5", {
+      .text(100, 28, "Engrenagens: " + this.score + "/5", {
         fontSize: "32px",
         fill: "#000",
       })
@@ -269,7 +269,12 @@ class scene0 extends Phaser.Scene {
     this.plataform1 = this.physics.add.sprite(680, 1094, "plataform");
     this.plataform1
       .setImmovable(true)
+      .setVelocityX(-100)
       .setPipeline("Light2D").body.allowGravity = false;
+    
+    setInterval(() => {
+      this.plataform1.setVelocityX(this.plataform1.body.velocity.x * -1);
+    }, 3000);
 
     //num intervalo de 3400ms, inverte a velocidade da plataforma 1
     
@@ -281,7 +286,12 @@ class scene0 extends Phaser.Scene {
     this.plataform3 = this.physics.add.sprite(1050, 935, "plataform");
     this.plataform3
     .setImmovable(true)
+    .setVelocityX(-150)
     .setPipeline("Light2D").body.allowGravity = false;
+    
+    setInterval(() => {
+      this.plataform3.setVelocityX(this.plataform3.body.velocity.x * -1);
+    }, 3490);
     
     this.plataform4 = this.physics.add.sprite(855, 1796, "plataform");
     this.plataform4
@@ -431,39 +441,14 @@ class scene0 extends Phaser.Scene {
           `X: ${Math.round(this.player.x)} Y: ${Math.round(this.player.y)}`,
         );
       },
-    });
-
-    if (this.fase1 === true) {
-   
-      this.gargantua.anims.play("gargantua-idle", true);
-      
-      this.plataform1.setVelocityX(-100);
-    setInterval(() => {
-      this.plataform1.setVelocityX(this.plataform1.body.velocity.x * -1);
-    }, 3000);
-      
-      this.plataform3.setVelocityX(-150);
-    setInterval(() => {
-      this.plataform3.setVelocityX(this.plataform3.body.velocity.x * -1);
-    }, 3490);
-      
-   }else if (this.fase2 === true) {
-      this.gargantua1.anims.play("gargantua-idle", true);
-      
-      this.plataform1.setVelocityX(0);
-      this.plataform3.setVelocityX(0);
-    }
+    });   
 
 }
-  
+
+
+
   update() {
 
-    if (this.fase === 1) {
-      this.fase1 = true;
-    } else if (this.fase === 2) {
-      this.fase2 = true;
-      this.fase1 = false;
-    }
     
     
     if (this.input.gamepad && this.input.gamepad.total > 0) {
@@ -532,8 +517,7 @@ class scene0 extends Phaser.Scene {
     engrenagem.disableBody(true, true);
     
     this.score += 1;
-    this.fase += 1;
-    this.scoreText.setText("Engrenagens: " + this.fase + "/5");
+    this.scoreText.setText("Engrenagens: " + this.score + "/5");
   }
 }
 
