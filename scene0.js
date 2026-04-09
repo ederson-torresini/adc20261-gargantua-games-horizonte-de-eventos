@@ -7,6 +7,9 @@ class scene0 extends Phaser.Scene {
     this.doubleJump = false;
     this.score = 0;
     this.scoreText;
+    this.fase = 1;
+    this.fase1 = true;
+    this.fase2 = false;
   }
 
   preload() {
@@ -84,7 +87,7 @@ class scene0 extends Phaser.Scene {
     this.gargantua = this.add
       .sprite(873, 950, "gargantua")
       .setScale(2)
-      .play("gargantua-idle")
+      
       .setPipeline("Light2D");
     this.gargantua.allowGravity = false;
 
@@ -190,6 +193,7 @@ class scene0 extends Phaser.Scene {
       repeat: -1,
     });*/
 
+
     this.anims.create({
       key: "idleRight",
       frames: this.anims.generateFrameNumbers("player", { start: 2, end: 3 }),
@@ -229,7 +233,7 @@ class scene0 extends Phaser.Scene {
     });
 
     this.scoreText = this.add
-      .text(100, 28, "Engrenagens: 0/5", {
+      .text(100, 28, "Engrenagens: " + this.fase + "/5", {
         fontSize: "32px",
         fill: "#000",
       })
@@ -265,92 +269,83 @@ class scene0 extends Phaser.Scene {
     this.plataform1 = this.physics.add.sprite(680, 1094, "plataform");
     this.plataform1
       .setImmovable(true)
-      .setVelocityX(-100)
       .setPipeline("Light2D").body.allowGravity = false;
 
     //num intervalo de 3400ms, inverte a velocidade da plataforma 1
-    setInterval(() => {
-      this.plataform1.setVelocityX(this.plataform1.body.velocity.x * -1);
-    }, 3000);
-
+    
     this.plataform2 = this.physics.add.sprite(1140, 980, "plataform");
     this.plataform2
-      .setImmovable(true)
-      .setPipeline("Light2D").body.allowGravity = false;
-
+    .setImmovable(true)
+    .setPipeline("Light2D").body.allowGravity = false;
+    
     this.plataform3 = this.physics.add.sprite(1050, 935, "plataform");
     this.plataform3
-      .setImmovable(true)
-      .setVelocityX(-150)
-      .setPipeline("Light2D").body.allowGravity = false;
-
-    setInterval(() => {
-      this.plataform3.setVelocityX(this.plataform3.body.velocity.x * -1);
-    }, 3490);
-
+    .setImmovable(true)
+    .setPipeline("Light2D").body.allowGravity = false;
+    
     this.plataform4 = this.physics.add.sprite(855, 1796, "plataform");
     this.plataform4
-      .setImmovable(true)
-      .setVelocityX(120)
-      .setPipeline("Light2D").body.allowGravity = false;
-
+    .setImmovable(true)
+    .setVelocityX(120)
+    .setPipeline("Light2D").body.allowGravity = false;
+    
     setInterval(() => {
       this.plataform4.setVelocityX(this.plataform4.body.velocity.x * -1);
     }, 1500);
-
+    
     this.plataform5 = this.physics.add.sprite(802, 1764, "plataform");
     this.plataform5
-      .setImmovable(true)
-      .setVelocityX(-150)
-      .setPipeline("Light2D").body.allowGravity = false;
+    .setImmovable(true)
+    .setVelocityX(-150)
+    .setPipeline("Light2D").body.allowGravity = false;
     setInterval(() => {
       this.plataform5.setVelocityX(this.plataform5.body.velocity.x * -1);
     }, 1000);
-
+    
     this.plataform6 = this.physics.add.sprite(640, 1732, "plataform");
     this.plataform6
-      .setImmovable(true)
-      .setPipeline("Light2D")
-      .setVelocityX(-150).body.allowGravity = false;
+    .setImmovable(true)
+    .setPipeline("Light2D")
+    .setVelocityX(-150).body.allowGravity = false;
     setInterval(() => {
       this.plataform6.setVelocityX(this.plataform6.body.velocity.x * -1);
     }, 2300);
-
+    
     this.plataform7 = this.physics.add.sprite(160, 1710, "plataform");
     this.plataform7
-      .setImmovable(true)
-      .setPipeline("Light2D").body.allowGravity = false;
-
+    .setImmovable(true)
+    .setPipeline("Light2D").body.allowGravity = false;
+    
     this.plataform8 = this.physics.add.sprite(112, 1640, "plataform");
     this.plataform8
-      .setImmovable(true)
-      .setPipeline("Light2D")
-      .setVelocityX(150)
-      .body.allowGravity = false;
+    .setImmovable(true)
+    .setPipeline("Light2D")
+    .setVelocityX(150)
+    .body.allowGravity = false;
     setInterval(() => {
       this.plataform8.setVelocityX(this.plataform8.body.velocity.x * -1);
     }, 3000);
-
+    
     this.plataform9 = this.physics.add.sprite(616, 1640, "plataform");
     this.plataform9
-      .setImmovable(true)
-      .setPipeline("Light2D")
-      .body.allowGravity = false;
-
+    .setImmovable(true)
+    .setPipeline("Light2D")
+    .body.allowGravity = false;
+    
     this.player = this.physics.add.sprite(92, 1066, "player", 3).setScale(0.9); //fase1:92, 1052//fase2:108, 1834//
     this.cameras.main.startFollow(this.player, false, 1, 0).zoom = 1.2;
     this.cameras.main.scrollY =
-      this.player.y - this.cameras.main.height / 2 - 120; // Ajuste para começar mais para cima (100 pixels acima do centro do jogador)
+    this.player.y - this.cameras.main.height / 2 - 120; // Ajuste para começar mais para cima (100 pixels acima do centro do jogador)
     this.player.anims.play("idleRight", true).setPipeline("Light2D");
     this.doubleJump = false;
-
+    
     this.lights
-      .enable()
-      .setAmbientColor(0xe0f7ff)
-      .addLight(1040, 995, 80)
-      .setIntensity(1)
-      .setColor(0xffa500);
-
+    .enable()
+    .setAmbientColor(0xe0f7ff)
+    .addLight(1040, 995, 80)
+    .setIntensity(1)
+    .setColor(0xffa500);
+    
     this.lights.addLight(924, 1020, 50).setIntensity(1).setColor(0xffa500);
     this.lights.addLight(1062, 1010, 50).setIntensity(1).setColor(0xffa500);
     this.lights.addLight(975, 1030, 50).setIntensity(1).setColor(0xffa500);
@@ -361,21 +356,21 @@ class scene0 extends Phaser.Scene {
     this.lights.addLight(717, 1050, 30).setIntensity(1).setColor(0xffa500);
     this.lights.addLight(735, 1050, 30).setIntensity(1).setColor(0xffa500);
     this.lights.addLight(765, 1040, 40).setIntensity(1).setColor(0xffa500);
-
+    
     this.lights
-      .addLight(this.engrenagem.x, this.engrenagem.y, 40)
-      .setIntensity(1.5);
-
+    .addLight(this.engrenagem.x, this.engrenagem.y, 40)
+    .setIntensity(1.5);
+    
     this.lights
-      .addLight(this.door21.x, 880, 40)
-      .setIntensity(1.5)
-      .setColor(0xff0000);
-
+    .addLight(this.door21.x, 880, 40)
+    .setIntensity(1.5)
+    .setColor(0xff0000);
+    
     this.lights
-      .addLight(this.door11.x, 1040, 40)
-      .setIntensity(1.5)
-      .setColor(0xff0000);
-
+    .addLight(this.door11.x, 1040, 40)
+    .setIntensity(1.5)
+    .setColor(0xff0000);
+    
     this.physics.add.overlap(
       this.player,
       this.engrenagem,
@@ -385,7 +380,7 @@ class scene0 extends Phaser.Scene {
     );
     this.physics.add.collider(this.engrenagem, this.plataform2);
     this.physics.add.collider(this.player, this.layerPiso);
-
+    
     this.physics.add.collider(this.player, this.plataformG);
     this.physics.add.collider(this.player, this.plataform1);
     this.physics.add.collider(this.player, this.plataform2);
@@ -395,11 +390,11 @@ class scene0 extends Phaser.Scene {
     this.physics.add.collider(this.player, this.plataform6);
     this.physics.add.collider(this.player, this.plataform7);
     this.physics.add.collider(this.player, this.plataform8);
-
+    
     this.physics.add.overlap(this.player, this.cai, () => {
       this.player.setPosition(92, 1066).setVelocity(0, 0);
     });
-
+    
     this.physics.add.overlap(this.player, this.door21, () => {
       if (this.score === 1) {
         this.door21.anims.play("open-door", true);
@@ -407,7 +402,7 @@ class scene0 extends Phaser.Scene {
           if (anim.key === "open-door") {
             this.player.setPosition(108, 1834).setVelocity(0, 0);
             this.cameras.main.scrollY =
-              this.player.y - this.cameras.main.height / 2 - 120;
+            this.player.y - this.cameras.main.height / 2 - 120;
             this.door12.anims.play("close-door", true);
             this.gargantua.anims.stop();
             this.gargantua1.anims.play("gargantua-idle", true);
@@ -415,19 +410,19 @@ class scene0 extends Phaser.Scene {
         });
       }
     });
-
+    
     this.layerPiso.setCollisionByProperty({ collides: true });
-
+    
     // Texto de posição do player atualizado a cada segundo
     this.positionText = this.add
-      .text(100, 50, "X: 0 Y: 0", {
-        fontSize: "18px",
-        fill: "#ffffff",
-        backgroundColor: "rgba(0,0,0,0.5)",
-        padding: { x: 6, y: 4 },
-      })
-      .setScrollFactor(0);
-
+    .text(100, 50, "X: 0 Y: 0", {
+      fontSize: "18px",
+      fill: "#ffffff",
+      backgroundColor: "rgba(0,0,0,0.5)",
+      padding: { x: 6, y: 4 },
+    })
+    .setScrollFactor(0);
+    
     this.time.addEvent({
       delay: 1000,
       loop: true,
@@ -437,16 +432,46 @@ class scene0 extends Phaser.Scene {
         );
       },
     });
-  }
 
+    if (this.fase1 === true) {
+   
+      this.gargantua.anims.play("gargantua-idle", true);
+      
+      this.plataform1.setVelocityX(-100);
+    setInterval(() => {
+      this.plataform1.setVelocityX(this.plataform1.body.velocity.x * -1);
+    }, 3000);
+      
+      this.plataform3.setVelocityX(-150);
+    setInterval(() => {
+      this.plataform3.setVelocityX(this.plataform3.body.velocity.x * -1);
+    }, 3490);
+      
+   }else if (this.fase2 === true) {
+      this.gargantua1.anims.play("gargantua-idle", true);
+      
+      this.plataform1.setVelocityX(0);
+      this.plataform3.setVelocityX(0);
+    }
+
+}
+  
   update() {
 
+    if (this.fase === 1) {
+      this.fase1 = true;
+    } else if (this.fase === 2) {
+      this.fase2 = true;
+      this.fase1 = false;
+    }
+    
+    
     if (this.input.gamepad && this.input.gamepad.total > 0) {
       const pad = this.input.gamepad.getPad(0);
-
+      
       if (pad.axes.length > 0) {
         const horizontal = pad.axes[0].getValue();
-
+        
         if (horizontal > 0) {
           this.player.setVelocityX(200);
           this.direction = true;
@@ -465,7 +490,7 @@ class scene0 extends Phaser.Scene {
           this.player.setVelocityX(0);
         }
       }
-
+      
       if (this.player.body.blocked.down) {
         this.doubleJump = false;
         if (pad.X) this.player.setVelocityY(-300);
@@ -477,7 +502,7 @@ class scene0 extends Phaser.Scene {
           this.doubleJump = true;
         }
       }
-
+      
     }
     if (
       this.direction === true &&
@@ -494,21 +519,22 @@ class scene0 extends Phaser.Scene {
     ) {
       this.player.anims.play("idleLeft", true);
     }
-
+    
     if (this.player.body.velocity.y < 0 && this.direction === true) {
       this.player.anims.play("jump", true);
     } else if (this.player.body.velocity.y < 0 && this.direction === false) {
       this.player.anims.play("jumpL", true);
     }
+    
   }
-
- 
-
+  
   collectEng(player, engrenagem) {
     engrenagem.disableBody(true, true);
-
+    
     this.score += 1;
-    this.scoreText.setText("Engrenagens: " + this.score + "/5");
+    this.fase += 1;
+    this.scoreText.setText("Engrenagens: " + this.fase + "/5");
   }
 }
+
 export default scene0;
