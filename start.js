@@ -7,8 +7,8 @@ class start extends Phaser.Scene {
     this.load.setPath("assets/assets-usados");
     this.load.image("start", "Startsceneredimencionada.png");
     this.load.spritesheet("gargantuac", "gargantuac.png", {
-      frameWidth: 150,
-      frameHeight: 150,
+      frameWidth: 220,
+      frameHeight: 160,
     });
   }
 
@@ -17,7 +17,7 @@ class start extends Phaser.Scene {
       key: "gargantuac-idle",
       frames: this.anims.generateFrameNumbers("gargantuac", {
         start: 0,
-        end: 3,
+        end: 49,
       }),
       frameRate: 5,
       repeat: -1,
