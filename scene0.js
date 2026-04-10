@@ -256,11 +256,14 @@ class scene0 extends Phaser.Scene {
     this.door11 = this.physics.add.sprite(92, 1056, "door", 0);
     this.door11.setPipeline("Light2D").body.allowGravity = false;
 
+    this.door12 = this.physics.add.sprite(108, 1825, "door", 7);
+    this.door12.setPipeline("Light2D").body.allowGravity = false;
+    
     this.door21 = this.physics.add.sprite(430, 897, "door", 0);
     this.door21.setPipeline("Light2D").body.allowGravity = false;
 
-    this.door12 = this.physics.add.sprite(108, 1825, "door", 7);
-    this.door12.setPipeline("Light2D").body.allowGravity = false;
+    this.door22 = this.physics.add.sprite(1185, 1825, "door", 0);
+    this.door22.setPipeline("Light2D").body.allowGravity = false;
 
     this.plataformG = this.physics.add.sprite(431, 930, "plataformG");
     this.plataformG
@@ -287,14 +290,14 @@ class scene0 extends Phaser.Scene {
     
     this.plataform2 = this.physics.add.sprite(1140, 980, "plataform");
     this.plataform2
-    .setImmovable(true)
-    .setPipeline("Light2D").body.allowGravity = false;
+      .setImmovable(true)
+      .setPipeline("Light2D").body.allowGravity = false;
     
     this.plataform3 = this.physics.add.sprite(1050, 935, "plataform");
     this.plataform3
-    .setImmovable(true)
-    .setVelocityX(-150)
-    .setPipeline("Light2D").body.allowGravity = false;
+      .setImmovable(true)
+      .setVelocityX(-150)
+      .setPipeline("Light2D").body.allowGravity = false;
     
     setInterval(() => {
       this.plataform3.setVelocityX(this.plataform3.body.velocity.x * -1);
@@ -302,9 +305,9 @@ class scene0 extends Phaser.Scene {
     
     this.plataform4 = this.physics.add.sprite(855, 1796, "plataform");
     this.plataform4
-    .setImmovable(true)
-    .setVelocityX(120)
-    .setPipeline("Light2D").body.allowGravity = false;
+      .setImmovable(true)
+      .setVelocityX(120)
+      .setPipeline("Light2D").body.allowGravity = false;
     
     setInterval(() => {
       this.plataform4.setVelocityX(this.plataform4.body.velocity.x * -1);
@@ -312,33 +315,33 @@ class scene0 extends Phaser.Scene {
     
     this.plataform5 = this.physics.add.sprite(802, 1764, "plataform");
     this.plataform5
-    .setImmovable(true)
-    .setVelocityX(-150)
-    .setPipeline("Light2D").body.allowGravity = false;
+      .setImmovable(true)
+      .setVelocityX(-150)
+      .setPipeline("Light2D").body.allowGravity = false;
     setInterval(() => {
       this.plataform5.setVelocityX(this.plataform5.body.velocity.x * -1);
     }, 1000);
     
     this.plataform6 = this.physics.add.sprite(640, 1732, "plataform");
     this.plataform6
-    .setImmovable(true)
-    .setPipeline("Light2D")
-    .setVelocityX(-150).body.allowGravity = false;
+      .setImmovable(true)
+      .setPipeline("Light2D")
+      .setVelocityX(-150).body.allowGravity = false;
     setInterval(() => {
       this.plataform6.setVelocityX(this.plataform6.body.velocity.x * -1);
     }, 2300);
     
     this.plataform7 = this.physics.add.sprite(160, 1710, "plataform");
     this.plataform7
-    .setImmovable(true)
-    .setPipeline("Light2D").body.allowGravity = false;
+      .setImmovable(true)
+      .setPipeline("Light2D").body.allowGravity = false;
     
     this.plataform8 = this.physics.add.sprite(560, 1640, "plataform");
     this.plataform8
-    .setImmovable(true)
-    .setPipeline("Light2D")
-    .setVelocityX(-150)
-    .body.allowGravity = false;
+      .setImmovable(true)
+      .setPipeline("Light2D")
+      .setVelocityX(-150)
+      .body.allowGravity = false;
     setInterval(() => {
       this.plataform8.setVelocityX(this.plataform8.body.velocity.x * -1);
     }, 2400);
@@ -347,46 +350,46 @@ class scene0 extends Phaser.Scene {
     this.plataform9
       .setImmovable(true)
       .setVelocityX(150)
-    .setPipeline("Light2D")
+      .setPipeline("Light2D")
       .body.allowGravity = false;
     setInterval(() => {
       this.plataform9.setVelocityX(this.plataform9.body.velocity.x * -1);
     }, 2400);
     
     this.lights
-    .enable()
-    .setAmbientColor(0xe0f7ff)
-    .addLight(1040, 995, 80)
-    .setIntensity(1)
+      .enable()
+      .setAmbientColor(0xe0f7ff)
+      .addLight(1040, 995, 80)
+      .setIntensity(1)
       .setColor(0xffa500);
     
     //this.lights.addLight(765, 1040, 40).setIntensity(1).setColor(0xffa500);
-   /* this.lights.addLight(924, 1020, 50).setIntensity(1).setColor(0xffa500);
-    this.lights.addLight(1062, 1010, 50).setIntensity(1).setColor(0xffa500);
-    this.lights.addLight(975, 1030, 50).setIntensity(1).setColor(0xffa500);
-    this.lights.addLight(872, 1024, 55).setIntensity(1).setColor(0xffa500);
-    this.lights.addLight(835, 1040, 40).setIntensity(1).setColor(0xffa500);
-    this.lights.addLight(797, 1040, 40).setIntensity(1).setColor(0xffa500);
-    this.lights.addLight(700, 1050, 30).setIntensity(1).setColor(0xffa500);
-    this.lights.addLight(717, 1050, 30).setIntensity(1).setColor(0xffa500);
-    this.lights.addLight(735, 1050, 30).setIntensity(1).setColor(0xffa500);*/
+    /* this.lights.addLight(924, 1020, 50).setIntensity(1).setColor(0xffa500);
+     this.lights.addLight(1062, 1010, 50).setIntensity(1).setColor(0xffa500);
+     this.lights.addLight(975, 1030, 50).setIntensity(1).setColor(0xffa500);
+     this.lights.addLight(872, 1024, 55).setIntensity(1).setColor(0xffa500);
+     this.lights.addLight(835, 1040, 40).setIntensity(1).setColor(0xffa500);
+     this.lights.addLight(797, 1040, 40).setIntensity(1).setColor(0xffa500);
+     this.lights.addLight(700, 1050, 30).setIntensity(1).setColor(0xffa500);
+     this.lights.addLight(717, 1050, 30).setIntensity(1).setColor(0xffa500);
+     this.lights.addLight(735, 1050, 30).setIntensity(1).setColor(0xffa500);*/
     
     
     this.lights
-    .addLight(this.door21.x, 880, 40)
-    .setIntensity(1.5)
-    .setColor(0xff0000);
+      .addLight(this.door21.x, 880, 40)
+      .setIntensity(1.5)
+      .setColor(0xff0000);
     
     this.lights
-    .addLight(this.door11.x, 1040, 40)
-    .setIntensity(1.5)
-    .setColor(0xff0000);
+      .addLight(this.door11.x, 1040, 40)
+      .setIntensity(1.5)
+      .setColor(0xff0000);
     
-    this.player = this.physics.add.sprite(92, 2602, "player", 3).setScale(1); //fase1:92, 1066//fase2:108, 1834//
+    this.player = this.physics.add.sprite(108, 1834, "player", 3).setScale(1); //fase1:92, 1066//fase2:108, 1834//fase3: 82, 2508
     this.player.body.setSize(20, 40);
     this.cameras.main.startFollow(this.player, false, 1, 0).zoom = 1.2;
     this.cameras.main.scrollY =
-    this.player.y - this.cameras.main.height / 2 - 120; // Ajuste para começar mais para cima (100 pixels acima do centro do jogador)
+      this.player.y - this.cameras.main.height / 2 - 120; // Ajuste para começar mais para cima (100 pixels acima do centro do jogador)
     this.player.anims.play("idleRight", true).setPipeline("Light2D");
     this.doubleJump = false;
 
@@ -409,7 +412,7 @@ class scene0 extends Phaser.Scene {
     this.physics.add.collider(this.player, this.plataform5);
     this.physics.add.collider(this.player, this.plataform6);
     this.physics.add.collider(this.player, this.plataform7);
-    this.physics.add.collider(this.player, this.plataform8) 
+    this.physics.add.collider(this.player, this.plataform8)
     this.physics.add.collider(this.player, this.plataform9);
     
     this.physics.add.overlap(this.player, this.cai, () => {
@@ -419,19 +422,46 @@ class scene0 extends Phaser.Scene {
     this.physics.add.overlap(this.player, this.door21, () => {
       if (this.score === 1) {
         this.door21.anims.play("open-door", true);
+        this.lights
+          .addLight(this.door22.x, 1805, 33)
+          .setIntensity(0.5)
+          .setColor(0xff0000);
         this.door21.once("animationcomplete", (anim, frame) => {
           if (anim.key === "open-door") {
             this.player.setPosition(108, 1834).setVelocity(0, 0);
             this.cameras.main.scrollY =
-            this.player.y - this.cameras.main.height / 2 - 120;
+              this.player.y - this.cameras.main.height / 2 - 120;
             this.door12.anims.play("close-door", true);
+            this.door12.once("animationcomplete", (anim, frame) => {
+              if (anim.key === "close-door") {
+                this.lights
+                  .addLight(this.door12.x, 1805, 35)
+                  .setIntensity(0.5)
+                  .setColor(0xff0000);
+              }
+            });
             this.gargantua.anims.stop();
             this.gargantua1.anims.play("gargantua-idle", true);
           }
         });
       }
     });
+
+    this.physics.add.overlap(this.player, this.door22, () => {
+      this.door22.anims.play("open-door", true);
+      this.door22.once("animationcomplete", (anim, frame) => {
+        if (anim.key === "open-door") {
+          this.player.setPosition(82, 2508).setVelocity(0, 0);
+          this.cameras.main.scrollY =
+            this.player.y - this.cameras.main.height / 3.5 - 120;
+      
+        }
+      });
+    });
     
+  
+  
+  
     this.layerPiso.setCollisionByProperty({ collides: true });
     
     // Texto de posição do player atualizado a cada segundo
