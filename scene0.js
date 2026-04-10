@@ -7,15 +7,14 @@ class scene0 extends Phaser.Scene {
     this.doubleJump = false;
     this.score = 0;
     this.scoreText;
-    /*this.fase = 1;
-    this.fase1 = true;
-    this.fase2 = false;*/
   }
 
   preload() {
+
     this.load.setPath("assets/");
 
     this.load.audio("passos", "walkamongus.mp3");
+    this.load.audio("trilhasonora", "trilhasonora.mp3");
 
     this.load.image("space", "assets-usados/space1.png");
 
@@ -40,7 +39,7 @@ class scene0 extends Phaser.Scene {
 
     this.load.spritesheet("player", "player.png", {
       frameWidth: 36,
-      frameHeight: 48,
+      frameHeight: 50,
     });
 
     this.load.spritesheet("plataform", "plataform.png", {
@@ -70,7 +69,10 @@ class scene0 extends Phaser.Scene {
   }
 
   create() {
-    this.passos = this.sound.add("passos", { loop: true, volume: 0.5 });
+
+    this.trilhasonora = this.sound.add("trilhasonora", { loop: true, volume: 0 }).play();
+
+    this.passos = this.sound.add("passos", { loop: true, volume: 1 });
 
     this.space = this.add.image(699, 1514, "space");
 
@@ -168,14 +170,14 @@ class scene0 extends Phaser.Scene {
     this.anims.create({
       key: "walk-left",
       frames: this.anims.generateFrameNumbers("player", { start: 15, end: 20 }),
-      frameRate: 10,
+      frameRate: 11,
       repeat: -1,
     });
 
     this.anims.create({
       key: "walk-right",
-      frames: this.anims.generateFrameNumbers("player", { start: 22, end: 26 }),
-      frameRate: 10,
+      frames: this.anims.generateFrameNumbers("player", { start: 21, end: 26 }),
+      frameRate: 11,
       repeat: -1,
     });
 
@@ -262,6 +264,11 @@ class scene0 extends Phaser.Scene {
 
     this.plataformG = this.physics.add.sprite(431, 930, "plataformG");
     this.plataformG
+      .setImmovable(true)
+      .setPipeline("Light2D").body.allowGravity = false;
+    
+    this.plataformG2 = this.physics.add.sprite(1059, 1666, "plataformG");
+    this.plataformG2
       .setImmovable(true)
       .setPipeline("Light2D").body.allowGravity = false;
 
@@ -353,10 +360,6 @@ class scene0 extends Phaser.Scene {
     .setIntensity(1)
       .setColor(0xffa500);
     
-    this.lights.addLight(910, 1020, 450).setIntensity(2).setColor(0xffa500);
-    this.lights.addLight(772, 1020, 450).setIntensity(0.8).setColor(0xffa500);
-
-    
     //this.lights.addLight(765, 1040, 40).setIntensity(1).setColor(0xffa500);
    /* this.lights.addLight(924, 1020, 50).setIntensity(1).setColor(0xffa500);
     this.lights.addLight(1062, 1010, 50).setIntensity(1).setColor(0xffa500);
@@ -366,11 +369,8 @@ class scene0 extends Phaser.Scene {
     this.lights.addLight(797, 1040, 40).setIntensity(1).setColor(0xffa500);
     this.lights.addLight(700, 1050, 30).setIntensity(1).setColor(0xffa500);
     this.lights.addLight(717, 1050, 30).setIntensity(1).setColor(0xffa500);
-    this.lights.addLight(735, 1050, 30).setIntensity(1).setColor(0xffa500);
+    this.lights.addLight(735, 1050, 30).setIntensity(1).setColor(0xffa500);*/
     
-    /*this.lights
-    .addLight(this.engrenagem.x, this.engrenagem.y, 40)
-    .setIntensity(1.5);*/
     
     this.lights
     .addLight(this.door21.x, 880, 40)
@@ -382,7 +382,8 @@ class scene0 extends Phaser.Scene {
     .setIntensity(1.5)
     .setColor(0xff0000);
     
-    this.player = this.physics.add.sprite(92, 1066, "player", 3).setScale(0.9); //fase1:92, 1052//fase2:108, 1834//
+    this.player = this.physics.add.sprite(92, 2602, "player", 3).setScale(1); //fase1:92, 1066//fase2:108, 1834//
+    this.player.body.setSize(20, 40);
     this.cameras.main.startFollow(this.player, false, 1, 0).zoom = 1.2;
     this.cameras.main.scrollY =
     this.player.y - this.cameras.main.height / 2 - 120; // Ajuste para começar mais para cima (100 pixels acima do centro do jogador)
@@ -400,6 +401,7 @@ class scene0 extends Phaser.Scene {
     this.physics.add.collider(this.player, this.layerPiso);
     
     this.physics.add.collider(this.player, this.plataformG);
+    this.physics.add.collider(this.player, this.plataformG2);
     this.physics.add.collider(this.player, this.plataform1);
     this.physics.add.collider(this.player, this.plataform2);
     this.physics.add.collider(this.player, this.plataform3);
@@ -498,6 +500,16 @@ class scene0 extends Phaser.Scene {
       }
       
     }
+
+    const movingHorizontally = Math.abs(this.player.body.velocity.x) > 1;
+    const onGround =
+      this.player.body.blocked.down || this.player.body.touching.down;
+    if (movingHorizontally && onGround) {
+      if (!this.passos.isPlaying) this.passos.play();
+    } else if (this.passos.isPlaying) {
+      this.passos.stop();
+    }
+
     if (
       this.direction === true &&
       this.player.body.velocity.x === 0 &&
