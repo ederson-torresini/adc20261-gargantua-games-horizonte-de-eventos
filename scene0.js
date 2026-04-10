@@ -326,37 +326,39 @@ class scene0 extends Phaser.Scene {
     .setImmovable(true)
     .setPipeline("Light2D").body.allowGravity = false;
     
-    this.plataform8 = this.physics.add.sprite(112, 1640, "plataform");
+    this.plataform8 = this.physics.add.sprite(560, 1640, "plataform");
     this.plataform8
     .setImmovable(true)
     .setPipeline("Light2D")
-    .setVelocityX(150)
+    .setVelocityX(-150)
     .body.allowGravity = false;
     setInterval(() => {
       this.plataform8.setVelocityX(this.plataform8.body.velocity.x * -1);
-    }, 3000);
+    }, 2400);
     
-    this.plataform9 = this.physics.add.sprite(616, 1640, "plataform");
+    this.plataform9 = this.physics.add.sprite(625, 1640, "plataform");
     this.plataform9
-    .setImmovable(true)
+      .setImmovable(true)
+      .setVelocityX(150)
     .setPipeline("Light2D")
-    .body.allowGravity = false;
-    
-    this.player = this.physics.add.sprite(92, 1066, "player", 3).setScale(0.9); //fase1:92, 1052//fase2:108, 1834//
-    this.cameras.main.startFollow(this.player, false, 1, 0).zoom = 1.2;
-    this.cameras.main.scrollY =
-    this.player.y - this.cameras.main.height / 2 - 120; // Ajuste para começar mais para cima (100 pixels acima do centro do jogador)
-    this.player.anims.play("idleRight", true).setPipeline("Light2D");
-    this.doubleJump = false;
+      .body.allowGravity = false;
+    setInterval(() => {
+      this.plataform9.setVelocityX(this.plataform9.body.velocity.x * -1);
+    }, 2400);
     
     this.lights
     .enable()
     .setAmbientColor(0xe0f7ff)
     .addLight(1040, 995, 80)
     .setIntensity(1)
-    .setColor(0xffa500);
+      .setColor(0xffa500);
     
-    this.lights.addLight(924, 1020, 50).setIntensity(1).setColor(0xffa500);
+    this.lights.addLight(910, 1020, 450).setIntensity(2).setColor(0xffa500);
+    this.lights.addLight(772, 1020, 450).setIntensity(0.8).setColor(0xffa500);
+
+    
+    //this.lights.addLight(765, 1040, 40).setIntensity(1).setColor(0xffa500);
+   /* this.lights.addLight(924, 1020, 50).setIntensity(1).setColor(0xffa500);
     this.lights.addLight(1062, 1010, 50).setIntensity(1).setColor(0xffa500);
     this.lights.addLight(975, 1030, 50).setIntensity(1).setColor(0xffa500);
     this.lights.addLight(872, 1024, 55).setIntensity(1).setColor(0xffa500);
@@ -365,11 +367,10 @@ class scene0 extends Phaser.Scene {
     this.lights.addLight(700, 1050, 30).setIntensity(1).setColor(0xffa500);
     this.lights.addLight(717, 1050, 30).setIntensity(1).setColor(0xffa500);
     this.lights.addLight(735, 1050, 30).setIntensity(1).setColor(0xffa500);
-    this.lights.addLight(765, 1040, 40).setIntensity(1).setColor(0xffa500);
     
-    this.lights
+    /*this.lights
     .addLight(this.engrenagem.x, this.engrenagem.y, 40)
-    .setIntensity(1.5);
+    .setIntensity(1.5);*/
     
     this.lights
     .addLight(this.door21.x, 880, 40)
@@ -381,6 +382,13 @@ class scene0 extends Phaser.Scene {
     .setIntensity(1.5)
     .setColor(0xff0000);
     
+    this.player = this.physics.add.sprite(92, 1066, "player", 3).setScale(0.9); //fase1:92, 1052//fase2:108, 1834//
+    this.cameras.main.startFollow(this.player, false, 1, 0).zoom = 1.2;
+    this.cameras.main.scrollY =
+    this.player.y - this.cameras.main.height / 2 - 120; // Ajuste para começar mais para cima (100 pixels acima do centro do jogador)
+    this.player.anims.play("idleRight", true).setPipeline("Light2D");
+    this.doubleJump = false;
+
     this.physics.add.overlap(
       this.player,
       this.engrenagem,
@@ -399,7 +407,8 @@ class scene0 extends Phaser.Scene {
     this.physics.add.collider(this.player, this.plataform5);
     this.physics.add.collider(this.player, this.plataform6);
     this.physics.add.collider(this.player, this.plataform7);
-    this.physics.add.collider(this.player, this.plataform8);
+    this.physics.add.collider(this.player, this.plataform8) 
+    this.physics.add.collider(this.player, this.plataform9);
     
     this.physics.add.overlap(this.player, this.cai, () => {
       this.player.setPosition(92, 1066).setVelocity(0, 0);
