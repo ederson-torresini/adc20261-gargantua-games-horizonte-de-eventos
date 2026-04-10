@@ -71,7 +71,6 @@ class scene0 extends Phaser.Scene {
   create() {
 
     this.trilhasonora = this.sound.add("trilhasonora", { loop: true, volume: 0 }).play();
-
     this.passos = this.sound.add("passos", { loop: true, volume: 1 });
 
     this.space = this.add.image(699, 1514, "space");
@@ -86,19 +85,19 @@ class scene0 extends Phaser.Scene {
       repeat: -1,
     });
 
-    this.gargantua = this.add
-      .sprite(873, 950, "gargantua")
-      .setScale(2)
-      .play("gargantua-idle", true)
-      .setPipeline("Light2D");
-    this.gargantua.allowGravity = false;
+    this.blackHole = this.add.group({
+      allowGravity: false,
+      pipeline: "Light2D",
+    });
 
-    this.gargantua1 = this.add
-      .sprite(455, 1750, "gargantua")
+    this.blackHole
+      .create(873, 950, "gargantua")
       .setScale(2)
-      //.play("gargantua-idle")
-      .setPipeline("Light2D");
-    this.gargantua1.allowGravity = false;
+      .anims.play("gargantua-idle", true);
+    this.blackHole
+      .create(455, 1750, "gargantua")
+      .setScale(2)
+      .anims.play("gargantua-idle", true);
 
     this.tilemap = this.make.tilemap({ key: "todasfases" });
 
@@ -144,7 +143,6 @@ class scene0 extends Phaser.Scene {
       0,
       0,
       this.tilemap.widthInPixels,
-      //this.tilemap.heightInPixels,
     );
     this.anims.create({
       key: "open-door",
@@ -160,13 +158,6 @@ class scene0 extends Phaser.Scene {
       repeat: 0,
     });
 
-    /* this.anims.create({
-      key: "walk-up",
-      frames: this.anims.generateFrameNumbers("player", { start: 28, end: 35 }),
-      frameRate: 10,
-      repeat: -1,
-    });*/
-
     this.anims.create({
       key: "walk-left",
       frames: this.anims.generateFrameNumbers("player", { start: 15, end: 20 }),
@@ -180,21 +171,6 @@ class scene0 extends Phaser.Scene {
       frameRate: 11,
       repeat: -1,
     });
-
-    /*this.anims.create({
-      key: "walk-down",
-      frames: this.anims.generateFrameNumbers("player", { start: 44, end: 51 }),
-      frameRate: 10,
-      repeat: -1,
-    });
-
-    /*this.anims.create({
-      key: "idle",
-      frames: this.anims.generateFrameNumbers("player", { start: 4, end: 5 }),
-      frameRate: 3,
-      repeat: -1,
-    });*/
-
 
     this.anims.create({
       key: "idleRight",
@@ -241,13 +217,21 @@ class scene0 extends Phaser.Scene {
       })
       .setScrollFactor(0);
 
-    this.engrenagem = this.physics.add
-      .sprite(1138, 968, "engrenagem")
-      .setScale(0.3);
-    this.engrenagem.anims
-      .play("engrenagem-idle", true)
-      .setImmovable(true)
-      .setPipeline("Light2D").body.allowGravity = false;
+    this.engrenagens = this.physics.add.group({
+      allowGravity: false,
+      immovable: true,
+      pipeline: "Light2D",
+    }
+      );
+
+    this.engrenagens
+      .create(1138, 968, "engrenagem")
+      .setScale(0.3)
+      .anims.play("engrenagem-idle", true);
+    this.engrenagens
+      .create(1059, 1652, "engrenagem")
+      .setScale(0.3)
+      .anims.play("engrenagem-idle", true);
 
     this.cai = this.physics.add.sprite(500, 1150, "cai");
     this.cai.setImmovable(true).setPipeline("Light2D").body.allowGravity =
@@ -385,7 +369,7 @@ class scene0 extends Phaser.Scene {
       .setIntensity(1.5)
       .setColor(0xff0000);
     
-    this.player = this.physics.add.sprite(108, 1834, "player", 3).setScale(1); //fase1:92, 1066//fase2:108, 1834//fase3: 82, 2508
+    this.player = this.physics.add.sprite(92, 1066, "player", 3).setScale(1); //fase1:92, 1066//fase2:108, 1834//fase3: 82, 2508
     this.player.body.setSize(20, 40);
     this.cameras.main.startFollow(this.player, false, 1, 0).zoom = 1.2;
     this.cameras.main.scrollY =
@@ -395,12 +379,13 @@ class scene0 extends Phaser.Scene {
 
     this.physics.add.overlap(
       this.player,
-      this.engrenagem,
+      this.engrenagens,
       this.collectEng,
       null,
       this,
     );
-    this.physics.add.collider(this.engrenagem, this.plataform2);
+    this.physics.add.collider(this.engrenagens, this.plataform2);
+    this.physics.add.collider(this.engrenagens, this.plataformG2);
     this.physics.add.collider(this.player, this.layerPiso);
     
     this.physics.add.collider(this.player, this.plataformG);
@@ -440,8 +425,6 @@ class scene0 extends Phaser.Scene {
                   .setColor(0xff0000);
               }
             });
-            this.gargantua.anims.stop();
-            this.gargantua1.anims.play("gargantua-idle", true);
           }
         });
       }
@@ -564,8 +547,8 @@ class scene0 extends Phaser.Scene {
     
   }
   
-  collectEng(player, engrenagem) {
-    engrenagem.disableBody(true, true);
+  collectEng(player, engrenagens) {
+    engrenagens.disableBody(true, true);
     
     this.score += 1;
     this.scoreText.setText("Engrenagens: " + this.score + "/5");
