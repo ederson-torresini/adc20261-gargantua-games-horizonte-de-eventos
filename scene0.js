@@ -88,17 +88,16 @@ class scene0 extends Phaser.Scene {
     this.blackHole = this.add.group({
       allowGravity: false,
       pipeline: "Light2D",
+      origin: 0,
+      scrollFactorX: 1,
+      scrollFactorY: 0.1,
     });
 
     this.blackHole
-      .create(550, 40, "gargantua")
+      .create(873, 950, "gargantua")//873, 950 //400, 40
       .setScale(3)
-      .setOrigin(0, 0)
-      .setScrollFactor(1, 0.1)
-      .anims.play("gargantua-idle", true);
-    this.blackHole
-      .create(455, 1750, "gargantua")
-      .setScale(2)
+      //.setOrigin(0, 0)
+      //.setScrollFactor(1, 0.1)
       .anims.play("gargantua-idle", true);
 
     this.tilemap = this.make.tilemap({ key: "todasfases" });
@@ -231,6 +230,9 @@ class scene0 extends Phaser.Scene {
       allowGravity: false,
       immovable: true,
       pipeline: "Light2D",
+      origin: 0,
+      scrollFactorX: 0.9,
+      scrollFactorY: 1,
     }
       );
 
