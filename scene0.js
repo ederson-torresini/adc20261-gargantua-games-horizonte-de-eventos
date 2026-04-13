@@ -91,8 +91,10 @@ class scene0 extends Phaser.Scene {
     });
 
     this.blackHole
-      .create(873, 950, "gargantua")
-      .setScale(2)
+      .create(550, 40, "gargantua")
+      .setScale(3)
+      .setOrigin(0, 0)
+      .setScrollFactor(1, 0.1)
       .anims.play("gargantua-idle", true);
     this.blackHole
       .create(455, 1750, "gargantua")
@@ -112,25 +114,32 @@ class scene0 extends Phaser.Scene {
         this.tilesetRemasterized,
         this.tilesetRemasterizedEnfeites,
       ])
-      .setPipeline("Light2D");
+      .setPipeline("Light2D")
+      .setScrollFactor(0.9, 1);
     this.layerEnfeites = this.tilemap
       .createLayer("enfeites", [this.tilesetRemasterizedEnfeites])
-      .setPipeline("Light2D");
+      .setPipeline("Light2D")
+      .setScrollFactor(0.9, 1);
     this.layerVidro = this.tilemap
       .createLayer("vidro", [this.tilesetRemasterized])
-      .setPipeline("Light2D");
+      .setPipeline("Light2D")
+      .setScrollFactor(0.9, 1);
     this.layerVidroH = this.tilemap
       .createLayer("vidroH", [this.tilesetRemasterized])
-      .setPipeline("Light2D");
+      .setPipeline("Light2D")
+      .setScrollFactor(0.9, 1);
     this.layerVidroh = this.tilemap
       .createLayer("vidroh", [this.tilesetRemasterized])
-      .setPipeline("Light2D");
+      .setPipeline("Light2D")
+      .setScrollFactor(0.9, 1);
     this.layerCadeira = this.tilemap
       .createLayer("cadeira", [this.tilesetUnnamed])
-      .setPipeline("Light2D");
+      .setPipeline("Light2D")
+      .setScrollFactor(0.9, 1);
     this.layerPiso = this.tilemap
       .createLayer("piso", [this.tilesetRemasterized])
-      .setPipeline("Light2D");
+      .setPipeline("Light2D")
+      .setScrollFactor(0.9, 1);
 
     this.physics.world.setBounds(
       0,
@@ -144,6 +153,7 @@ class scene0 extends Phaser.Scene {
       0,
       this.tilemap.widthInPixels,
     );
+
     this.anims.create({
       key: "open-door",
       frames: this.anims.generateFrameNumbers("door", { start: 0, end: 7 }),
@@ -211,7 +221,7 @@ class scene0 extends Phaser.Scene {
     });
 
     this.scoreText = this.add
-      .text(100, 28, "Engrenagens: " + this.score + "/5", {
+      .text(600, 80, "Engrenagens: " + this.score + "/5", {
         fontSize: "32px",
         fill: "#000",
       })
