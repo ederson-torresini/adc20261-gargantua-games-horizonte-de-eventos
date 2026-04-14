@@ -7,6 +7,7 @@ class scene0 extends Phaser.Scene {
     this.doubleJump = false;
     this.score = 0;
     this.scoreText;
+    this.jetPack = false;
   }
 
   preload() {
@@ -15,12 +16,15 @@ class scene0 extends Phaser.Scene {
 
     this.load.audio("passos", "walkamongus.mp3");
     this.load.audio("trilhasonora", "trilhasonora.mp3");
+    
+    this.load.image("space", "assets-usados/space1.png", {
+      frameWidth: 1536,
+      frameHeight: 3000,
+    });
 
-    this.load.image("space", "assets-usados/space1.png");
-
-    this.load.spritesheet("gargantua", "assets-usados/gargantuac.png", {
-      frameWidth: 220,
-      frameHeight: 160,
+    this.load.spritesheet("gargantua", "assets-usados/gargantua.png", {
+      frameWidth: 320,
+      frameHeight: 320,
     });
 
     this.load.tilemapTiledJSON("todasfases", "mapasv4/todasfases.json");
@@ -30,7 +34,6 @@ class scene0 extends Phaser.Scene {
       "remasterizedEnfeites",
       "assets-usados/remasterizedEnfeites.png",
     );
-    this.load.image("space", "assets-usados/space.jpg");
     this.load.image("newPiskel", "assets-usados/New Piskel.png");
     this.load.image("consoles", "assets-usados/console_s.png");
     this.load.image("consolew", "assets-usados/console_w.png");
@@ -38,8 +41,8 @@ class scene0 extends Phaser.Scene {
     this.load.image("unnamed", "assets-usados/unnamed.png");
 
     this.load.spritesheet("player", "player.png", {
-      frameWidth: 36,
-      frameHeight: 50,
+      frameWidth: 64,
+      frameHeight: 64,
     });
 
     this.load.spritesheet("plataform", "plataform.png", {
@@ -73,7 +76,11 @@ class scene0 extends Phaser.Scene {
     this.trilhasonora = this.sound.add("trilhasonora", { loop: true, volume: 0 }).play();
     this.passos = this.sound.add("passos", { loop: true, volume: 1 });
 
-    this.space = this.add.image(699, 1514, "space");
+    this.space = this.add.image(100, 800, "space");
+    this.space
+      .setPipeline("Light2D")
+      .setOrigin(0, 0)
+      .setScrollFactor(0.1, 1);
 
     this.anims.create({
       key: "gargantua-idle",
@@ -88,18 +95,22 @@ class scene0 extends Phaser.Scene {
     this.blackHole = this.add.group({
       allowGravity: false,
       pipeline: "Light2D",
-      origin: 0,
-      scrollFactorX: 1,
-      scrollFactorY: 0.1,
     });
 
     this.blackHole
-      .create(873, 950, "gargantua")//873, 950 //400, 40
-      .setScale(3)
-      //.setOrigin(0, 0)
-      //.setScrollFactor(1, 0.1)
+      .create(650, 200, "gargantua")//873, 950 //400, 40
+      .setScale(2)
+      .setOrigin(0, 0)
+      .setScrollFactor(.33)
       .anims.play("gargantua-idle", true);
-
+    
+    this.blackHole
+      .create(500, 430, "gargantua")//455, 1750 //200, 40
+      .setScale(2)
+      .setOrigin(0, 0)
+      .setScrollFactor(.33)
+      .anims.play("gargantua-idle", true);
+    
     this.tilemap = this.make.tilemap({ key: "todasfases" });
 
     this.tilesetRemasterized = this.tilemap.addTilesetImage("remasterized");
@@ -148,7 +159,7 @@ class scene0 extends Phaser.Scene {
     );
 
     this.cameras.main.setBounds(
-      0,
+      10,
       0,
       this.tilemap.widthInPixels,
     );
@@ -168,43 +179,114 @@ class scene0 extends Phaser.Scene {
     });
 
     this.anims.create({
-      key: "walk-left",
-      frames: this.anims.generateFrameNumbers("player", { start: 15, end: 20 }),
+      key: "walk-leftJp",
+      frames: this.anims.generateFrameNumbers("player", { start: 14, end: 20 }),
+      frameRate: 11,
+      repeat: -1,
+    });
+    
+    this.anims.create({
+      key: "walk-rightJp",
+      frames: this.anims.generateFrameNumbers("player", { start: 21, end: 27 }),
       frameRate: 11,
       repeat: -1,
     });
 
     this.anims.create({
-      key: "walk-right",
-      frames: this.anims.generateFrameNumbers("player", { start: 21, end: 26 }),
-      frameRate: 11,
-      repeat: -1,
-    });
-
-    this.anims.create({
-      key: "idleRight",
+      key: "idleRightJP",
       frames: this.anims.generateFrameNumbers("player", { start: 2, end: 3 }),
       frameRate: 3,
       repeat: -1,
     });
 
     this.anims.create({
-      key: "idleLeft",
+      key: "idleLeftJP",
       frames: this.anims.generateFrameNumbers("player", { start: 0, end: 1 }),
       frameRate: 3,
       repeat: -1,
     });
 
     this.anims.create({
+      key: "jumpJP",
+      frames: this.anims.generateFrameNumbers("player", { start: 9, end: 13 }),
+      frameRate: 6,
+      repeat: -1,
+    });
+    
+    this.anims.create({
+      key: "jumpLJP",
+      frames: this.anims.generateFrameNumbers("player", { start: 4, end: 8 }),
+      frameRate: 6,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "jetRight",
+      frames: this.anims.generateFrameNumbers("player", { start: 10, end: 10 }),
+      frameRate: 3,
+      repeat: 1,
+    });
+    
+    this.anims.create({
+      key: "jetRightNP",
+      frames: this.anims.generateFrameNumbers("player", { start: 9, end: 9 }),
+      frameRate: 3,
+      repeat: 1,
+    });
+
+    this.anims.create({
+      key: "jetLeft",
+      frames: this.anims.generateFrameNumbers("player", { start: 5, end: 5 }),
+      frameRate: 3,
+      repeat: 0,
+    });
+
+    this.anims.create({
+      key: "jetLeftNP",
+      frames: this.anims.generateFrameNumbers("player", { start: 4, end: 4 }),
+      frameRate: 3,
+      repeat: 0,
+    });
+
+    this.anims.create({
+      key: "walk-left",
+      frames: this.anims.generateFrameNumbers("player", { start: 42, end: 48 }),
+      frameRate: 11,
+      repeat: -1,
+    });
+
+
+    this.anims.create({
+      key: "walk-right",
+      frames: this.anims.generateFrameNumbers("player", { start: 49, end: 55 }),
+      frameRate: 11,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "idleRight",
+      frames: this.anims.generateFrameNumbers("player", { start: 30, end: 31 }),
+      frameRate: 3,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "idleLeft",
+      frames: this.anims.generateFrameNumbers("player", { start: 28, end: 29 }),
+      frameRate: 3,
+      repeat: -1,
+    });
+
+    this.anims.create({
       key: "jump",
-      frames: this.anims.generateFrameNumbers("player", { start: 10, end: 13 }),
+      frames: this.anims.generateFrameNumbers("player", { start: 38, end: 41 }),
       frameRate: 6,
       repeat: -1,
     });
 
     this.anims.create({
       key: "jumpL",
-      frames: this.anims.generateFrameNumbers("player", { start: 5, end: 8 }),
+      frames: this.anims.generateFrameNumbers("player", { start: 33, end: 36 }),
       frameRate: 6,
       repeat: -1,
     });
@@ -230,9 +312,6 @@ class scene0 extends Phaser.Scene {
       allowGravity: false,
       immovable: true,
       pipeline: "Light2D",
-      origin: 0,
-      scrollFactorX: 0.9,
-      scrollFactorY: 1,
     }
       );
 
@@ -245,30 +324,32 @@ class scene0 extends Phaser.Scene {
       .setScale(0.3)
       .anims.play("engrenagem-idle", true);
 
-    this.cai = this.physics.add.sprite(500, 1150, "cai");
+    this.cai = this.physics.add.sprite(500, 1500, "cai");
     this.cai.setImmovable(true).setPipeline("Light2D").body.allowGravity =
       false;
 
     this.door11 = this.physics.add.sprite(92, 1056, "door", 0);
-    this.door11.setPipeline("Light2D").body.allowGravity = false;
+    this.door11.setScrollFactor(0.95, 1).setPipeline("Light2D").body.allowGravity = false;
 
     this.door12 = this.physics.add.sprite(108, 1825, "door", 7);
-    this.door12.setPipeline("Light2D").body.allowGravity = false;
+    this.door12.setScrollFactor(0.95, 1).setPipeline("Light2D").body.allowGravity = false;
     
     this.door21 = this.physics.add.sprite(430, 897, "door", 0);
-    this.door21.setPipeline("Light2D").body.allowGravity = false;
+    this.door21.setScrollFactor(0.95, 1).setPipeline("Light2D").body.allowGravity = false;
 
     this.door22 = this.physics.add.sprite(1185, 1825, "door", 0);
-    this.door22.setPipeline("Light2D").body.allowGravity = false;
+    this.door22.setScrollFactor(0.95, 1).setPipeline("Light2D").body.allowGravity = false;
 
     this.plataformG = this.physics.add.sprite(431, 930, "plataformG");
     this.plataformG
       .setImmovable(true)
+      .setScrollFactor(0.95, 1)
       .setPipeline("Light2D").body.allowGravity = false;
     
     this.plataformG2 = this.physics.add.sprite(1059, 1666, "plataformG");
     this.plataformG2
       .setImmovable(true)
+      .setScrollFactor(0.95, 1)
       .setPipeline("Light2D").body.allowGravity = false;
 
     //cria plataforma 1 e defne como imovível e de velocidade x = 100 além de fazê-la ignorar a gravidade
@@ -287,6 +368,7 @@ class scene0 extends Phaser.Scene {
     this.plataform2 = this.physics.add.sprite(1140, 980, "plataform");
     this.plataform2
       .setImmovable(true)
+      .setScrollFactor(0.95, 1)
       .setPipeline("Light2D").body.allowGravity = false;
     
     this.plataform3 = this.physics.add.sprite(1050, 935, "plataform");
@@ -330,6 +412,7 @@ class scene0 extends Phaser.Scene {
     this.plataform7 = this.physics.add.sprite(160, 1710, "plataform");
     this.plataform7
       .setImmovable(true)
+      .setScrollFactor(0.95, 1)
       .setPipeline("Light2D").body.allowGravity = false;
     
     this.plataform8 = this.physics.add.sprite(560, 1640, "plataform");
@@ -354,34 +437,21 @@ class scene0 extends Phaser.Scene {
     
     this.lights
       .enable()
-      .setAmbientColor(0xe0f7ff)
-      .addLight(1040, 995, 80)
-      .setIntensity(1)
-      .setColor(0xffa500);
-    
-    //this.lights.addLight(765, 1040, 40).setIntensity(1).setColor(0xffa500);
-    /* this.lights.addLight(924, 1020, 50).setIntensity(1).setColor(0xffa500);
-     this.lights.addLight(1062, 1010, 50).setIntensity(1).setColor(0xffa500);
-     this.lights.addLight(975, 1030, 50).setIntensity(1).setColor(0xffa500);
-     this.lights.addLight(872, 1024, 55).setIntensity(1).setColor(0xffa500);
-     this.lights.addLight(835, 1040, 40).setIntensity(1).setColor(0xffa500);
-     this.lights.addLight(797, 1040, 40).setIntensity(1).setColor(0xffa500);
-     this.lights.addLight(700, 1050, 30).setIntensity(1).setColor(0xffa500);
-     this.lights.addLight(717, 1050, 30).setIntensity(1).setColor(0xffa500);
-     this.lights.addLight(735, 1050, 30).setIntensity(1).setColor(0xffa500);*/
-    
+      .setAmbientColor(0xe0f7ff);
     
     this.lights
       .addLight(this.door21.x, 880, 40)
       .setIntensity(1.5)
+      .setScrollFactor(0.95, 1)
       .setColor(0xff0000);
     
     this.lights
       .addLight(this.door11.x, 1040, 40)
       .setIntensity(1.5)
+      .setScrollFactor(0.95, 1)
       .setColor(0xff0000);
     
-    this.player = this.physics.add.sprite(92, 1066, "player", 3).setScale(1); //fase1:92, 1066//fase2:108, 1834//fase3: 82, 2508
+    this.player = this.physics.add.sprite(108, 1834, "player", 3) //fase1:92, 1066//fase2:108, 1834//fase3: 82, 2508
     this.player.body.setSize(20, 40);
     this.cameras.main.startFollow(this.player, false, 1, 0).zoom = 1.2;
     this.cameras.main.scrollY =
@@ -422,18 +492,21 @@ class scene0 extends Phaser.Scene {
         this.lights
           .addLight(this.door22.x, 1805, 33)
           .setIntensity(0.5)
+          .setScrollFactor(0.95, 1)
           .setColor(0xff0000);
         this.door21.once("animationcomplete", (anim, frame) => {
           if (anim.key === "open-door") {
             this.player.setPosition(108, 1834).setVelocity(0, 0);
             this.cameras.main.scrollY =
               this.player.y - this.cameras.main.height / 2 - 120;
+            
             this.door12.anims.play("close-door", true);
             this.door12.once("animationcomplete", (anim, frame) => {
               if (anim.key === "close-door") {
                 this.lights
                   .addLight(this.door12.x, 1805, 35)
                   .setIntensity(0.5)
+                  .setScrollFactor(0.95, 1)
                   .setColor(0xff0000);
               }
             });
@@ -449,6 +522,7 @@ class scene0 extends Phaser.Scene {
           this.player.setPosition(82, 2508).setVelocity(0, 0);
           this.cameras.main.scrollY =
             this.player.y - this.cameras.main.height / 3.5 - 120;
+          this.jetPack = true;
       
         }
       });
@@ -496,34 +570,58 @@ class scene0 extends Phaser.Scene {
         if (horizontal > 0) {
           this.player.setVelocityX(200);
           this.direction = true;
-          if (this.player.body.velocity.y === 0) {
+          if (this.player.body.velocity.y === 0 && this.jetPack === false) {
             this.player.anims.play("walk-right", true);
-            //this.passos.play();
+          }if (this.player.body.velocity.y === 0 && this.jetPack === true) {
+            this.player.anims.play("walk-rightJp", true);
           }
         } else if (horizontal < 0) {
           this.player.setVelocityX(-200);
           this.direction = false;
-          if (this.player.body.velocity.y === 0) {
+          if (this.player.body.velocity.y === 0 && this.jetPack === false) {
             this.player.anims.play("walk-left", true);
-            //this.passos.play();
+          }else if (this.player.body.velocity.y === 0 && this.jetPack === true) {
+            this.player.anims.play("walk-leftJp", true);
           }
         } else {
           this.player.setVelocityX(0);
         }
       }
-      
-      if (this.player.body.blocked.down) {
-        this.doubleJump = false;
-        if (pad.X) this.player.setVelocityY(-300);
-      }
-      
-      if (this.player.body.blocked.left || this.player.body.blocked.right) {
-        if (this.player.body.velocity.x != 0 && pad.X && !this.doubleJump) {
-          this.player.setVelocityY(-415);
-          this.doubleJump = true;
+      if (this.jetPack === false) {
+        if (this.player.body.blocked.down) {
+          this.doubleJump = false;
+          if (pad.X) this.player.setVelocityY(-300);
         }
-      }
       
+        if (this.player.body.blocked.left || this.player.body.blocked.right) {
+          if (this.player.body.velocity.x != 0 && pad.X && !this.doubleJump) {
+            this.player.setVelocityY(-415);
+            this.doubleJump = true;
+          }
+        }
+      } else {
+        this.physics.world.gravity.y = 90;
+        if (pad.X) {
+          this.player.setVelocityY(-50)
+            if (this.direction === true) {
+              this.player.anims.play("jetRight", true);
+            } else if (this.direction === false) {
+              this.player.anims.play("jetLeft", true);
+            }
+        } else {
+          if (this.direction === true) {
+              this.player.anims.play("jetRightNP", true);
+            } else if (this.direction === false) {
+              this.player.anims.play("jetLeftNP", true);
+            }}
+      }
+    }
+    if (this.jetPack === false) {
+      if (this.player.body.velocity.y < 0 && this.direction === true) {
+        this.player.anims.play("jump", true);
+      } else if (this.player.body.velocity.y < 0 && this.direction === false) {
+        this.player.anims.play("jumpL", true);
+      }
     }
 
     const movingHorizontally = Math.abs(this.player.body.velocity.x) > 1;
@@ -551,11 +649,6 @@ class scene0 extends Phaser.Scene {
       this.player.anims.play("idleLeft", true);
     }
     
-    if (this.player.body.velocity.y < 0 && this.direction === true) {
-      this.player.anims.play("jump", true);
-    } else if (this.player.body.velocity.y < 0 && this.direction === false) {
-      this.player.anims.play("jumpL", true);
-    }
     
   }
   
