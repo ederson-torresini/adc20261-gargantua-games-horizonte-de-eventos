@@ -551,8 +551,10 @@ class scene0 extends Phaser.Scene {
     this.physics.add.collider(this.player, this.plataform7);
     this.physics.add.collider(this.player, this.plataform8);
     this.physics.add.collider(this.player, this.plataform9);
-    this.physics.add.collider(this.player, this.boxes);
-    
+    this.physics.add.overlap(this.player, this.boxes, () => {
+      this.player.setPosition(82, 2508).setVelocity(0, 0);
+    });
+
     this.physics.add.overlap(this.player, this.cai, () => {
       this.player.setPosition(92, 1066).setVelocity(0, 0);
     });
