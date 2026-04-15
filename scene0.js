@@ -380,7 +380,7 @@ class scene0 extends Phaser.Scene {
       .anims.play("box-idle1", true)
       .body.setSize(37, 59);
     this.boxes
-      .create(895, 2554, "box")
+      .create(895, 2558, "box")
       .setAngle(5)
       .anims.play("box-idle", true)
       .body.setSize(37, 59);
@@ -394,24 +394,40 @@ class scene0 extends Phaser.Scene {
       .setAngle(-10)
       .anims.play("box-idle", true)
       .body.setSize(37, 59);
+    this.boxes
+      .create(192, 2604, "boxD")
+      //.anims.play("box-idle", true)
+      .body.setSize(57, 38);
+    this.boxes
+      .create(327, 2604, "boxD")
+      .setAngle(180)
+      //.anims.play("box-idle", true)
+      .body.setSize(57, 38);
+    this.boxes
+      .create(1155, 2604, "boxD")
+      //.anims.play("box-idle", true)
+      .body.setSize(57, 38);
     //*BOTAR UMAS 15 CARGAS NO JETPACK*
     
     
     this.cai = this.physics.add.sprite(500, 1500, "cai");
     this.cai.setImmovable(true).setPipeline("Light2D").body.allowGravity =
       false;
-
+    //porta N da fase N
     this.door11 = this.physics.add.sprite(92, 1056, "door", 0);
     this.door11.setScrollFactor(0.95, 1).setPipeline("Light2D").body.allowGravity = false;
-
-    this.door12 = this.physics.add.sprite(108, 1825, "door", 7);
-    this.door12.setScrollFactor(0.95, 1).setPipeline("Light2D").body.allowGravity = false;
     
     this.door21 = this.physics.add.sprite(430, 897, "door", 0);
     this.door21.setScrollFactor(0.95, 1).setPipeline("Light2D").body.allowGravity = false;
+    
+    this.door12 = this.physics.add.sprite(108, 1825, "door", 7);
+    this.door12.setScrollFactor(0.95, 1).setPipeline("Light2D").body.allowGravity = false;
 
     this.door22 = this.physics.add.sprite(1185, 1825, "door", 0);
     this.door22.setScrollFactor(0.95, 1).setPipeline("Light2D").body.allowGravity = false;
+    
+    this.door13 = this.physics.add.sprite(69, 2496, "door", 7);
+    this.door13.setScrollFactor(0.95, 1).setPipeline("Light2D").body.allowGravity = false;
 
     this.plataformG = this.physics.add.sprite(431, 930, "plataformG");
     this.plataformG
@@ -525,7 +541,7 @@ class scene0 extends Phaser.Scene {
       .setScrollFactor(0.95, 1)
       .setColor(0xff0000);
     
-    this.player = this.physics.add.sprite(1138, 1836, "player", 3) //fase1:92, 1066//fase2:108, 1836//fase3: 82, 2508
+    this.player = this.physics.add.sprite(1138, 1836, "player", 3) //fase1:92, 1066//fase2:108, 1836//fase3: 82, 2508//1138, 1836
     this.player.body.setSize(20, 40);
     this.cameras.main.startFollow(this.player, false, 1, 0).zoom = 1.2;
     this.cameras.main.scrollY =
