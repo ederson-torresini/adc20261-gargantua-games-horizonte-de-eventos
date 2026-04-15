@@ -541,7 +541,7 @@ class scene0 extends Phaser.Scene {
       .setScrollFactor(0.95, 1)
       .setColor(0xff0000);
     
-    this.player = this.physics.add.sprite(1138, 1836, "player", 3) //fase1:92, 1066//fase2:108, 1836//fase3: 82, 2508//1138, 1836
+    this.player = this.physics.add.sprite(92, 1066, "player", 3) //fase1:92, 1066//fase2:108, 1836//fase3: 82, 2508//1138, 1836
     this.player.body.setSize(20, 40);
     this.cameras.main.startFollow(this.player, false, 1, 0).zoom = 1.2;
     this.cameras.main.scrollY =
@@ -707,11 +707,11 @@ class scene0 extends Phaser.Scene {
         else if (!pad.X && this.player.body.velocity.y != 0) {
           if (this.direction === true) {
             this.player
-              .setFrame(9)
+              .anims.play("idleRightJP", true)
               .setAngle(10);
           } else if (this.direction === false) {
             this.player
-              .setFrame(4)
+              .anims.play("idleLeftJP", true)
               .setAngle(-10);
           }
         }
