@@ -220,33 +220,6 @@ class scene0 extends Phaser.Scene {
       repeat: -1,
     });
 
-    this.anims.create({
-      key: "jetRight",
-      frames: this.anims.generateFrameNumbers("player", { start: 10, end: 10 }),
-      frameRate: 3,
-      repeat: 1,
-    });
-    
-    this.anims.create({
-      key: "jetRightNP",
-      frames: this.anims.generateFrameNumbers("player", { start: 9, end: 9 }),
-      frameRate: 3,
-      repeat: 1,
-    });
-
-    this.anims.create({
-      key: "jetLeft",
-      frames: this.anims.generateFrameNumbers("player", { start: 5, end: 5 }),
-      frameRate: 3,
-      repeat: 0,
-    });
-
-    this.anims.create({
-      key: "jetLeftNP",
-      frames: this.anims.generateFrameNumbers("player", { start: 4, end: 4 }),
-      frameRate: 3,
-      repeat: 0,
-    });
 
     this.anims.create({
       key: "walk-left",
@@ -557,7 +530,7 @@ class scene0 extends Phaser.Scene {
 
 
 
-  update() {
+  update() { 
 
     
     
@@ -572,7 +545,7 @@ class scene0 extends Phaser.Scene {
           this.direction = true;
           if (this.player.body.velocity.y === 0 && this.jetPack === false) {
             this.player.anims.play("walk-right", true);
-          }if (this.player.body.velocity.y === 0 && this.jetPack === true) {
+          } else if (this.player.body.velocity.y === 0 && this.jetPack === true) {
             this.player.anims.play("walk-rightJp", true);
           }
         } else if (horizontal < 0) {
@@ -580,7 +553,7 @@ class scene0 extends Phaser.Scene {
           this.direction = false;
           if (this.player.body.velocity.y === 0 && this.jetPack === false) {
             this.player.anims.play("walk-left", true);
-          }else if (this.player.body.velocity.y === 0 && this.jetPack === true) {
+          } else if (this.player.body.velocity.y === 0 && this.jetPack === true) {
             this.player.anims.play("walk-leftJp", true);
           }
         } else {
@@ -602,20 +575,40 @@ class scene0 extends Phaser.Scene {
       } else {
         this.physics.world.gravity.y = 90;
         if (pad.X) {
-          this.player.setVelocityY(-50)
-            if (this.direction === true) {
-              this.player.anims.play("jetRight", true);
-            } else if (this.direction === false) {
-              this.player.anims.play("jetLeft", true);
-            }
-        } else {
+          
+          this.player.setVelocityY(-50);
           if (this.direction === true) {
-              this.player.anims.play("jetRightNP", true);
-            } else if (this.direction === false) {
-              this.player.anims.play("jetLeftNP", true);
-            }}
+            this.player
+              .setFrame(10);
+          } else if (this.direction === false) {
+            this.player
+              .setFrame(5);
+          }
+        }
+        else if (!pad.X && this.player.body.velocity.y != 0) {
+          if (this.direction === true) {
+            this.player
+              .setFrame(9)
+              .setAngle(10);
+          } else if (this.direction === false) {
+            this.player
+              .setFrame(4)
+              .setAngle(-10);
+          }
+        }
+        if (this.player.body.velocity.y != 0) {
+          if (this.direction === true) {
+            this.player.setAngle(10);
+          } else if (this.direction === false) {
+            this.player.setAngle(-10);
+          }
+        } else if (this.player.body.velocity.y === 0) {
+          this.player.setAngle(0);
+        }
       }
+      
     }
+    
     if (this.jetPack === false) {
       if (this.player.body.velocity.y < 0 && this.direction === true) {
         this.player.anims.play("jump", true);
@@ -633,20 +626,38 @@ class scene0 extends Phaser.Scene {
       this.passos.stop();
     }
 
-    if (
-      this.direction === true &&
-      this.player.body.velocity.x === 0 &&
-      this.player.body.velocity.y === 0 &&
-      (this.player.body.blocked.down || this.player.body.blocked.up)
-    ) {
-      this.player.anims.play("idleRight", true);
-    } else if (
-      this.direction === false &&
-      this.player.body.velocity.x === 0 &&
-      this.player.body.velocity.y === 0 &&
-      (this.player.body.blocked.down || this.player.body.blocked.up)
-    ) {
-      this.player.anims.play("idleLeft", true);
+    if (this.jetPack === false) {
+      if (
+        this.direction === true &&
+        this.player.body.velocity.x === 0 &&
+        this.player.body.velocity.y === 0 &&
+        (this.player.body.blocked.down || this.player.body.blocked.up)
+      ) {
+        this.player.anims.play("idleRight", true);
+      } else if (
+        this.direction === false &&
+        this.player.body.velocity.x === 0 &&
+        this.player.body.velocity.y === 0 &&
+        (this.player.body.blocked.down || this.player.body.blocked.up)
+      ) {
+        this.player.anims.play("idleLeft", true);
+      }
+    } else if(this.jetPack === true) {
+      if (
+        this.direction === true &&
+        this.player.body.velocity.x === 0 &&
+        this.player.body.velocity.y === 0 &&
+        (this.player.body.blocked.down || this.player.body.blocked.up)
+      ) {
+        this.player.anims.play("idleRightJP", true);
+      } else if (
+        this.direction === false &&
+        this.player.body.velocity.x === 0 &&
+        this.player.body.velocity.y === 0 &&
+        (this.player.body.blocked.down || this.player.body.blocked.up)
+      ) {
+        this.player.anims.play("idleLeftJP", true);
+      }
     }
     
     
