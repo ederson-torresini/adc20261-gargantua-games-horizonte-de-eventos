@@ -74,6 +74,10 @@ class scene0 extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64,
     });
+    this.load.spritesheet("boxD", "boxD.png", {
+      frameWidth: 64,//57
+      frameHeight: 64,//38
+    });
   }
 
   create() {
