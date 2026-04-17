@@ -131,5 +131,6 @@ class scene1 extends Phaser.Scene {
 
 //fim preload
 }
+export default scene1;
   
   

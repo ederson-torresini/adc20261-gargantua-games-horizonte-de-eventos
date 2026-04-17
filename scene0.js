@@ -34,11 +34,11 @@ class scene0 extends Phaser.Scene {
       "remasterizedEnfeites",
       "assets-usados/remasterizedEnfeites.png",
     );
-    this.load.image("newPiskel", "assets-usados/New Piskel.png");
-    this.load.image("consoles", "assets-usados/console_s.png");
-    this.load.image("consolew", "assets-usados/console_w.png");
-    this.load.image("tileset", "assets-usados/tileset x1.png");
-    this.load.image("unnamed", "assets-usados/unnamed.png");
+    //this.load.image("newPiskel", "assets-usados/New Piskel.png");
+    //this.load.image("consoles", "assets-usados/console_s.png");
+    //this.load.image("consolew", "assets-usados/console_w.png");
+    //this.load.image("tileset", "assets-usados/tileset x1.png");
+    //this.load.image("unnamed", "assets-usados/unnamed.png");
 
     this.load.spritesheet("player", "player.png", {
       frameWidth: 64,
@@ -144,16 +144,12 @@ class scene0 extends Phaser.Scene {
       .createLayer("vidro", [this.tilesetRemasterized])
       .setPipeline("Light2D")
       .setScrollFactor(0.9, 1);
-    this.layerVidroH = this.tilemap
-      .createLayer("vidroH", [this.tilesetRemasterized])
-      .setPipeline("Light2D")
-      .setScrollFactor(0.9, 1);
     this.layerVidroh = this.tilemap
       .createLayer("vidroh", [this.tilesetRemasterized])
       .setPipeline("Light2D")
       .setScrollFactor(0.9, 1);
-    this.layerCadeira = this.tilemap
-      .createLayer("cadeira", [this.tilesetUnnamed])
+    this.layerComp39 = this.tilemap
+      .createLayer("comp39", [this.tilesetRemasterized])
       .setPipeline("Light2D")
       .setScrollFactor(0.9, 1);
     this.layerPiso = this.tilemap
@@ -326,6 +322,10 @@ class scene0 extends Phaser.Scene {
       .create(1059, 1652, "engrenagem")
       .setScale(0.3)
       .anims.play("engrenagem-idle", true);
+    this.engrenagens
+      .create(610, 2383, "engrenagem")
+      .setScale(0.3)
+      .anims.play("engrenagem-idle", true);
 
      this.boxes = this.physics.add.group({
       allowGravity: false,
@@ -430,6 +430,9 @@ class scene0 extends Phaser.Scene {
     
     this.door13 = this.physics.add.sprite(69, 2496, "door", 7);
     this.door13.setScrollFactor(0.95, 1).setPipeline("Light2D").body.allowGravity = false;
+
+    this.door23 = this.physics.add.sprite(1224, 2432, "door", 0);
+    this.door23.setScrollFactor(0.95, 1).setPipeline("Light2D").body.allowGravity = false;
 
     this.plataformG = this.physics.add.sprite(431, 930, "plataformG");
     this.plataformG
@@ -543,7 +546,7 @@ class scene0 extends Phaser.Scene {
       .setScrollFactor(0.95, 1)
       .setColor(0xff0000);
     
-    this.player = this.physics.add.sprite(92, 1066, "player", 3) //fase1:92, 1066//fase2:108, 1836//fase3: 69, 2496//1138, 1836
+    this.player = this.physics.add.sprite(92,300, "player", 3) //fase1:92, 1066//fase2:108, 1836/1138, 1836//fase3: 69, 2496/1095,2604//fase3.9: 92,300//
     this.player.body.setSize(20, 40);
     this.cameras.main.startFollow(this.player, false, 1, 0).zoom = 1.2;
     this.cameras.main.scrollY =
@@ -735,7 +738,7 @@ class scene0 extends Phaser.Scene {
           } else if (this.direction === false) {
             this.player.setAngle(-10);
           }            
-        } else if (this.player.body.velocity.y != 0 && this.player.body.velocity.x === 0) {
+        } else if (this.player.body.velocity.y != 0 && this.player.body.velocity.x === 0 || this.player.body.blocked.down) {
           this.player.setAngle(0);
         }
       }
