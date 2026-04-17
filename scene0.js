@@ -338,74 +338,76 @@ class scene0 extends Phaser.Scene {
       .create(319, 2400, "box")
       .setAngle(10)
       .anims.play("box-idle", true)
-      .body.setSize(37, 59);
+      .body.setSize(36, 58);
     this.boxes
       .create(244, 2530, "box")
       .setAngle(-10)
       .anims.play("box-idle1", true)
-      .body.setSize(37, 59);
+      .body.setSize(36, 58);
     this.boxes
       .create(394, 2490, "box")
       .setAngle(5)
       .anims.play("box-idle", true)
-      .body.setSize(37, 59);
+      .body.setSize(36, 58);
     this.boxes
       .create(504, 2556, "box")
       .setAngle(-5)
       .anims.play("box-idle1", true)
-      .body.setSize(37, 59);
+      .body.setSize(36, 58);
     this.boxes
       .create(571, 2416, "box")
       .setAngle(10)
       .anims.play("box-idle1", true)
-      .body.setSize(37, 59);
+      .body.setSize(36, 58);
     this.boxes
       .create(634, 2446, "box")
       .setAngle(10)
       .anims.play("box-idle", true)
-      .body.setSize(37, 59);
+      .body.setSize(36, 58);
     this.boxes
       .create(679, 2580, "box")
       .setAngle(10)
       .anims.play("box-idle1", true)
-      .body.setSize(37, 59);
+      .body.setSize(36, 58);
     this.boxes
       .create(769, 2502, "box")
       .setAngle(-10)
       .anims.play("box-idle", true)
-      .body.setSize(37, 59);
+      .body.setSize(36, 58);
     this.boxes
       .create(849, 2377, "box")
       .setAngle(7)
       .anims.play("box-idle1", true)
-      .body.setSize(37, 59);
+      .body.setSize(36, 58);
     this.boxes
       .create(895, 2558, "box")
       .setAngle(5)
       .anims.play("box-idle", true)
-      .body.setSize(37, 59);
+      .body.setSize(36, 58);
     this.boxes
       .create(1064, 2479, "box")
       .setAngle(-7)
       .anims.play("box-idle1", true)
-      .body.setSize(37, 59);
+      .body.setSize(36, 58);
     this.boxes
       .create(977, 2430, "box")
       .setAngle(-10)
       .anims.play("box-idle", true)
-      .body.setSize(37, 59);
+      .body.setSize(36, 58);
     this.boxes
-      .create(192, 2604, "boxD")
-      //.anims.play("box-idle", true)
+      .create(192, 2604, "box") //RAFAEL
+      .anims.play("box-idle", true)
+      .setAngle(90)
       .body.setSize(57, 38);
     this.boxes
-      .create(327, 2604, "boxD")
-      .setAngle(180)
-      //.anims.play("box-idle", true)
+      .create(327, 2604, "box")
+      .setAngle(-90)
+      .anims.play("box-idle1", true)
       .body.setSize(57, 38);
     this.boxes
-      .create(1155, 2604, "boxD")
-      //.anims.play("box-idle", true)
+      .create(1155, 2604, "box")
+      .setAngle(90)
+      .anims.play("box-idle", true)
       .body.setSize(57, 38);
     //*BOTAR UMAS 15 CARGAS NO JETPACK*
     
@@ -541,14 +543,14 @@ class scene0 extends Phaser.Scene {
       .setScrollFactor(0.95, 1)
       .setColor(0xff0000);
     
-    this.player = this.physics.add.sprite(92, 1066, "player", 3) //fase1:92, 1066//fase2:108, 1836//fase3: 82, 2508//1138, 1836
+    this.player = this.physics.add.sprite(92, 1066, "player", 3) //fase1:92, 1066//fase2:108, 1836//fase3: 69, 2496//1138, 1836
     this.player.body.setSize(20, 40);
     this.cameras.main.startFollow(this.player, false, 1, 0).zoom = 1.2;
     this.cameras.main.scrollY =
       this.player.y - this.cameras.main.height / 2 - 120; // Ajuste para começar mais para cima (100 pixels acima do centro do jogador)
     this.player.anims.play("idleRight", true).setPipeline("Light2D");
     this.doubleJump = false;
-
+    
     this.physics.add.overlap(
       this.player,
       this.engrenagens,
@@ -589,7 +591,7 @@ class scene0 extends Phaser.Scene {
           .setColor(0xff0000);
         this.door21.once("animationcomplete", (anim, frame) => {
           if (anim.key === "open-door") {
-            this.player.setPosition(108, 1834).setVelocity(0, 0);
+            this.player.setPosition(108, 1835).setVelocity(0, 0);
             this.cameras.main.scrollY =
               this.player.y - this.cameras.main.height / 2 - 120;
             
@@ -612,12 +614,23 @@ class scene0 extends Phaser.Scene {
       this.door22.anims.play("open-door", true);
       this.door22.once("animationcomplete", (anim, frame) => {
         if (anim.key === "open-door") {
-          this.player.setPosition(82, 2508).setVelocity(0, 0);
+          this.player.setPosition(69, 2508).setVelocity(0, 0);
           this.cameras.main.scrollY =
             this.player.y - this.cameras.main.height / 3.5 - 120;
-          this.jetPack = true;     
+          this.jetPack = true;
+          this.door13.anims.play("close-door", true);
+          this.door13.once("animationcomplete", (anim, frame) => {
+            if (anim.key === "close-door") {
+              this.lights
+                .addLight(this.door13.x, 2480, 35)
+                .setIntensity(0.5)
+                .setScrollFactor(0.95, 1)
+                .setColor(0xff0000);
+            }
+          });
         }
-      });
+        }
+      );
     });
     
   
@@ -708,20 +721,21 @@ class scene0 extends Phaser.Scene {
           if (this.direction === true) {
             this.player
               .anims.play("idleRightJP", true)
-              .setAngle(10);
+              //.setAngle(10);
           } else if (this.direction === false) {
             this.player
               .anims.play("idleLeftJP", true)
-              .setAngle(-10);
+              //.setAngle(-10);
           }
         }
-        if (this.player.body.velocity.y != 0) {
+
+        if (this.player.body.velocity.y != 0 && this.player.body.velocity.x != 0) {
           if (this.direction === true) {
             this.player.setAngle(10);
           } else if (this.direction === false) {
             this.player.setAngle(-10);
           }            
-        } else if (this.player.body.velocity.y === 0) {
+        } else if (this.player.body.velocity.y != 0 && this.player.body.velocity.x === 0) {
           this.player.setAngle(0);
         }
       }
