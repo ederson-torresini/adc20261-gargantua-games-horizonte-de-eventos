@@ -17,7 +17,7 @@ class scene1 extends Phaser.Scene {
     this.load.audio("passos", "walkamongus.mp3");
     this.load.audio("trilhasonora", "trilhasonora.mp3");
     
-    //preloa o asset do espaço ao fundo
+    //preload o asset do espaço ao fundo
     this.load.image("space", "assets-usados/space1.png", {
       frameWidth: 1536,
       frameHeight: 3000,
@@ -28,17 +28,16 @@ class scene1 extends Phaser.Scene {
       frameHeight: 320,
     });*/
 
-    //preload do tilemap da sala ortogonal
-    this.load.tilemapTiledJSON("salaortogonal", "mapasv4/salaortogonal.json");
+    //preload do tilemap da fase ortogonal (troquei de arquivo pois na salaortogonal tem tilesets que não estão sendo usados e estava dando erro) 
+    this.load.tilemapTiledJSON("faseortogonal", "mapasv4/faseortogonal.json");
 
     this.load.image("remasterized", "assets-usados/remasterized.png");
-    this.load.image("remasterizedEnfeites","assets-usados/remasterizedEnfeites.png",);
-    this.load.image("newPiskel", "assets-usados/New Piskel.png");
-    this.load.image("consoles", "assets-usados/console_s.png");
-    this.load.image("consolew", "assets-usados/console_w.png");
-    this.load.image("tileset", "assets-usados/tileset x1.png");
-    this.load.image("unnamed", "assets-usados/unnamed.png");
-    this.laod.image("space1", "assets-usados/space1.png");
+    this.load.image("remasterizedEnfeites", "assets-usados/remasterizedEnfeites.png",);
+    this.load.image("newPiskel", "assets-usados/NewPiskel.png");
+    this.load.image("console_s", "assets-usados/console_s.png");
+    this.load.image("console_w", "assets-usados/console_w.png");
+    this.load.image("tilesetx1", "assets-usados/tilesetx1.png");
+    this.load.image("space1", "assets-usados/space1.png");
 
     //preload do sprite do player roxo
     this.load.spritesheet("playerroxo", "playerroxo.png", {
@@ -46,6 +45,7 @@ class scene1 extends Phaser.Scene {
       frameHeight: 64,
     });
   }
+  
   create() {
 
     //adiciona trilha sonora e efeitos sonoros
@@ -65,14 +65,13 @@ class scene1 extends Phaser.Scene {
     //adiciona os tilesets utilizados
     this.tilesetRemasterized = this.tilemap.addTilesetImage("remasterized");
     this.tilesetRemasterizedEnfeites = this.tilemap.addTilesetImage("remasterizedEnfeites",);
-    this.tilesetUnnamed = this.tilemap.addTilesetImage("unnamed");
-    this.tilesetConsoles = this.tilemap.addTilesetImage("consoles");
-    this.tilesetConsolew = this.tilemap.addTilesetImage("consolew");
+    this.tilesetConsoles = this.tilemap.addTilesetImage("console_s");
+    this.tilesetConsolew = this.tilemap.addTilesetImage("console_w");
     this.tilesetNewPiskel = this.tilemap.addTilesetImage("newPiskel");
-    this.tilesetx1 = this.tilemap.addTilesetImage("tileset", "tilesetx1");
+    this.tilesetx1 = this.tilemap.addTilesetImage("tilesetx1");
     this.tilesetSpace1 = this.tilemap.addTilesetImage("space1");
 
-    //adiciona a layer do piso utilizando o tilesetx1
+    //adiciona o layer do piso utilizando o tilesetx1
     this.layerPiso = this.tilemap
       .createLayer("piso", [this.tilesetx1])
       .setPipeline("Light2D")
@@ -88,30 +87,30 @@ class scene1 extends Phaser.Scene {
       .setPipeline("Light2D")
       .setScrollFactor(0.9, 1);
     
-      this.layerComp2 = this.tilemap
-        .createLayer("comp2", [this.tilesetConsoles])
-        .setPipeline("Light2D")
-        .setScrollFactor(0.9, 1);
+    this.layerComp2 = this.tilemap
+      .createLayer("comp2", [this.tilesetConsoles])
+      .setPipeline("Light2D")
+      .setScrollFactor(0.9, 1);
     
-      this.layerEspaco = this.tilemap
-        .createLayer("espaco", [this.tilesetSpace1])
-        .setPipeline("Light2D")
-        .setScrollFactor(0.9, 1);
+    this.layerEspaco = this.tilemap
+      .createLayer("espaco", [this.tilesetSpace1])
+      .setPipeline("Light2D")
+      .setScrollFactor(0.9, 1);
   
-      this.layerNave = this.tilemap
-        .createLayer("nave", [this.tilesetRemasterized])
-        .setPipeline("Light2D")
-        .setScrollFactor(0.9, 1);
+    this.layerNave = this.tilemap
+      .createLayer("nave", [this.tilesetRemasterized])
+      .setPipeline("Light2D")
+      .setScrollFactor(0.9, 1);
     
-      this.layerEnfeites = this.tilemap
-        .createLayer("enfeites", [this.tilesetRemasterizedEnfeites])
-        .setPipeline("Light2D")
-        .setScrollFactor(0.9, 1);
+    this.layerEnfeites = this.tilemap
+      .createLayer("enfeites", [this.tilesetRemasterizedEnfeites])
+      .setPipeline("Light2D")
+      .setScrollFactor(0.9, 1);
     
-      this.layerConserto = this.tilemap
-        .createLayer("conserto", [this.tilesetRemasterized, this.tilesetRemasterizedEnfeites, this.tilesetNewPiskel])
-        .setPipeline("Light2D")
-        .setScrollFactor(0.9, 1);
+    this.layerConserto = this.tilemap
+      .createLayer("conserto", [this.tilesetRemasterized, this.tilesetRemasterizedEnfeites, this.tilesetNewPiskel])
+      .setPipeline("Light2D")
+      .setScrollFactor(0.9, 1);
     
     this.physics.world.setBounds(
       0,
@@ -121,16 +120,12 @@ class scene1 extends Phaser.Scene {
     );
 
     this.cameras.main.setBounds(10, 0, this.tilemap.widthInPixels);
-  //fim create
-  }
+  
+  }//fim create
 
-
-
-
-
-
-//fim preload
 }
+
+
 export default scene1;
   
   
