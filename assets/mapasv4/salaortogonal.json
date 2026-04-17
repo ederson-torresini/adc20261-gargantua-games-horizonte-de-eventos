@@ -1246,11 +1246,11 @@
         {
          "columns":37,
          "firstgid":3610,
-         "image":"../assets-usados/tileset x1.png",
+         "image":"../assets-usados/tilesetx1.png",
          "imageheight":736,
          "imagewidth":1184,
          "margin":0,
-         "name":"tileset x1",
+         "name":"tilesetx1",
          "spacing":0,
          "tilecount":851,
          "tileheight":32,
