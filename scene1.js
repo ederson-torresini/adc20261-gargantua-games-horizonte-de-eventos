@@ -46,7 +46,7 @@ class scene1 extends Phaser.Scene {
   create() {
     //adiciona trilha sonora e efeitos sonoros
     this.trilhasonora = this.sound
-      .add("trilhasonora", { loop: true, volume: 0 })
+      .add("trilhasonora", { loop: true, volume: 0.5 })
       .play();
     this.passos = this.sound.add("passos", { loop: true, volume: 1 });
 

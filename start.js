@@ -4,36 +4,86 @@ class start extends Phaser.Scene {
   }
 
   preload() {
-    this.load.setPath("assets/assets-usados");
+    this.load.image("capa", "assets/fundocapatitulo.png");
+    this.load.image("playroxo", "assets/playerroxocapa2.png");
+    this.load.image("playvermelho", "assets/playervermelhocapa.png");
+    /*this.load.setPath("assets/assets-usados");
     this.load.image("start", "Startsceneredimencionada.png");
     this.load.spritesheet("gargantuac", "gargantuac.png", {
       frameWidth: 220,
       frameHeight: 160,
-    });
+    });*/
   }
 
   create() {
-    this.anims.create({
-      key: "gargantuac-idle",
-      frames: this.anims.generateFrameNumbers("gargantuac", {
-        start: 0,
-        end: 49,
-      }),
-      frameRate: 5,
+    // Fundo da tela de título com proporção preservada
+    const bg = this.add.image(0, 0, "capa").setOrigin(0, 0).setDepth(0);
+    const imageRatio = bg.width / bg.height;
+    const screenRatio = this.scale.width / this.scale.height;
+
+    let displayWidth = this.scale.width;
+    let displayHeight = this.scale.height;
+
+    if (screenRatio > imageRatio) {
+      displayWidth = this.scale.height * imageRatio;
+      displayHeight = this.scale.height;
+    } else {
+      displayWidth = this.scale.width;
+      displayHeight = this.scale.width / imageRatio;
+    }
+
+    bg.setDisplaySize(displayWidth, displayHeight);
+    bg.setPosition(
+      (this.scale.width - displayWidth) / 2,
+      (this.scale.height - displayHeight) / 2,
+    );
+    this.cameras.main.setBackgroundColor("#000000");
+
+    // Player roxo e player vermelho na capa
+    const margin = 60;
+    //const roxoX = bg.x + margin;
+    //const roxoY = bg.y + displayHeight - margin;
+    this.playerRoxo = this.add
+      .image(525, 260, "playroxo")
+      .setScale(0.35)
+      .setInteractive({ cursor: "pointer" })
+      .setDepth(1);
+
+    this.playerVermelho = this.add
+      .image(600, 250, "playvermelho")
+      .setScale(0.35)
+      .setInteractive({ cursor: "pointer" })
+      .setDepth(1);
+
+    // Animação de subida e descida leve para os personagens (fora de sincronia)
+    this.tweens.add({
+      targets: this.playerRoxo,
+      y: "+=10",
+      duration: 1200,
+      ease: "Sine.easeInOut",
+      yoyo: true,
       repeat: -1,
     });
 
-    this.add
-      .image(400, 225, "start")
-      .setInteractive()
-      .on("pointerdown", () => {
-        this.scene.start("scene0");
-      });
+    this.tweens.add({
+      targets: this.playerVermelho,
+      y: "+=10",
+      duration: 1400,
+      ease: "Sine.easeInOut",
+      yoyo: true,
+      repeat: -1,
+      delay: 300,
+    });
 
-    this.gargantuac = this.add
-      .sprite(200, 200, "gargantuac")
-      .play("gargantuac-idle")
-      .setScale(1.5);
+    // Click no player roxo abre scene1
+    this.playerRoxo.on("pointerdown", () => {
+      this.scene.start("scene1");
+    });
+
+    // Click no player vermelho abre scene0
+    this.playerVermelho.on("pointerdown", () => {
+      this.scene.start("scene0");
+    });
   }
 }
 
