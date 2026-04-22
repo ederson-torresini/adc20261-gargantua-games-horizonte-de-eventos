@@ -84,6 +84,28 @@ class start extends Phaser.Scene {
     this.playerVermelho.on("pointerdown", () => {
       this.scene.start("scene0");
     });
+
+    
+  }
+
+  update() {
+    
+    const pad =
+      this.input.gamepad && this.input.gamepad.total > 0
+        ? this.input.gamepad.getPad(0)
+        : null;
+    let horizontal = 0;
+    let jumpPressed = false;
+
+    if (pad && pad.axes.length > 0) {
+      horizontal = pad.axes[0].getValue();
+      jumpPressed = !!pad.X;
+    }
+  
+
+    if (jumpPressed) {
+      this.scene.start("scene0");
+    }
   }
 }
 
