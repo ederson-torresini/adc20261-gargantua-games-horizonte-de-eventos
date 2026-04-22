@@ -7,6 +7,8 @@ class scene0 extends Phaser.Scene {
     this.doubleJump = false;
     this.score = 0;
     this.scoreText;
+    this.fase3 = false;
+    this.fase5 = false;
     this.jetPack = false;
     this.energy = true;
     this.keys = null;
@@ -80,7 +82,7 @@ class scene0 extends Phaser.Scene {
       frameHeight: 64,
     });
 
-    this.load.spritesheet("bag", "jetpack.png", {
+    this.load.spritesheet("jetBag", "jetpack.png", {
       frameWidth: 20,
       frameHeight: 23,
     });
@@ -213,14 +215,14 @@ class scene0 extends Phaser.Scene {
 
     this.anims.create({
       key: "jumpJP",
-      frames: this.anims.generateFrameNumbers("player", { start: 9, end: 13 }),
+      frames: this.anims.generateFrameNumbers("player", { start: 10, end: 13 }),
       frameRate: 6,
       repeat: -1,
     });
 
     this.anims.create({
       key: "jumpLJP",
-      frames: this.anims.generateFrameNumbers("player", { start: 4, end: 8 }),
+      frames: this.anims.generateFrameNumbers("player", { start: 5, end: 8 }),
       frameRate: 6,
       repeat: -1,
     });
@@ -278,8 +280,8 @@ class scene0 extends Phaser.Scene {
     });
 
     this.anims.create({
-      key: "bag-idle",
-      frames: this.anims.generateFrameNumbers("bag", {
+      key: "jetBag-idle",
+      frames: this.anims.generateFrameNumbers("jetBag", {
         start: 0,
         end: 2,
       }),
@@ -420,59 +422,48 @@ class scene0 extends Phaser.Scene {
       .body.setSize(57, 38);
     //*BOTAR UMAS 15 CARGAS NO JETPACK*
 
-    this.lights
-      .addLight(430, 880, 40)
-      .setIntensity(1.5)
-      .setScrollFactor(0.95, 1)
-      .setColor(0xff0000);
-
-    this.lights
-      .addLight(92, 1040, 40)
-      .setIntensity(1.5)
-      .setScrollFactor(0.95, 1)
-      .setColor(0xff0000);
-
+    
     this.cai = this.physics.add.sprite(500, 1160, "cai");
     this.cai
-      .setImmovable(true)
+    .setImmovable(true)
       .setPipeline("Light2D")
       .setSize(1000, 8).body.allowGravity = false;
 
-    //porta N da fase N
-    this.door11 = this.physics.add.sprite(92, 1056, "door", 0);
-    this.door11
+      //porta N da fase N
+      this.door11 = this.physics.add.sprite(92, 1056, "door", 0);
+      this.door11
       .setScrollFactor(0.95, 1)
       .setPipeline("Light2D").body.allowGravity = false;
 
-    this.door21 = this.physics.add.sprite(430, 897, "door", 0);
+      this.door21 = this.physics.add.sprite(430, 897, "door", 0);
     this.door21
-      .setScrollFactor(0.95, 1)
-      .setPipeline("Light2D").body.allowGravity = false;
+    .setScrollFactor(0.95, 1)
+    .setPipeline("Light2D").body.allowGravity = false;
 
     this.door12 = this.physics.add.sprite(108, 1825, "door", 7);
     this.door12
-      .setScrollFactor(0.95, 1)
-      .setPipeline("Light2D").body.allowGravity = false;
-
+    .setScrollFactor(0.95, 1)
+    .setPipeline("Light2D").body.allowGravity = false;
+    
     this.door22 = this.physics.add.sprite(1185, 1825, "door", 0);
     this.door22
-      .setScrollFactor(0.95, 1)
-      .setPipeline("Light2D").body.allowGravity = false;
-
+    .setScrollFactor(0.95, 1)
+    .setPipeline("Light2D").body.allowGravity = false;
+    
     this.door13 = this.physics.add.sprite(69, 2496, "door", 7);
     this.door13
-      .setScrollFactor(0.95, 1)
-      .setPipeline("Light2D").body.allowGravity = false;
-
+    .setScrollFactor(0.95, 1)
+    .setPipeline("Light2D").body.allowGravity = false;
+    
     this.door23 = this.physics.add.sprite(1224, 2432, "door", 0);
     this.door23
-      .setScrollFactor(0.95, 1)
-      .setPipeline("Light2D").body.allowGravity = false;
-
+    .setScrollFactor(0.95, 1)
+    .setPipeline("Light2D").body.allowGravity = false;
+    
     this.door14 = this.physics.add.sprite(92, 288, "door", 7);
     this.door14
-      .setScrollFactor(0.95, 1)
-      .setPipeline("Light2D").body.allowGravity = false;
+    .setScrollFactor(0.95, 1)
+    .setPipeline("Light2D").body.allowGravity = false;
 
     this.door24 = this.physics.add.sprite(1152, 288, "door", 0);
     this.door24
@@ -481,165 +472,177 @@ class scene0 extends Phaser.Scene {
 
     this.door15 = this.physics.add.sprite(92, 3520, "door", 7);
     this.door15
-      .setScrollFactor(0.95, 1)
-      .setPipeline("Light2D").body.allowGravity = false;
-
+    .setScrollFactor(0.95, 1)
+    .setPipeline("Light2D").body.allowGravity = false;
+    
     this.door25 = this.physics.add.sprite(1152, 3520, "door", 0);
     this.door25
-      .setScrollFactor(0.95, 1)
+    .setScrollFactor(0.95, 1)
       .setPipeline("Light2D").body.allowGravity = false;
-
-    this.plataformG = this.physics.add.sprite(431, 930, "plataformG");
-    this.plataformG
+      
+      this.plataformG = this.physics.add.sprite(431, 930, "plataformG");
+      this.plataformG
       .setImmovable(true)
       .setScrollFactor(0.99, 1)
       .setPipeline("Light2D").body.allowGravity = false;
-
+      
     this.plataformG2 = this.physics.add.sprite(1059, 1666, "plataformG");
     this.plataformG2
-      .setImmovable(true)
+    .setImmovable(true)
       .setScrollFactor(0.99, 1)
       .setPipeline("Light2D").body.allowGravity = false;
-
-    //cria plataforma 1 e defne como imovível e de velocidade x = 100 além de fazê-la ignorar a gravidade
-    this.plataform1 = this.physics.add.sprite(680, 1094, "plataform");
-    this.plataform1
+      
+      //cria plataforma 1 e defne como imovível e de velocidade x = 100 além de fazê-la ignorar a gravidade
+      this.plataform1 = this.physics.add.sprite(680, 1094, "plataform");
+      this.plataform1
       .setImmovable(true)
       .setVelocityX(-100)
       .setPipeline("Light2D").body.allowGravity = false;
-
-    setInterval(() => {
-      this.plataform1.setVelocityX(this.plataform1.body.velocity.x * -1);
-    }, 3000);
-
-    //num intervalo de 3400ms, inverte a velocidade da plataforma 1
-
-    this.plataform2 = this.physics.add.sprite(1140, 980, "plataform");
-    this.plataform2
+      
+      setInterval(() => {
+        this.plataform1.setVelocityX(this.plataform1.body.velocity.x * -1);
+      }, 3000);
+      
+      //num intervalo de 3400ms, inverte a velocidade da plataforma 1
+      
+      this.plataform2 = this.physics.add.sprite(1140, 980, "plataform");
+      this.plataform2
       .setImmovable(true)
       .setScrollFactor(0.99, 1)
       .setPipeline("Light2D").body.allowGravity = false;
 
-    this.plataform3 = this.physics.add.sprite(1050, 935, "plataform");
-    this.plataform3
+      this.plataform3 = this.physics.add.sprite(1050, 935, "plataform");
+      this.plataform3
       .setImmovable(true)
       .setVelocityX(-150)
       .setPipeline("Light2D").body.allowGravity = false;
-
-    setInterval(() => {
+      
+      setInterval(() => {
       this.plataform3.setVelocityX(this.plataform3.body.velocity.x * -1);
     }, 3490);
-
+    
     this.plataform4 = this.physics.add.sprite(855, 1796, "plataform");
     this.plataform4
-      .setImmovable(true)
-      .setVelocityX(120)
-      .setPipeline("Light2D").body.allowGravity = false;
-
+    .setImmovable(true)
+    .setVelocityX(120)
+    .setPipeline("Light2D").body.allowGravity = false;
+    
     setInterval(() => {
       this.plataform4.setVelocityX(this.plataform4.body.velocity.x * -1);
     }, 1500);
 
     this.plataform5 = this.physics.add.sprite(802, 1764, "plataform");
     this.plataform5
-      .setImmovable(true)
-      .setVelocityX(-150)
-      .setPipeline("Light2D").body.allowGravity = false;
+    .setImmovable(true)
+    .setVelocityX(-150)
+    .setPipeline("Light2D").body.allowGravity = false;
     setInterval(() => {
       this.plataform5.setVelocityX(this.plataform5.body.velocity.x * -1);
     }, 1000);
-
+    
     this.plataform6 = this.physics.add.sprite(640, 1732, "plataform");
     this.plataform6
       .setImmovable(true)
       .setPipeline("Light2D")
       .setVelocityX(-150).body.allowGravity = false;
-    setInterval(() => {
-      this.plataform6.setVelocityX(this.plataform6.body.velocity.x * -1);
+      setInterval(() => {
+        this.plataform6.setVelocityX(this.plataform6.body.velocity.x * -1);
     }, 2300);
 
     this.plataform7 = this.physics.add.sprite(160, 1710, "plataform");
     this.plataform7
-      .setImmovable(true)
-      .setScrollFactor(0.99, 1)
-      .setPipeline("Light2D").body.allowGravity = false;
+    .setImmovable(true)
+    .setScrollFactor(0.99, 1)
+    .setPipeline("Light2D").body.allowGravity = false;
 
     this.plataform8 = this.physics.add.sprite(560, 1640, "plataform");
     this.plataform8
-      .setImmovable(true)
-      .setScrollFactor(0.99, 1)
-      .setPipeline("Light2D")
-      .setVelocityX(-150).body.allowGravity = false;
+    .setImmovable(true)
+    .setScrollFactor(0.99, 1)
+    .setPipeline("Light2D")
+    .setVelocityX(-150).body.allowGravity = false;
     setInterval(() => {
       this.plataform8.setVelocityX(this.plataform8.body.velocity.x * -1);
     }, 2400);
 
     this.plataform9 = this.physics.add.sprite(625, 1640, "plataform");
     this.plataform9
-      .setImmovable(true)
-      .setVelocityX(150)
-      .setPipeline("Light2D").body.allowGravity = false;
+    .setImmovable(true)
+    .setVelocityX(150)
+    .setPipeline("Light2D").body.allowGravity = false;
     setInterval(() => {
       this.plataform9.setVelocityX(this.plataform9.body.velocity.x * -1);
     }, 2400);
-
+    
     this.plataform10 = this.physics.add.sprite(280, 3365, "plataform");
     this.plataform10
       .setImmovable(true)
       .setScrollFactor(0.99, 1)
       .setPipeline("Light2D").body.allowGravity = false;
-
-    this.plataform11 = this.physics.add.sprite(115, 3420, "plataform");
-    this.plataform11
+      
+      this.plataform11 = this.physics.add.sprite(115, 3420, "plataform");
+      this.plataform11
       .setImmovable(true)
       .setScrollFactor(0.99, 1)
       .setPipeline("Light2D").body.allowGravity = false;
-
-    this.plataform12 = this.physics.add.sprite(425, 3425, "plataform");
-    this.plataform12
+      
+      this.plataform12 = this.physics.add.sprite(425, 3425, "plataform");
+      this.plataform12
       .setImmovable(true)
       .setScrollFactor(0.99, 1)
       .setPipeline("Light2D").body.allowGravity = false;
-
-    this.plataform13 = this.physics.add.sprite(769, 3495, "plataform");
-    this.plataform13
+      
+      this.plataform13 = this.physics.add.sprite(769, 3495, "plataform");
+      this.plataform13
       .setImmovable(true)
       .setScrollFactor(0.99, 1)
       .setPipeline("Light2D").body.allowGravity = false;
-
-    this.plataform14 = this.physics.add.sprite(841, 3400, "plataform");
+      
+      this.plataform14 = this.physics.add.sprite(841, 3400, "plataform");
     this.plataform14
-      .setImmovable(true)
+    .setImmovable(true)
       .setScrollFactor(0.99, 1)
       .setPipeline("Light2D").body.allowGravity = false;
 
-    this.plataform15 = this.physics.add.sprite(955, 3375, "plataform");
-    this.plataform15
+      this.plataform15 = this.physics.add.sprite(955, 3375, "plataform");
+      this.plataform15
       .setImmovable(true)
       .setScrollFactor(0.99, 1)
       .setPipeline("Light2D").body.allowGravity = false;
-
+      
     this.plataform16 = this.physics.add.sprite(1230, 3375, "plataform");
     this.plataform16
-      .setImmovable(true)
+    .setImmovable(true)
       .setScrollFactor(0.99, 1)
       .setPipeline("Light2D").body.allowGravity = false;
-
-    this.invisible = this.physics.add.sprite(421, 3396, "invisible");
-    this.invisible
+      
+      this.invisible = this.physics.add.sprite(421, 3396, "invisible");
+      this.invisible
       .setAlpha(0)
       .setImmovable(true)
       .setPipeline("Light2D").body.allowGravity = false;
 
-    //LIGAR O2 E MIN DE LUZ EM 422, 3396
-
-    this.lights.enable().setAmbientColor(0xe0f7ff);
-
-    this.player = this.physics.add.sprite(92, 1066, "player", 3); //fase1:92, 1066//fase2:108, 1836/1138, 1836//fase3: 69, 2496/1256,2356//fase4: 92,300//fase5:92, 3532//
-    this.player.body.setSize(20, 40);
+      //LIGAR O2 E MIN DE LUZ EM 422, 3396
+      
+      this.lights.enable().setAmbientColor(0xe0f7ff);
+      
+    this.light21 = this.lights
+        .addLight(this.door21.x, 880, 40)
+        .setIntensity(1.5)
+        .setScrollFactor(0.95, 1)
+        .setColor(0xff0000);
+  
+      this.lights
+        .addLight(this.door11.x, 1040, 40)
+        .setIntensity(1.5)
+        .setScrollFactor(0.95, 1)
+        .setColor(0xff0000);
+      
+      this.player = this.physics.add.sprite(92, 1066, "player", 3); //fase1:92, 1066/445, 911//fase2:108, 1836/1138, 1836//fase3: 69, 2496/1256,2356//fase4: 92,300//fase5:92, 3532//
+      this.player.body.setSize(20, 40);
     this.cameras.main.startFollow(this.player, false, 1, 0).zoom = 1.2;
     this.cameras.main.scrollY =
-      this.player.y - this.cameras.main.height / 2 - 120; // Ajuste para começar mais para cima (100 pixels acima do centro do jogador)
+    this.player.y - this.cameras.main.height / 2 - 120; // Ajuste para começar mais para cima (100 pixels acima do centro do jogador)
     this.player.anims.play("idleRight", true).setPipeline("Light2D");
     this.doubleJump = false;
 
@@ -650,8 +653,10 @@ class scene0 extends Phaser.Scene {
       null,
       this,
     );
+
     this.physics.add.collider(this.engrenagens, this.plataform2);
     this.physics.add.collider(this.engrenagens, this.plataformG2);
+
 
     this.physics.add.collider(this.player, this.layerPiso);
     this.physics.add.collider(this.player, this.plataformG);
@@ -694,9 +699,8 @@ class scene0 extends Phaser.Scene {
     });
 
     this.physics.add.overlap(this.player, this.door21, () => {
-      if (this.score === 1) {
         this.door21.anims.play("open-door", true);
-        this.lights
+        this.light22 = this.lights
           .addLight(this.door22.x, 1802, 35)
           .setIntensity(0.5)
           .setScrollFactor(0.95, 1)
@@ -709,35 +713,48 @@ class scene0 extends Phaser.Scene {
             this.door12.anims.play("close-door", true);
             this.door12.once("animationcomplete", (anim, frame) => {
               if (anim.key === "close-door") {
-                this.lights
+                this.light12 = this.lights
                   .addLight(this.door12.x, 1802, 35)
                   .setIntensity(0.5)
                   .setScrollFactor(0.95, 1)
                   .setColor(0xff0000);
 
-                this.bag = this.physics.add.sprite(598, 1584, "bag");
-                this.bag
+                this.jetBag = this.physics.add.sprite(595, 1584, "jetBag");
+                this.jetBag
                   .setScrollFactor(0.9, 1)
-                  .setPipeline("Light2D").body.allowGravity = false;
+                  .setPipeline("Light2D")
+                  .setVelocityY(100)
+                  .body.allowGravity = false;
+                this.physics.add.collider(this.jetBag, this.layerPiso);
+
+                this.physics.add.overlap(this.player, this.jetBag, this.collectBag, null, this);
               }
             });
           }
         });
-      }
+      
     });
 
     this.physics.add.overlap(this.player, this.door22, () => {
+      if (this.jetPack) {
+        this.lights
+          .addLight(this.door22.x, 1802, 35)
+          .setIntensity(0.5)
+          .setScrollFactor(0.95, 1)
+          .setColor(0x90EE90);
+        
       this.door22.anims.play("open-door", true);
       this.door22.once("animationcomplete", (anim, frame) => {
         if (anim.key === "open-door") {
           this.player.setPosition(69, 2508).setVelocity(0, 0);
           this.cameras.main.scrollY =
             this.player.y - this.cameras.main.height / 3.5 - 120;
-          this.jetPack = true;
+          this.fase3 = true;
           this.door13.anims.play("close-door", true);
           this.door13.once("animationcomplete", (anim, frame) => {
             if (anim.key === "close-door") {
-              this.lights
+              this.light13 = this.lights
+                
                 .addLight(this.door13.x, 2473, 35)
                 .setIntensity(0.5)
                 .setScrollFactor(0.95, 1)
@@ -746,20 +763,23 @@ class scene0 extends Phaser.Scene {
           });
         }
       });
+    }
     });
 
     this.physics.add.overlap(this.player, this.door23, () => {
       this.door23.anims.play("open-door", true);
       this.door23.once("animationcomplete", (anim, frame) => {
         if (anim.key === "open-door") {
-          this.player.setPosition(92, 300).setVelocity(0, 0);
+          this.player.setPosition(92, 300).setVelocity(0, 0).setAngle(0);
           this.cameras.main.scrollY =
             this.player.y - this.cameras.main.height / 2 - 120;
-          this.jetPack = false;
+          this.fase3 = false;
           this.door14.anims.play("close-door", true);
           this.door14.once("animationcomplete", (anim, frame) => {
             if (anim.key === "close-door") {
-              this.lights
+
+              this.light14 = this.lights
+                
                 .addLight(this.door14.x, 265, 35)
                 .setIntensity(0.5)
                 .setScrollFactor(0.95, 1)
@@ -781,7 +801,7 @@ class scene0 extends Phaser.Scene {
           this.door15.anims.play("close-door", true);
           this.door15.once("animationcomplete", (anim, frame) => {
             if (anim.key === "close-door") {
-              this.lights
+              this.light15 = this.lights
                 .addLight(this.door15.x, 3497, 35) //ANA VITORIA
                 .setIntensity(0.5)
                 .setScrollFactor(0.95, 1)
@@ -823,8 +843,18 @@ class scene0 extends Phaser.Scene {
       space: Phaser.Input.Keyboard.KeyCodes.SPACE,
     });
   }
-
+  
   update() {
+    
+    const movingHorizontally = Math.abs(this.player.body.velocity.x) > 1;
+    const onGround =
+      this.player.body.blocked.down || this.player.body.touching.down;
+    if (movingHorizontally && onGround) {
+      if (!this.passos.isPlaying) this.passos.play();
+    } else if (this.passos.isPlaying) {
+      this.passos.stop();
+    }
+
     const keyboard = this.keys;
     const pad =
       this.input.gamepad && this.input.gamepad.total > 0
@@ -873,7 +903,7 @@ class scene0 extends Phaser.Scene {
       this.player.setVelocityX(0);
     }
 
-    if (this.jetPack === false) {
+    if (this.fase3 === false) {
       this.physics.world.gravity.y = 900;
 
       if (this.player.body.blocked.down) {
@@ -892,21 +922,25 @@ class scene0 extends Phaser.Scene {
         }
       }
     } else {
+
       this.physics.world.gravity.y = 50;
+
       if (jumpPressed) {
         this.player.setVelocityY(-70);
+
         if (this.direction === true) {
-          this.player.setFrame(10);
+          this.player.setFrame("10");
         } else if (this.direction === false) {
-          this.player.setFrame(5);
+          this.player.setFrame("5");
         }
+        
       } else if (!jumpPressed && this.player.body.velocity.y != 0) {
         if (this.direction === true) {
           this.player.anims.play("idleRightJP", true);
         } else if (this.direction === false) {
           this.player.anims.play("idleLeftJP", true);
         }
-      }
+      } 
 
       if (
         this.player.body.velocity.y != 0 &&
@@ -926,22 +960,20 @@ class scene0 extends Phaser.Scene {
       }
     }
 
-    if (this.jetPack === false) {
+    if (this.jetPack === false && this.fase3 === false) {
       if (this.player.body.velocity.y < 0 && this.direction === true) {
         this.player.anims.play("jump", true);
       } else if (this.player.body.velocity.y < 0 && this.direction === false) {
         this.player.anims.play("jumpL", true);
       }
+    }else if (this.jetPack === true && this.fase3 === false) {
+        if (this.player.body.velocity.y < 0 && this.direction === true) {
+          this.player.anims.play("jumpJP", true);
+        } else if (this.player.body.velocity.y < 0 && this.direction === false) {
+          this.player.anims.play("jumpLJP", true);
+      }
     }
 
-    const movingHorizontally = Math.abs(this.player.body.velocity.x) > 1;
-    const onGround =
-      this.player.body.blocked.down || this.player.body.touching.down;
-    if (movingHorizontally && onGround) {
-      if (!this.passos.isPlaying) this.passos.play();
-    } else if (this.passos.isPlaying) {
-      this.passos.stop();
-    }
 
     if (this.jetPack === false) {
       if (
@@ -983,6 +1015,12 @@ class scene0 extends Phaser.Scene {
 
     this.score += 1;
     this.scoreText.setText("Engrenagens: " + this.score + "/5");
+  }
+  collectBag(player, jetBag) {
+    jetBag.disableBody(true, true);
+
+    this.jetPack = true;
+
   }
 }
 
