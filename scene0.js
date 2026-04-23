@@ -695,6 +695,7 @@ class scene0 extends Phaser.Scene {
 
     this.physics.add.overlap(this.player, this.boxes, () => {
       this.player.setPosition(82, 2508).setVelocity(0, 0);
+      this.cargaJp = 15;
     });
 
     this.physics.add.overlap(this.player, this.cai, () => {
@@ -928,10 +929,10 @@ class scene0 extends Phaser.Scene {
 
       this.physics.world.gravity.y = 50;
 
-      if (jumpPressed && (this.player.body.blocked.down || this.doubleJump) && this.cargaJp > 0) {
+      if (jumpPressed && (this.player.body.blocked.down || (this.doubleJump && this.cargaJp > 0))) {
         this.player.setVelocityY(-70);
         this.doubleJump = false;
-        this.cargaJp = this.cargaJp - 1;
+        this.cargaJp -= 1;
 
         if (this.direction === true) {
           this.player.setFrame("10");
