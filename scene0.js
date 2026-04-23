@@ -12,7 +12,7 @@ class scene0 extends Phaser.Scene {
     this.jetPack = false;
     this.energy = true;
     this.keys = null;
-    this.cargaJp = 13
+    this.cargaJp = 7;
     this.cargaJpText;
 
   }
@@ -34,6 +34,11 @@ class scene0 extends Phaser.Scene {
       frameHeight: 320,
     });
 
+    this.load.spritesheet("iaBox", "iaBox.png", {
+      frameWidth: 322,
+      frameHeight: 51,
+    })
+
     this.load.tilemapTiledJSON("todasfases", "mapasv4/todasfases.json");
 
     this.load.image("remasterized", "assets-usados/remasterized.png");
@@ -47,7 +52,7 @@ class scene0 extends Phaser.Scene {
       frameHeight: 64,
     });
 
-    this.load.spritesheet("invisible", "invisibleSprite.png", {
+    this.load.spritesheet("invisible", "InvisibleSprite.png", {
       frameWidth: 16,
       frameHeight: 16,
     });
@@ -314,7 +319,7 @@ class scene0 extends Phaser.Scene {
     });
 
     this.scoreText = this.add
-      .text(600, 80, "Engrenagens: " + this.score + "/5", {
+      .text(100, 80, "Engrenagens: " + this.score + "/5", {
         fontSize: "32px",
         fill: "#000",
       })
@@ -342,6 +347,16 @@ class scene0 extends Phaser.Scene {
       .create(531, 3340, "engrenagem")
       .setScale(0.3)
       .anims.play("engrenagem-idle", true);
+    
+    this.anims.create({
+      key: "iaSpeak",
+      frames: this.anims.generateFrameNumbers("iaBox", {
+        start: 0,
+        end: 1,
+      }),
+      frameRate: 4,
+      repeat: -1,
+    });
 
     this.boxes = this.physics.add.group({
       allowGravity: false,
@@ -622,7 +637,7 @@ class scene0 extends Phaser.Scene {
       
       this.invisible = this.physics.add.sprite(421, 3396, "invisible");
       this.invisible
-      .setAlpha(0)
+      //.setAlpha(0)
       .setImmovable(true)
       .setPipeline("Light2D").body.allowGravity = false;
 
@@ -641,6 +656,14 @@ class scene0 extends Phaser.Scene {
         .setIntensity(1.5)
         .setScrollFactor(0.95, 1)
         .setColor(0xff0000);
+
+    this.iaBox = this.physics.add.sprite(687, 33, "iaBox")
+    this.iaBox
+      .setOrigin(0, 0)
+      .setScrollFactor(0)
+      .setPipeline("Light2D")
+      .anims.play("iaSpeak")
+      .body.allowGravity = false;
       
       this.player = this.physics.add.sprite(92, 1066, "player", 3); //fase1:92, 1066/445, 911//fase2:108, 1836/1138, 1836//fase3: 69, 2496/1256,2356//fase4: 92,300//fase5:92, 3532//
       this.player.body.setSize(20, 40);
@@ -696,7 +719,8 @@ class scene0 extends Phaser.Scene {
 
     this.physics.add.overlap(this.player, this.boxes, () => {
       this.player.setPosition(82, 2508).setVelocity(0, 0);
-      this.cargaJp = 13;
+      this.cargaJp = 7;
+      this.cargaJpText.setText("Cargas: " + this.cargaJp);
     });
 
     this.physics.add.overlap(this.player, this.cai, () => {
@@ -779,6 +803,7 @@ class scene0 extends Phaser.Scene {
           this.cameras.main.scrollY =
             this.player.y - this.cameras.main.height / 2 - 120;
           this.fase3 = false;
+          this.cargaJp = 0;
           this.door14.anims.play("close-door", true);
           this.door14.once("animationcomplete", (anim, frame) => {
             if (anim.key === "close-door") {
@@ -819,6 +844,13 @@ class scene0 extends Phaser.Scene {
 
     this.layerPiso.setCollisionByProperty({ collides: true });
 
+    this.cargaJpText = this.add
+        .text(270, 50, "Cargas: " + this.cargaJp, {
+          fontSize: "32px",
+          fill: "#ffffff00",
+        })
+        .setScrollFactor(0);
+
     // Texto de posição do player atualizado a cada segundo
     this.positionText = this.add
       .text(100, 50, "X: 0 Y: 0", {
@@ -855,12 +887,10 @@ class scene0 extends Phaser.Scene {
     
     if (this.fase3) {
 
-      this.cargaJpText = this.add
-        .text(600, 50, "Cargas: " + this.cargaJp, {
-          fontSize: "32px",
-          fill: "#000",
-        })
-        .setScrollFactor(0);
+      this.cargaJpText
+        .setFill('#000000')
+    } else if(this.cargaJp === 0){
+      this.cargaJpText.setText("Carga: Sem Carga")
     }
 
     const movingHorizontally = Math.abs(this.player.body.velocity.x) > 1;
@@ -946,8 +976,10 @@ class scene0 extends Phaser.Scene {
       if (jumpPressed && (this.player.body.blocked.down || (this.doubleJump && this.cargaJp > 0))) {
         this.player.setVelocityY(-70);
         this.doubleJump = false;
-        this.cargaJp -= 1;
-        this.cargaJpText.setText("Cargas: " + this.cargaJp)
+        if (!this.player.body.blocked.down){
+          this.cargaJp -= 1;
+          this.cargaJpText.setText("Cargas: " + this.cargaJp)
+      }
 
         if (this.direction === true) {
           this.player.setFrame("10");
