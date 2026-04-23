@@ -12,7 +12,8 @@ class scene0 extends Phaser.Scene {
     this.jetPack = false;
     this.energy = true;
     this.keys = null;
-    this.cargaJp = 10;
+    this.cargaJp = 13
+    this.cargaJpText;
 
   }
 
@@ -695,7 +696,7 @@ class scene0 extends Phaser.Scene {
 
     this.physics.add.overlap(this.player, this.boxes, () => {
       this.player.setPosition(82, 2508).setVelocity(0, 0);
-      this.cargaJp = 15;
+      this.cargaJp = 13;
     });
 
     this.physics.add.overlap(this.player, this.cai, () => {
@@ -838,6 +839,8 @@ class scene0 extends Phaser.Scene {
       },
     });
 
+    
+
     this.keys = this.input.keyboard.addKeys({
       left: Phaser.Input.Keyboard.KeyCodes.A,
       right: Phaser.Input.Keyboard.KeyCodes.D,
@@ -850,6 +853,16 @@ class scene0 extends Phaser.Scene {
   
   update() {
     
+    if (this.fase3) {
+
+      this.cargaJpText = this.add
+        .text(600, 50, "Cargas: " + this.cargaJp, {
+          fontSize: "32px",
+          fill: "#000",
+        })
+        .setScrollFactor(0);
+    }
+
     const movingHorizontally = Math.abs(this.player.body.velocity.x) > 1;
     const onGround =
       this.player.body.blocked.down || this.player.body.touching.down;
@@ -927,12 +940,14 @@ class scene0 extends Phaser.Scene {
       }
     } else {
 
+
       this.physics.world.gravity.y = 50;
 
       if (jumpPressed && (this.player.body.blocked.down || (this.doubleJump && this.cargaJp > 0))) {
         this.player.setVelocityY(-70);
         this.doubleJump = false;
         this.cargaJp -= 1;
+        this.cargaJpText.setText("Cargas: " + this.cargaJp)
 
         if (this.direction === true) {
           this.player.setFrame("10");
