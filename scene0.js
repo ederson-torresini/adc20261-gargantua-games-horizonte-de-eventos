@@ -12,9 +12,12 @@ class scene0 extends Phaser.Scene {
     this.jetPack = false;
     this.energy = true;
     this.keys = null;
+    this.cargaJp = 10;
+
   }
 
   preload() {
+
     this.load.setPath("assets/");
 
     this.load.audio("passos", "walkamongus.mp3");
@@ -331,7 +334,7 @@ class scene0 extends Phaser.Scene {
       .setScale(0.3)
       .anims.play("engrenagem-idle", true);
     this.engrenagens
-      .create(610, 2383, "engrenagem")
+      .create(1209, 2604, "engrenagem")
       .setScale(0.3)
       .anims.play("engrenagem-idle", true);
     this.engrenagens
@@ -925,8 +928,10 @@ class scene0 extends Phaser.Scene {
 
       this.physics.world.gravity.y = 50;
 
-      if (jumpPressed) {
+      if (jumpPressed && (this.player.body.blocked.down || this.doubleJump) && this.cargaJp > 0) {
         this.player.setVelocityY(-70);
+        this.doubleJump = false;
+        this.cargaJp = this.cargaJp - 1;
 
         if (this.direction === true) {
           this.player.setFrame("10");
@@ -935,12 +940,14 @@ class scene0 extends Phaser.Scene {
         }
         
       } else if (!jumpPressed && this.player.body.velocity.y != 0) {
+        this.doubleJump = true;
+
         if (this.direction === true) {
           this.player.anims.play("idleRightJP", true);
         } else if (this.direction === false) {
           this.player.anims.play("idleLeftJP", true);
         }
-      } 
+      }
 
       if (
         this.player.body.velocity.y != 0 &&
