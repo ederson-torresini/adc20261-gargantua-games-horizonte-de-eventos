@@ -23,7 +23,7 @@ class scene1 extends Phaser.Scene {
     //});
 
     //preload do tilemap da faseortogonal1(troquei de arquivo pois na salaortogonal tem tilesets que não estão sendo usados e estava dando erro)
-    this.load.tilemapTiledJSON("faseortogonal", "mapasv4/faseortogonal1.json");
+    this.load.tilemapTiledJSON("faseortogonal", "mapasv4/faseortogonalatualizada.json");
 
     this.load.image("remasterized", "assets-usados/remasterized.png");
     this.load.image(
@@ -35,6 +35,7 @@ class scene1 extends Phaser.Scene {
     this.load.image("console_w", "assets-usados/console_w.png");
     this.load.image("tilesetx1", "assets-usados/tilesetx1.png");
     this.load.image("space1", "assets-usados/space1.png");
+    this.load.image("consolelongo", "assets-usados/consolelongo.png");
 
     //preload do sprite do player roxo
     this.load.spritesheet("playerroxo", "playerroxo.png", {
@@ -63,89 +64,71 @@ class scene1 extends Phaser.Scene {
 
     //adiciona o espaço ao fundo
     this.space = this.add.image("space1");
-    this.space.setOrigin(0, 0).setScrollFactor(0.1, 1);
+    this.space.setOrigin(0, 0)//.setScrollFactor(0.1, 1);
 
     //adiciona o tilemap da sala ortogonal
     this.tilemap = this.make.tilemap({ key: "faseortogonal" });
 
     //adiciona os tilesets utilizados
     this.tilesetRemasterized = this.tilemap.addTilesetImage("remasterized");
-    this.tilesetRemasterizedEnfeites = this.tilemap.addTilesetImage(
-      "remasterizedEnfeites",
-    );
+    this.tilesetRemasterizedEnfeites = this.tilemap.addTilesetImage("remasterizedEnfeites", );
     this.tilesetConsoles = this.tilemap.addTilesetImage("console_s");
     this.tilesetConsolew = this.tilemap.addTilesetImage("console_w");
     this.tilesetNewPiskel = this.tilemap.addTilesetImage("NewPiskel");
     this.tilesetx1 = this.tilemap.addTilesetImage("tilesetx1");
     this.tilesetSpace1 = this.tilemap.addTilesetImage("space1");
-
-    //adiciona o layer do piso utilizando o tilesetx1
+    
+    this.layerEspaco = this.tilemap
+      .createLayer("espaco", [this.tilesetSpace1])
+      .setPipeline("Light2D")
+     // .setScrollFactor(0.9, 1);
+   
     this.layerPiso = this.tilemap
       .createLayer("piso", [this.tilesetx1])
       .setPipeline("Light2D")
-      .setScrollFactor(0.9, 1);
+      //.setScrollFactor(0.9, 1);
 
     this.layerParede = this.tilemap
       .createLayer("parede", [this.tilesetx1, this.tilesetRemasterizedEnfeites])
       .setPipeline("Light2D")
-      .setScrollFactor(0.9, 1);
-
-    this.layerComp1 = this.tilemap
-      .createLayer("comp1", [this.tilesetConsolew])
-      .setPipeline("Light2D")
-      .setScrollFactor(0.9, 1);
-
-    this.layerComp2 = this.tilemap
-      .createLayer("comp2", [this.tilesetConsoles])
-      .setPipeline("Light2D")
-      .setScrollFactor(0.9, 1);
-    
-    this.layerComp3 = this.tilemap
-      .createLayer("comp3", [this.tilesetConsoles, this.tilesetConsolew])
-      .setPipeline("Light2D")
-      .setScrollFactor(0.9, 1);
-
-    this.layerEspaco = this.tilemap
-      .createLayer("espaco", [this.tilesetSpace1])
-      .setPipeline("Light2D")
-      .setScrollFactor(0.9, 1);
+     // .setScrollFactor(0.9, 1);
 
     this.layerNave = this.tilemap
       .createLayer("nave", [this.tilesetRemasterized])
       .setPipeline("Light2D")
-      .setScrollFactor(0.9, 1);
+      //.setScrollFactor(0.9, 1);
 
     this.layerEnfeites = this.tilemap
       .createLayer("enfeites", [this.tilesetRemasterizedEnfeites])
       .setPipeline("Light2D")
-      .setScrollFactor(0.9, 1);
-
-    this.layerConserto = this.tilemap
+      //.setScrollFactor(0.9, 1);
+      
+      this.layerConserto = this.tilemap
       .createLayer("conserto", [
         this.tilesetRemasterized,
         this.tilesetRemasterizedEnfeites,
         this.tilesetNewPiskel,])
       .setPipeline("Light2D")
-      .setScrollFactor(0.9, 1);
-
-    //animações
-    this.anims.create({
-      key: "idlecostas",
-      frames: this.anims.generateFrameNumbers("playerroxo", {
-        start: 0,
-        end: 1,
-      }),
-      frameRate: 2,
-      repeat: -1,
-    });
-
-    this.anims.create({
-      key: "idlefrente",
-      frames: this.anims.generateFrameNumbers("playerroxo", {
-        start: 4,
-        end: 5,
-      }),
-      frameRate: 2,
+      // .setScrollFactor(0.9, 1);
+      
+      //animações
+      this.anims.create({
+        key: "idlecostas",
+        frames: this.anims.generateFrameNumbers("playerroxo", {
+          start: 0,
+          end: 1,
+        }),
+        frameRate: 2,
+        repeat: -1,
+      });
+      
+      this.anims.create({
+        key: "idlefrente",
+        frames: this.anims.generateFrameNumbers("playerroxo", {
+          start: 4,
+          end: 5,
+        }),
+        frameRate: 2,
       repeat: -1,
     });
 
@@ -158,7 +141,7 @@ class scene1 extends Phaser.Scene {
       frameRate: 2,
       repeat: -1,
     });
-
+    
     this.anims.create({
       key: "idledireita",
       frames: this.anims.generateFrameNumbers("playerroxo", {
@@ -168,7 +151,7 @@ class scene1 extends Phaser.Scene {
       frameRate: 2,
       repeat: -1,
     });
-
+    
     this.anims.create({
       key: "andarcostas",
       frames: this.anims.generateFrameNumbers("playerroxo", {
@@ -178,7 +161,7 @@ class scene1 extends Phaser.Scene {
       frameRate: 11,
       repeat: -1,
     });
-
+    
     this.anims.create({
       key: "andarfrente",
       frames: this.anims.generateFrameNumbers("playerroxo", {
@@ -188,7 +171,7 @@ class scene1 extends Phaser.Scene {
       frameRate: 11,
       repeat: -1,
     });
-
+    
     this.anims.create({
       key: "andaresquerda",
       frames: this.anims.generateFrameNumbers("playerroxo", {
@@ -198,7 +181,7 @@ class scene1 extends Phaser.Scene {
       frameRate: 11,
       repeat: -1,
     });
-
+    
     this.anims.create({
       key: "andardireita",
       frames: this.anims.generateFrameNumbers("playerroxo", {
@@ -208,7 +191,7 @@ class scene1 extends Phaser.Scene {
       frameRate: 11,
       repeat: -1,
     });
-
+    
     //anim porta
     this.anims.create({
       key: "portaabrindo",
@@ -216,52 +199,53 @@ class scene1 extends Phaser.Scene {
       frameRate: 7,
       repeat: 0,
     });
-
+    
     this.anims.create({
       key: "portafechando",
       frames: this.anims.generateFrameNumbers("porta", { start: 7, end: 0 }),
       frameRate: 7,
       repeat: 0,
     });
-
+    
     //adicionar porta
-    this.porta = this.physics.add.sprite(645, 707, "porta", 0).setAngle(180).setScrollFactor(0.9, 1).setPipeline("Light2D").body.allowGravity = false;
-
-    //faz um grupo para os bigbosses
+    this.porta = this.physics.add.sprite(645, 707, "porta", 0).setAngle(180)//.setScrollFactor(0.9, 1).setPipeline("Light2D")
+    .body.allowGravity = false;
+    
+    /* //faz um grupo para os bigbosses
     this.bigboss = this.physics.add.group({
       allowGravity: false,
       immovable: true,
       pipeline: "Light2D",
-    });
-
-    //adiciona o bigboss como sprite físico para colidir com o player 
-    //COMPUTADOR 1, SPRITES DA DIREITA PRA ESQUERDA
-    this.bigboss.create(465, 275, "bigboss");
-    this.bigboss.create(452, 260, "bigboss").setSize(40, 10);
-    this.bigboss.create(385, 260, "bigboss").setSize(70, 20);
+      });
+      
+      //adiciona o bigboss como sprite físico para colidir com o player 
+      //COMPUTADOR 1, SPRITES DA DIREITA PRA ESQUERDA
+      this.bigboss.create(465, 275, "bigboss");
+      this.bigboss.create(452, 260, "bigboss").setSize(40, 10);
+      this.bigboss.create(385, 260, "bigboss").setSize(70, 20);
     this.bigboss.create(335, 267, "bigboss").setSize(25, 17);
-
+    
     //COMPUTADOR 2(ABAIXO DO 1), SPRITES DA DIREITA PRA ESQUERDA
     //-62 +160
     this.bigboss.create(403, 435, "bigboss");
     this.bigboss.create(390, 420, "bigboss").setSize(40, 10);
     this.bigboss.create(323, 420, "bigboss").setSize(70, 20);
     this.bigboss.create(273, 427, "bigboss").setSize(25, 17);
-
+    
     //COMPUTADOR 3(ABAIXO DO 2), SPRITES DA DIREITA PRA ESQUERDA
     //-33 -160
     this.bigboss.create(370, 595, "bigboss");
     this.bigboss.create(357, 580, "bigboss").setSize(40, 10);
     this.bigboss.create(290, 580, "bigboss").setSize(70, 20);
     this.bigboss.create(240, 587, "bigboss").setSize(25, 17);
-
+    
     //COMPUTADOR 4 (DIREITA DO 3), SPRITES DA DIREITA PRA ESQUERDA
     //+690 X A PARTIR DO 3
     this.bigboss.create(1060, 595, "bigboss");
     this.bigboss.create(1047, 580, "bigboss").setSize(40, 10);
     this.bigboss.create(980, 580, "bigboss").setSize(70, 20);
     this.bigboss.create(930, 587, "bigboss").setSize(25, 17);
-
+    
     //COMPUTADOR 5 (DIREITA DO 2), SPRITES DA DIREITA PRA ESQUERDA
     //+627 X A PARTIR DO 2
     this.bigboss.create(1030, 435, "bigboss");
@@ -275,50 +259,52 @@ class scene1 extends Phaser.Scene {
     this.bigboss.create(952, 260, "bigboss").setSize(40, 10);
     this.bigboss.create(885, 260, "bigboss").setSize(70, 20);
     this.bigboss.create(835, 267, "bigboss").setSize(25, 17);
-
+    
     //COMPUTADOR 7 (CENTRAL DE CIMA), SPRITES DA DIREITA PRA DIREITA
     this.bigboss.create(770, 203, "bigboss").setSize(30, 20);
     this.bigboss.create(650, 197, "bigboss").setSize(210, 17);
     this.bigboss.create(530,203, "bigboss").setSize(30, 20);
-
+    
     //COMPUTADOR 8 (CENTRAL), SPRITES DA DIREITA PRA DIREITA
     //+160 ABAIXO DO 7
     this.bigboss.create(800, 363, "bigboss").setSize(30, 20);
     this.bigboss.create(650, 357, "bigboss").setSize(270, 17);
     this.bigboss.create(500, 363, "bigboss").setSize(30, 20);
-
+    
     //COMPUTADOR 9 (CENTRAL DE BAIXO), SPRITES DA DIREITA PRA DIREITA
     //+352 Y ABAIXO DO 7 TBM
     this.bigboss.create(770, 555, "bigboss").setSize(30, 20);
     this.bigboss.create(650, 549, "bigboss").setSize(210, 17);
-    this.bigboss.create(530, 555, "bigboss").setSize(30, 20);
+    this.bigboss.create(530, 555, "bigboss").setSize(30, 20);*/
     
-
+    
     this.lights.enable().setAmbientColor(0xe0f7ff);
+    
+    this.consolelongo = this.physics.add.sprite(650, 350, "consolelongo")//.setScrollFactor(0, 1)
+    .setSize(323,25).setOffset(0, 27).body.allowGravity = false;
     
     //adiciona o player roxo
     this.playerroxo = this.physics.add.sprite(640, 290, "playerroxo");
     this.playerroxo.body.setSize(25, 10).setOffset(19, 52);
+    this.playerroxo.body.allowGravity = false;
     
     this.physics.add.collider(this.playerroxo, this.layerPiso);
     this.physics.add.collider(this.playerroxo, this.layerParede);
-    this.physics.add.collider(this.playerroxo, this.layerComp1);
-    this.physics.add.collider(this.playerroxo, this.layerComp2);
-    this.physics.add.collider(this.playerroxo, this.layerComp3);
-    this.physics.add.collider(this.playerroxo, this.bigboss);
+    // this.physics.add.collider(this.playerroxo, this.bigboss);
+    this.physics.add.collider(this.playerroxo, this.consolelongo);
     
-    this.playerroxo.body.allowGravity = false;
+    this.layerParede.setCollisionByProperty({ collides: true });
     
     //camera
-    this.cameras.main.startFollow(this.playerroxo, true, 0.1, 0.1);
-    this.cameras.main.setBounds(
+    this.cameras.main.startFollow(this.playerroxo, true, 0.1, 0.1).zoom = 1.5;
+    /*this.cameras.main.setBounds(
       0,
       0,
       this.tilemap.widthInPixels,
       this.tilemap.heightInPixels,
-    );
+    );*/
     
-    // Texto de posição do player atualizado a cada segundo
+    // Texto de posição do playerroxo atualizado a cada segundo
     this.positionText = this.add
     .text(100, 50, "X: 0 Y: 0", {
       fontSize: "18px",
@@ -326,7 +312,7 @@ class scene1 extends Phaser.Scene {
       backgroundColor: "rgba(0,0,0,0.5)",
       padding: { x: 6, y: 4 },
     })
-    .setScrollFactor(0);
+    //.setScrollFactor(0);
     
     this.time.addEvent({
       delay: 1000,
@@ -338,11 +324,6 @@ class scene1 extends Phaser.Scene {
       },
     });
 
-    //colllides true
-    //this.layerComp1.setCollisionByProperty({ collides: true });
-    //this.layerComp2.setCollisionByProperty({ collides: true });
-    //this.layerComp3.setCollisionByProperty({ collides: true });
-    this.layerParede.setCollisionByProperty({ collides: true });
 
     /*this.physics.world.setBounds(
       0,
