@@ -338,7 +338,7 @@ class scene0 extends Phaser.Scene {
       .create(1059, 1652, "engrenagem")
       .setScale(0.3)
       .anims.play("engrenagem-idle", true);
-    this.engrenagens
+    this.engrenagem3 = this.engrenagens
       .create(1209, 2604, "engrenagem")
       .setScale(0.3)
       .anims.play("engrenagem-idle", true);
