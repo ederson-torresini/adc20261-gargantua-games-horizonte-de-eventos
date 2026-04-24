@@ -1,3 +1,5 @@
+import scene1 from "./scene1.js";
+
 class scene0 extends Phaser.Scene {
   constructor() {
     super("scene0");
