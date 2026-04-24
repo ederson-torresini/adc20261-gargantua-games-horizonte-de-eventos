@@ -2,7 +2,6 @@ class scene0 extends Phaser.Scene {
   constructor() {
     super("scene0");
 
-    this.speed = 200;
     this.direction = true;
     this.doubleJump = false;
     this.score = 0;
