@@ -34,8 +34,8 @@ class scene1 extends Phaser.Scene {
       "assets-usados/remasterizedEnfeites.png",
     );
     this.load.image("NewPiskel", "assets-usados/NewPiskel.png");
-    this.load.image("console_s", "assets-usados/console_s.png");
-    this.load.image("console_w", "assets-usados/console_w.png");
+    this.load.image("consoles", "assets-usados/console_s.png");
+    this.load.image("consolew", "assets-usados/console_w.png");
     this.load.image("tilesetx1", "assets-usados/tilesetx1.png");
     this.load.image("space1", "assets-usados/space1.png");
     this.load.image("consolelongo", "assets-usados/consolelongo.png");
@@ -77,8 +77,8 @@ class scene1 extends Phaser.Scene {
     this.tilesetRemasterizedEnfeites = this.tilemap.addTilesetImage(
       "remasterizedEnfeites",
     );
-    this.tilesetConsoles = this.tilemap.addTilesetImage("console_s");
-    this.tilesetConsolew = this.tilemap.addTilesetImage("console_w");
+    this.tilesetConsoles = this.tilemap.addTilesetImage("consoles");
+    this.tilesetConsolew = this.tilemap.addTilesetImage("consolew");
     this.tilesetNewPiskel = this.tilemap.addTilesetImage("NewPiskel");
     this.tilesetx1 = this.tilemap.addTilesetImage("tilesetx1");
     this.tilesetSpace1 = this.tilemap.addTilesetImage("space1");
@@ -218,7 +218,7 @@ class scene1 extends Phaser.Scene {
     this.porta.setAngle(180);
     this.porta.body.allowGravity = false;
 
-    /* //faz um grupo para os bigbosses
+    //faz um grupo para os bigbosses
     this.bigboss = this.physics.add.group({
       allowGravity: false,
       immovable: true,
@@ -227,22 +227,22 @@ class scene1 extends Phaser.Scene {
       
       //adiciona o bigboss como sprite físico para colidir com o player 
       //COMPUTADOR 1, SPRITES DA DIREITA PRA ESQUERDA
-      this.bigboss.create(465, 275, "bigboss");
-      this.bigboss.create(452, 260, "bigboss").setSize(40, 10);
+      this.bigboss.create(465, 275, "bigboss");//bigboss 1
+     /* this.bigboss.create(452, 260, "bigboss").setSize(40, 10);
       this.bigboss.create(385, 260, "bigboss").setSize(70, 20);
-    this.bigboss.create(335, 267, "bigboss").setSize(25, 17);
+    this.bigboss.create(335, 267, "bigboss").setSize(25, 17);*/
     
     //COMPUTADOR 2(ABAIXO DO 1), SPRITES DA DIREITA PRA ESQUERDA
     //-62 +160
-    this.bigboss.create(403, 435, "bigboss");
-    this.bigboss.create(390, 420, "bigboss").setSize(40, 10);
+    this.bigboss.create(403, 435, "bigboss");//bigboss 2
+    /*this.bigboss.create(390, 420, "bigboss").setSize(40, 10);
     this.bigboss.create(323, 420, "bigboss").setSize(70, 20);
-    this.bigboss.create(273, 427, "bigboss").setSize(25, 17);
+    this.bigboss.create(273, 427, "bigboss").setSize(25, 17);*/
     
     //COMPUTADOR 3(ABAIXO DO 2), SPRITES DA DIREITA PRA ESQUERDA
     //-33 -160
-    this.bigboss.create(370, 595, "bigboss");
-    this.bigboss.create(357, 580, "bigboss").setSize(40, 10);
+    this.bigboss.create(370, 595, "bigboss");//bigboss 3
+    /*this.bigboss.create(357, 580, "bigboss").setSize(40, 10);
     this.bigboss.create(290, 580, "bigboss").setSize(70, 20);
     this.bigboss.create(240, 587, "bigboss").setSize(25, 17);
     
@@ -286,21 +286,64 @@ class scene1 extends Phaser.Scene {
 
     this.lights.enable().setAmbientColor(0xe0f7ff);
 
-    //adiciona console longo
+    
+    //console do meio
     this.consolelongo = this.physics.add.sprite(645, 350, "consolelongo");
     this.consolelongo.body.setSize(323, 25).setOffset(0, 27);
     this.consolelongo.body.allowGravity = false;
     this.consolelongo.setImmovable(true);
+    
+    this.consolemedio = this.physics.add.group({
+      allowGravity: false,
+      immovable: true,
+      pipeline: "Light2D",
+    });
 
-     this.consolemedio = this.physics.add.sprite(640, 190, "consolemedio");
-     this.consolemedio.body.setSize(255, 25).setOffset(0, 27);
-     this.consolemedio.body.allowGravity = false;
-     this.consolemedio.setImmovable(true);
+    //console de cima centro
+     this.consolemedio.create(640, 190, "consolemedio").setSize(255, 25).setOffset(0, 27);
+     
+    //console de baixo centro
+     this.consolemedio.create(640, 540, "consolemedio").setSize(255, 25).setOffset(0, 27);
+    
+    
+    //console_s da esquerda cima
+     this.consoles = this.physics.add.sprite(382, 258, "consoles");
+     this.consoles.body.setSize(102, 25).setOffset(0, 27);
+     this.consoles.body.allowGravity = false;
+     this.consoles.setImmovable(true);
 
-     this.consolemedio2 = this.physics.add.sprite(640, 540, "consolemedio");
-     this.consolemedio2.body.setSize(255, 25).setOffset(0, 27);
-     this.consolemedio2.body.allowGravity = false;
-     this.consolemedio2.setImmovable(true);
+    //console_w da esuqerda cima, com bigboss 1
+    this.consolew = this.physics.add.sprite(446, 268, "consolew");
+    this.consolew.body.setSize(47, 17).setOffset(15, 20);
+    this.consolew.body.allowGravity = false;
+    this.consolew.setImmovable(true);
+
+    //console_s da esquerda meio
+    this.consoles2 = this.physics.add.sprite(310, 418, "consoles");
+    this.consoles2.body.setSize(102, 25).setOffset(0, 27);
+    this.consoles2.body.allowGravity = false;
+    this.consoles2.setImmovable(true);
+
+    //console_w da esuqerda meio, com bigboss 2
+    this.consolew2 = this.physics.add.sprite(385, 429, "consolew");
+    this.consolew2.body.setSize(47, 17).setOffset(15, 20);
+    this.consolew2.body.allowGravity = false;
+    this.consolew2.setImmovable(true);
+
+    //console_s da esquerda baixo
+    this.consoles3 = this.physics.add.sprite(278, 580, "consoles");
+    this.consoles3.body.setSize(102, 25).setOffset(0, 27);
+    this.consoles3.body.allowGravity = false;
+    this.consoles3.setImmovable(true);
+
+    //console_w da esuqerda baixo, com bigboss 3
+    this.consolew3 = this.physics.add.sprite(350, 587, "consolew");
+    this.consolew3.body.setSize(47, 17).setOffset(15, 20);
+    this.consolew3.body.allowGravity = false;
+    this.consolew3.setImmovable(true);
+
+
+    
 
     //adiciona o player roxo
     this.playerroxo = this.physics.add.sprite(640, 290, "playerroxo");
@@ -310,9 +353,14 @@ class scene1 extends Phaser.Scene {
     this.physics.add.collider(this.playerroxo, this.layerPiso);
     this.physics.add.collider(this.playerroxo, this.layerParede);
     this.physics.add.collider(this.playerroxo, this.consolelongo);
-    this.physics.add.collider(this.playerroxo, this.consolemedio);
-    this.physics.add.collider(this.playerroxo, this.consolemedio2);
-    // this.physics.add.collider(this.playerroxo, this.bigboss);
+    this.physics.add.collider(this.playerroxo, this.consolemedio);;
+    this.physics.add.collider(this.playerroxo, this.consoles);
+    this.physics.add.collider(this.playerroxo, this.consoles2);
+    this.physics.add.collider(this.playerroxo, this.consoles3);
+    this.physics.add.collider(this.playerroxo, this.consolew);
+    this.physics.add.collider(this.playerroxo, this.consolew2);
+    this.physics.add.collider(this.playerroxo, this.consolew3);
+    this.physics.add.collider(this.playerroxo, this.bigboss);
 
     this.layerParede.setCollisionByProperty({ collides: true });
 
