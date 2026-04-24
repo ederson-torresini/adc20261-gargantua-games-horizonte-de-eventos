@@ -23,7 +23,10 @@ class scene1 extends Phaser.Scene {
     //});
 
     //preload do tilemap da faseortogonal1(troquei de arquivo pois na salaortogonal tem tilesets que não estão sendo usados e estava dando erro)
-    this.load.tilemapTiledJSON("faseortogonal", "mapasv4/faseortogonalatualizada.json");
+    this.load.tilemapTiledJSON(
+      "faseortogonal",
+      "mapasv4/faseortogonalatualizada.json",
+    );
 
     this.load.image("remasterized", "assets-usados/remasterized.png");
     this.load.image(
@@ -36,6 +39,7 @@ class scene1 extends Phaser.Scene {
     this.load.image("tilesetx1", "assets-usados/tilesetx1.png");
     this.load.image("space1", "assets-usados/space1.png");
     this.load.image("consolelongo", "assets-usados/consolelongo.png");
+    this.load.image("consolemedio", "assets-usados/consolemedio.png");
 
     //preload do sprite do player roxo
     this.load.spritesheet("playerroxo", "playerroxo.png", {
@@ -50,9 +54,8 @@ class scene1 extends Phaser.Scene {
 
     this.load.spritesheet("porta", "porta64x64.png", {
       frameWidth: 64,
-      frameHeight: 64
+      frameHeight: 64,
     });
-    
   }
 
   create() {
@@ -64,71 +67,74 @@ class scene1 extends Phaser.Scene {
 
     //adiciona o espaço ao fundo
     this.space = this.add.image("space1");
-    this.space.setOrigin(0, 0)//.setScrollFactor(0.1, 1);
+    this.space.setOrigin(0, 0); //.setScrollFactor(0.1, 1);
 
     //adiciona o tilemap da sala ortogonal
     this.tilemap = this.make.tilemap({ key: "faseortogonal" });
 
     //adiciona os tilesets utilizados
     this.tilesetRemasterized = this.tilemap.addTilesetImage("remasterized");
-    this.tilesetRemasterizedEnfeites = this.tilemap.addTilesetImage("remasterizedEnfeites", );
+    this.tilesetRemasterizedEnfeites = this.tilemap.addTilesetImage(
+      "remasterizedEnfeites",
+    );
     this.tilesetConsoles = this.tilemap.addTilesetImage("console_s");
     this.tilesetConsolew = this.tilemap.addTilesetImage("console_w");
     this.tilesetNewPiskel = this.tilemap.addTilesetImage("NewPiskel");
     this.tilesetx1 = this.tilemap.addTilesetImage("tilesetx1");
     this.tilesetSpace1 = this.tilemap.addTilesetImage("space1");
-    
+
     this.layerEspaco = this.tilemap
       .createLayer("espaco", [this.tilesetSpace1])
-      .setPipeline("Light2D")
-     // .setScrollFactor(0.9, 1);
-   
+      .setPipeline("Light2D");
+    // .setScrollFactor(0.9, 1);
+
     this.layerPiso = this.tilemap
       .createLayer("piso", [this.tilesetx1])
-      .setPipeline("Light2D")
-      //.setScrollFactor(0.9, 1);
+      .setPipeline("Light2D");
+    //.setScrollFactor(0.9, 1);
 
     this.layerParede = this.tilemap
       .createLayer("parede", [this.tilesetx1, this.tilesetRemasterizedEnfeites])
-      .setPipeline("Light2D")
-     // .setScrollFactor(0.9, 1);
+      .setPipeline("Light2D");
+    // .setScrollFactor(0.9, 1);
 
     this.layerNave = this.tilemap
       .createLayer("nave", [this.tilesetRemasterized])
-      .setPipeline("Light2D")
-      //.setScrollFactor(0.9, 1);
+      .setPipeline("Light2D");
+    //.setScrollFactor(0.9, 1);
 
     this.layerEnfeites = this.tilemap
       .createLayer("enfeites", [this.tilesetRemasterizedEnfeites])
-      .setPipeline("Light2D")
-      //.setScrollFactor(0.9, 1);
-      
-      this.layerConserto = this.tilemap
+      .setPipeline("Light2D");
+    //.setScrollFactor(0.9, 1);
+
+    this.layerConserto = this.tilemap
       .createLayer("conserto", [
         this.tilesetRemasterized,
         this.tilesetRemasterizedEnfeites,
-        this.tilesetNewPiskel,])
-      .setPipeline("Light2D")
-      // .setScrollFactor(0.9, 1);
-      
-      //animações
-      this.anims.create({
-        key: "idlecostas",
-        frames: this.anims.generateFrameNumbers("playerroxo", {
-          start: 0,
-          end: 1,
-        }),
-        frameRate: 2,
-        repeat: -1,
-      });
-      
-      this.anims.create({
-        key: "idlefrente",
-        frames: this.anims.generateFrameNumbers("playerroxo", {
-          start: 4,
-          end: 5,
-        }),
-        frameRate: 2,
+        this.tilesetNewPiskel,
+      ])
+      .setPipeline("Light2D");
+    // .setScrollFactor(0.9, 1);
+
+    //animações
+    this.anims.create({
+      key: "idlecostas",
+      frames: this.anims.generateFrameNumbers("playerroxo", {
+        start: 0,
+        end: 1,
+      }),
+      frameRate: 2,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "idlefrente",
+      frames: this.anims.generateFrameNumbers("playerroxo", {
+        start: 4,
+        end: 5,
+      }),
+      frameRate: 2,
       repeat: -1,
     });
 
@@ -141,7 +147,7 @@ class scene1 extends Phaser.Scene {
       frameRate: 2,
       repeat: -1,
     });
-    
+
     this.anims.create({
       key: "idledireita",
       frames: this.anims.generateFrameNumbers("playerroxo", {
@@ -151,7 +157,7 @@ class scene1 extends Phaser.Scene {
       frameRate: 2,
       repeat: -1,
     });
-    
+
     this.anims.create({
       key: "andarcostas",
       frames: this.anims.generateFrameNumbers("playerroxo", {
@@ -161,7 +167,7 @@ class scene1 extends Phaser.Scene {
       frameRate: 11,
       repeat: -1,
     });
-    
+
     this.anims.create({
       key: "andarfrente",
       frames: this.anims.generateFrameNumbers("playerroxo", {
@@ -171,7 +177,7 @@ class scene1 extends Phaser.Scene {
       frameRate: 11,
       repeat: -1,
     });
-    
+
     this.anims.create({
       key: "andaresquerda",
       frames: this.anims.generateFrameNumbers("playerroxo", {
@@ -181,7 +187,7 @@ class scene1 extends Phaser.Scene {
       frameRate: 11,
       repeat: -1,
     });
-    
+
     this.anims.create({
       key: "andardireita",
       frames: this.anims.generateFrameNumbers("playerroxo", {
@@ -191,7 +197,7 @@ class scene1 extends Phaser.Scene {
       frameRate: 11,
       repeat: -1,
     });
-    
+
     //anim porta
     this.anims.create({
       key: "portaabrindo",
@@ -199,18 +205,19 @@ class scene1 extends Phaser.Scene {
       frameRate: 7,
       repeat: 0,
     });
-    
+
     this.anims.create({
       key: "portafechando",
       frames: this.anims.generateFrameNumbers("porta", { start: 7, end: 0 }),
       frameRate: 7,
       repeat: 0,
     });
-    
+
     //adicionar porta
-    this.porta = this.physics.add.sprite(645, 707, "porta", 0).setAngle(180)//.setScrollFactor(0.9, 1).setPipeline("Light2D")
-    .body.allowGravity = false;
-    
+    this.porta = this.physics.add.sprite(645, 707, "porta", 0);
+    this.porta.setAngle(180);
+    this.porta.body.allowGravity = false;
+
     /* //faz um grupo para os bigbosses
     this.bigboss = this.physics.add.group({
       allowGravity: false,
@@ -276,25 +283,39 @@ class scene1 extends Phaser.Scene {
     this.bigboss.create(770, 555, "bigboss").setSize(30, 20);
     this.bigboss.create(650, 549, "bigboss").setSize(210, 17);
     this.bigboss.create(530, 555, "bigboss").setSize(30, 20);*/
-    
-    
+
     this.lights.enable().setAmbientColor(0xe0f7ff);
-    
-    this.consolelongo = this.physics.add.sprite(650, 350, "consolelongo")//.setScrollFactor(0, 1)
-    .setSize(323,25).setOffset(0, 27).body.allowGravity = false;
-    
+
+    //adiciona console longo
+    this.consolelongo = this.physics.add.sprite(645, 350, "consolelongo");
+    this.consolelongo.body.setSize(323, 25).setOffset(0, 27);
+    this.consolelongo.body.allowGravity = false;
+    this.consolelongo.setImmovable(true);
+
+     this.consolemedio = this.physics.add.sprite(640, 190, "consolemedio");
+     this.consolemedio.body.setSize(255, 25).setOffset(0, 27);
+     this.consolemedio.body.allowGravity = false;
+     this.consolemedio.setImmovable(true);
+
+     this.consolemedio2 = this.physics.add.sprite(640, 540, "consolemedio");
+     this.consolemedio2.body.setSize(255, 25).setOffset(0, 27);
+     this.consolemedio2.body.allowGravity = false;
+     this.consolemedio2.setImmovable(true);
+
     //adiciona o player roxo
     this.playerroxo = this.physics.add.sprite(640, 290, "playerroxo");
     this.playerroxo.body.setSize(25, 10).setOffset(19, 52);
     this.playerroxo.body.allowGravity = false;
-    
+
     this.physics.add.collider(this.playerroxo, this.layerPiso);
     this.physics.add.collider(this.playerroxo, this.layerParede);
-    // this.physics.add.collider(this.playerroxo, this.bigboss);
     this.physics.add.collider(this.playerroxo, this.consolelongo);
-    
+    this.physics.add.collider(this.playerroxo, this.consolemedio);
+    this.physics.add.collider(this.playerroxo, this.consolemedio2);
+    // this.physics.add.collider(this.playerroxo, this.bigboss);
+
     this.layerParede.setCollisionByProperty({ collides: true });
-    
+
     //camera
     this.cameras.main.startFollow(this.playerroxo, true, 0.1, 0.1).zoom = 1.5;
     /*this.cameras.main.setBounds(
@@ -303,17 +324,15 @@ class scene1 extends Phaser.Scene {
       this.tilemap.widthInPixels,
       this.tilemap.heightInPixels,
     );*/
-    
+
     // Texto de posição do playerroxo atualizado a cada segundo
-    this.positionText = this.add
-    .text(100, 50, "X: 0 Y: 0", {
+    this.positionText = this.add.text(200, 80, "X: 0 Y: 0", {
       fontSize: "18px",
       fill: "#ffffff",
       backgroundColor: "rgba(0,0,0,0.5)",
       padding: { x: 6, y: 4 },
-    })
-    //.setScrollFactor(0);
-    
+    }).setScrollFactor(0);
+
     this.time.addEvent({
       delay: 1000,
       loop: true,
@@ -323,7 +342,6 @@ class scene1 extends Phaser.Scene {
         );
       },
     });
-
 
     /*this.physics.world.setBounds(
       0,
