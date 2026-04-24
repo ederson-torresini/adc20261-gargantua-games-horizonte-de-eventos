@@ -1,5 +1,3 @@
-import scene1 from "./scene1.js";
-
 class scene0 extends Phaser.Scene {
   constructor() {
     super("scene0");
@@ -13,7 +11,7 @@ class scene0 extends Phaser.Scene {
     this.jetPack = false;
     this.energy = true;
     this.keys = null;
-    this.cargaJp = 7;
+    this.cargaJp = 8;
     this.cargaJpText;
 
   }
@@ -320,7 +318,7 @@ class scene0 extends Phaser.Scene {
     });
 
     this.scoreText = this.add
-      .text(100, 80, "Engrenagens: " + this.score + "/5", {
+      .text(100, 80, "Engrenagens: " + this.score + "/4", {
         fontSize: "32px",
         fill: "#000",
       })
@@ -658,7 +656,7 @@ class scene0 extends Phaser.Scene {
         .setScrollFactor(0.95, 1)
         .setColor(0xff0000);
 
-    this.iaBox = this.physics.add.sprite(687, 33, "iaBox")
+    this.iaBox = this.physics.add.sprite(1009, 33, "iaBox")//687
     this.iaBox
       .setOrigin(0, 0)
       .setScrollFactor(0)
@@ -1069,8 +1067,10 @@ class scene0 extends Phaser.Scene {
   collectEng(player, engrenagens) {
     engrenagens.disableBody(true, true);
 
+    this.iaBox.setVelocityX(-100);
+
     this.score += 1;
-    this.scoreText.setText("Engrenagens: " + this.score + "/5");
+    this.scoreText.setText("Engrenagens: " + this.score + "/4");
   }
   collectBag(player, jetBag) {
     jetBag.disableBody(true, true);
