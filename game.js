@@ -7,22 +7,23 @@ class Game extends Phaser.Game {
   constructor() {
     super(config);
 
-    this.direction = true;
-    this.doubleJump = false;
-    this.score = 0;
+    this.direction;
+    this.doubleJump;
+    this.score;
     this.scoreText;
-    this.fase3 = false;
-    this.fase5 = false;
-    this.jetPack = false;
-    this.energy = true;
-    this.keys = null;
-    this.cargaJp = 8;
+    this.fase3;
+    this.fase5;
+    this.jetPack;
+    this.energy;
+    this.keys;
+    this.cargaJp;
     this.cargaJpText;
+    this.o2;
     
     this.scene.add("start", start);
     this.scene.add("scene0", scene0);
     this.scene.add("scene1", scene1);
-    this.scene.start("scene1");
+    this.scene.start("scene0");
   }
 }
 

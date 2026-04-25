@@ -11,6 +11,7 @@ class scene0 extends Phaser.Scene {
     this.energy = true;
     this.keys = null;
     this.cargaJp = 8;
+    this.o2 = 100;
   }
 
   preload() {
@@ -93,6 +94,7 @@ class scene0 extends Phaser.Scene {
   }
 
   create() {
+
     this.trilhasonora = this.sound
       .add("trilhasonora", { loop: true, volume: 0.5 })
       .play();
@@ -312,6 +314,13 @@ class scene0 extends Phaser.Scene {
       frameRate: 2,
       repeat: -1,
     });
+    
+    this.o2Text = this.add
+      .text(100, 100, "O2: " + this.o2 + "%", {
+        fontSize: "32px",
+        fill: "#000000",
+      })
+      .setScrollFactor(0);
 
     this.scoreText = this.add
       .text(100, 80, "Engrenagens: " + this.score + "/4", {
@@ -626,7 +635,7 @@ class scene0 extends Phaser.Scene {
     this.plataform16 = this.physics.add.sprite(1230, 3375, "plataform");
     this.plataform16
       .setImmovable(true)
-      .setScrollFactor(0.99, 1)
+      .setScrollFactor(.99, 1)
       .setPipeline("Light2D").body.allowGravity = false;
 
     this.invisible = this.physics.add.sprite(421, 3396, "invisible");
@@ -635,6 +644,18 @@ class scene0 extends Phaser.Scene {
       .setImmovable(true)
       .setPipeline("Light2D").body.allowGravity = false;
 
+     setInterval(() => {
+    if (this.o2 < 100 && this.fase5 === false) {
+      this.o2 += 1;
+      this.o2Text.setText("O2: " + this.o2 + "%");
+
+    } else if (this.o2 > 0 && this.fase5 === true) {
+        this.o2 -= 1;
+        this.o2Text.setText("O2: " + this.o2 + "%");
+        
+      }
+    }, 200);
+
     //LIGAR O2 E MIN DE LUZ EM 422, 3396
 
     this.lights.enable().setAmbientColor(0xe0f7ff);
@@ -642,13 +663,13 @@ class scene0 extends Phaser.Scene {
     this.light21 = this.lights
       .addLight(this.door21.x, 880, 40)
       .setIntensity(1.5)
-      .setScrollFactor(0.95, 1)
+      .setScrollFactor(.95, 1)
       .setColor(0xff0000);
 
     this.lights
       .addLight(this.door11.x, 1040, 40)
       .setIntensity(1.5)
-      .setScrollFactor(0.95, 1)
+      .setScrollFactor(.95, 1)
       .setColor(0xff0000);
 
     this.iaBox = this.physics.add.sprite(1009, 33, "iaBox"); //687
@@ -823,6 +844,7 @@ class scene0 extends Phaser.Scene {
           this.cameras.main.scrollY =
             this.player.y - this.cameras.main.height / 2 - 120;
           this.energy = false;
+          this.fase5 = true;
           this.door15.anims.play("close-door", true);
           this.door15.once("animationcomplete", (anim, frame) => {
             if (anim.key === "close-door") {
@@ -877,6 +899,8 @@ class scene0 extends Phaser.Scene {
   }
 
   update() {
+    
+    
     if (this.fase3) {
       this.cargaJpText.setFill("#000000");
     } else if (this.cargaJp === 0) {

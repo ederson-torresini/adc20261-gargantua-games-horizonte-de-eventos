@@ -347,8 +347,8 @@ class scene1 extends Phaser.Scene {
 
     //adiciona o player roxo
     this.playerroxo = this.physics.add.sprite(640, 290, "playerroxo");
-    this.playerroxo.body.setSize(25, 10).setOffset(19, 52);
-    this.playerroxo.body.allowGravity = false;
+    this.playerroxo.body.setSize(25, 10).setOffset(19, 52)
+    .body.allowGravity = false;
 
     this.physics.add.collider(this.playerroxo, this.layerPiso);
     this.physics.add.collider(this.playerroxo, this.layerParede);
