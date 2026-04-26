@@ -40,6 +40,8 @@ class scene1 extends Phaser.Scene {
     this.load.image("space1", "assets-usados/space1.png");
     this.load.image("consolelongo", "assets-usados/consolelongo.png");
     this.load.image("consolemedio", "assets-usados/consolemedio.png");
+    this.load.image("telescopio", "assets-usados/telescopio.png");
+    this.load.image("osciloscopio", "assets-usados/osciloscopio.png");
 
     //preload do sprite do player roxo
     this.load.spritesheet("playerroxo", "playerroxo.png", {
@@ -390,46 +392,43 @@ class scene1 extends Phaser.Scene {
       pipeline: "Light2D",
     });
 
-    this.antenas
-      .create(537, 1324, "NewPiskel")
-      .setScale(-1, 1)
-      .body.setSize(20, 30)
-      .setOffset(27, 0);
+    this.antenas.create(537, 1324, "NewPiskel").setScale(-1, 1).body.setSize(20, 30).setOffset(27, 0);
 
-    this.antenas
-      .create(880, 1355, "NewPiskel")
-      .setScale(-1, 1)
-      .body.setSize(20, 30)
-      .setOffset(27, 0);
+    this.antenas.create(880, 1355, "NewPiskel").setScale(-1, 1).body.setSize(20, 30).setOffset(27, 0);
 
-    this.antenas
-      .create(1170, 1327, "NewPiskel")
-      .body.setSize(20, 30)
-      .setOffset(10, 0);
+    this.antenas.create(1170, 1327, "NewPiskel").body.setSize(20, 30).setOffset(10, 0);
 
-    this.antenas
-      .create(820, 1420, "NewPiskel")
-      .setScale(-1, 1)
-      .body.setSize(20, 30)
-      .setOffset(27, 0);
+    this.antenas.create(820, 1420, "NewPiskel").setScale(-1, 1).body.setSize(20, 30).setOffset(27, 0);
 
-    this.antenas
-      .create(433, 1483, "NewPiskel")
-      .body.setSize(20, 30)
-      .setOffset(10, 0);
+    this.antenas.create(433, 1483, "NewPiskel").body.setSize(20, 30).setOffset(10, 0);
 
-      this.antenas
-        .create(880, 1514, "NewPiskel")
-        .setScale(-1, 1)
-        .body.setSize(20, 30)
-        .setOffset(27, 0);
+      this.antenas.create(880, 1514, "NewPiskel").setScale(-1, 1).body.setSize(20, 30).setOffset(27, 0);
 
-        this.antenas
-          .create(175, 1546, "NewPiskel")
-          .body.setSize(20, 30)
-          .setOffset(10, 0);
+      this.antenas.create(175, 1546, "NewPiskel").body.setSize(20, 30).setOffset(10, 0);
 
-    
+    //telescopios exterior
+    this.telescopios = this.physics.add.group({
+      allowGravity: false,
+      immovable: true,
+      pipeline: "Light2D",
+    });
+
+    this.telescopios.create(207, 1363, "telescopio").body.setSize(20, 20);
+
+    this.telescopios.create(338, 1587, "telescopio").body.setSize(20, 20);
+
+    this.telescopios.create(1107, 1490, "telescopio").body.setSize(20, 20);
+
+    //osciloscopios exterior
+    this.osciloscopios = this.physics.add.group({
+      allowGravity: false,
+      immovable: true,
+      pipeline: "Light2D",
+    });
+
+    this.osciloscopios.create(626, 1400, "osciloscopio").body.setSize(35, 17);
+
+    this.osciloscopios.create(980, 1560, "osciloscopio").body.setSize(35, 17);
 
     //adiciona o player roxo
     this.playerroxo = this.physics.add.sprite(650, 1437, "playerroxo"); //640,290 interior //650, 1437 exterior
@@ -454,11 +453,13 @@ class scene1 extends Phaser.Scene {
     this.physics.add.collider(this.playerroxo, this.consolew6);
     this.physics.add.collider(this.playerroxo, this.bigboss);
     this.physics.add.collider(this.playerroxo, this.antenas);
+    this.physics.add.collider(this.playerroxo, this.telescopios);
+    this.physics.add.collider(this.playerroxo, this.osciloscopios);
 
     this.layerParede.setCollisionByProperty({ collides: true });
 
     //camera
-    this.cameras.main.startFollow(this.playerroxo, true, 0.1, 0.1); //.zoom = 1.5;
+    this.cameras.main.startFollow(this.playerroxo, true, 0.1, 0.1).zoom = 1.5;
     /*this.cameras.main.setBounds(
       0,
       0,
