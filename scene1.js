@@ -114,8 +114,8 @@ class scene1 extends Phaser.Scene {
         this.tilesetRemasterizedEnfeites,
         this.tilesetNewPiskel,
       ])
-      .setPipeline("Light2D");
-    // .setAlpha(0);
+      .setPipeline("Light2D")
+      .setAlpha(0);
     // .setScrollFactor(0.9, 1);
 
     //animações
