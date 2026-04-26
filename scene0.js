@@ -12,9 +12,11 @@ class scene0 extends Phaser.Scene {
     this.keys = null;
     this.cargaJp = 8;
     this.o2 = 100;
-  }
+    this.collectEng3 = false;
 
+  }
   preload() {
+
     this.load.setPath("assets/");
 
     this.load.audio("passos", "walkamongus.mp3");
@@ -653,7 +655,14 @@ class scene0 extends Phaser.Scene {
         this.o2 -= 1;
         this.o2Text.setText("O2: " + this.o2 + "%");
         
-      }
+    } else if (this.o2 === 0) {
+
+      this.player.setPosition(92, 3532).setVelocity(0, 0).anims.play("idleRightJP");
+      this.direction = true;
+
+      this.o2 = 100;
+      
+    }
     }, 200);
 
     //LIGAR O2 E MIN DE LUZ EM 422, 3396
@@ -720,6 +729,7 @@ class scene0 extends Phaser.Scene {
 
     this.physics.add.overlap(this.player, this.invisible, () => {
       this.invisible.disableBody(true, true);
+      this.fase5 = false;
       this.plataform12.setVelocityX(150);
       setInterval(() => {
         this.plataform12.setVelocityX(this.plataform12.body.velocity.x * -1);
@@ -749,7 +759,8 @@ class scene0 extends Phaser.Scene {
         .setColor(0xff0000);
       this.door21.once("animationcomplete", (anim, frame) => {
         if (anim.key === "open-door") {
-          this.player.setPosition(108, 1835).setVelocity(0, 0);
+          this.player.setPosition(108, 1835).setVelocity(0, 0).anims.play("idleRight");
+          this.direction = true;
           this.cameras.main.scrollY =
             this.player.y - this.cameras.main.height / 2 - 120;
           this.door12.anims.play("close-door", true);
@@ -792,7 +803,8 @@ class scene0 extends Phaser.Scene {
         this.door22.anims.play("open-door", true);
         this.door22.once("animationcomplete", (anim, frame) => {
           if (anim.key === "open-door") {
-            this.player.setPosition(69, 2508).setVelocity(0, 0);
+            this.player.setPosition(69, 2508).setVelocity(0, 0).anims.play("idleRightJP");
+            this.direction = true;
             this.cameras.main.scrollY =
               this.player.y - this.cameras.main.height / 3.5 - 120;
             this.fase3 = true;
@@ -816,7 +828,8 @@ class scene0 extends Phaser.Scene {
       this.door23.anims.play("open-door", true);
       this.door23.once("animationcomplete", (anim, frame) => {
         if (anim.key === "open-door") {
-          this.player.setPosition(92, 300).setVelocity(0, 0).setAngle(0);
+          this.player.setPosition(92, 300).setVelocity(0, 0).setAngle(0).anims.play("idleRightJP");
+          this.direction = true;
           this.cameras.main.scrollY =
             this.player.y - this.cameras.main.height / 2 - 120;
           this.fase3 = false;
@@ -840,7 +853,8 @@ class scene0 extends Phaser.Scene {
       this.door24.anims.play("open-door", true);
       this.door24.once("animationcomplete", (anim, frame) => {
         if (anim.key === "open-door") {
-          this.player.setPosition(92, 3532).setVelocity(0, 0);
+          this.player.setPosition(92, 3532).setVelocity(0, 0).anims.play("idleRghtJP");
+          this.direction = true;
           this.cameras.main.scrollY =
             this.player.y - this.cameras.main.height / 2 - 120;
           this.energy = false;
