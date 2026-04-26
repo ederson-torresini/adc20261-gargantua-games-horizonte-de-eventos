@@ -115,6 +115,7 @@ class scene1 extends Phaser.Scene {
         this.tilesetNewPiskel,
       ])
       .setPipeline("Light2D");
+    // .setAlpha(0);
     // .setScrollFactor(0.9, 1);
 
     //animações
@@ -223,47 +224,47 @@ class scene1 extends Phaser.Scene {
       allowGravity: false,
       immovable: true,
       pipeline: "Light2D",
-      });
-      
-      //adiciona o bigboss como sprite físico para colidir com o player 
-      //COMPUTADOR 1, SPRITES DA DIREITA PRA ESQUERDA
-      this.bigboss.create(465, 275, "bigboss");//bigboss 1
-     /* this.bigboss.create(452, 260, "bigboss").setSize(40, 10);
+    });
+
+    //adiciona o bigboss como sprite físico para colidir com o player
+    //COMPUTADOR 1, SPRITES DA DIREITA PRA ESQUERDA
+    this.bigboss.create(465, 275, "bigboss"); //bigboss 1
+    /* this.bigboss.create(452, 260, "bigboss").setSize(40, 10);
       this.bigboss.create(385, 260, "bigboss").setSize(70, 20);
     this.bigboss.create(335, 267, "bigboss").setSize(25, 17);*/
-    
+
     //COMPUTADOR 2(ABAIXO DO 1), SPRITES DA DIREITA PRA ESQUERDA
     //-62 +160
-    this.bigboss.create(403, 435, "bigboss");//bigboss 2
+    this.bigboss.create(403, 435, "bigboss"); //bigboss 2
     /*this.bigboss.create(390, 420, "bigboss").setSize(40, 10);
     this.bigboss.create(323, 420, "bigboss").setSize(70, 20);
     this.bigboss.create(273, 427, "bigboss").setSize(25, 17);*/
-    
+
     //COMPUTADOR 3(ABAIXO DO 2), SPRITES DA DIREITA PRA ESQUERDA
     //-33 -160
-    this.bigboss.create(370, 595, "bigboss");//bigboss 3
+    this.bigboss.create(370, 595, "bigboss"); //bigboss 3
     /*this.bigboss.create(357, 580, "bigboss").setSize(40, 10);
     this.bigboss.create(290, 580, "bigboss").setSize(70, 20);
-    this.bigboss.create(240, 587, "bigboss").setSize(25, 17);
-    
+    this.bigboss.create(240, 587, "bigboss").setSize(25, 17);*/
+
     //COMPUTADOR 4 (DIREITA DO 3), SPRITES DA DIREITA PRA ESQUERDA
     //+690 X A PARTIR DO 3
-    this.bigboss.create(1060, 595, "bigboss");
-    this.bigboss.create(1047, 580, "bigboss").setSize(40, 10);
+    this.bigboss.create(1040, 598, "bigboss"); //bigboss 4, posição alterada
+    /*this.bigboss.create(1047, 580, "bigboss").setSize(40, 10);
     this.bigboss.create(980, 580, "bigboss").setSize(70, 20);
-    this.bigboss.create(930, 587, "bigboss").setSize(25, 17);
-    
+    this.bigboss.create(930, 587, "bigboss").setSize(25, 17);*/
+
     //COMPUTADOR 5 (DIREITA DO 2), SPRITES DA DIREITA PRA ESQUERDA
     //+627 X A PARTIR DO 2
-    this.bigboss.create(1030, 435, "bigboss");
-    this.bigboss.create(1017, 420, "bigboss").setSize(40, 10);
+    this.bigboss.create(1008, 443, "bigboss"); //bigboss 5, posição alterada
+    /*this.bigboss.create(1017, 420, "bigboss").setSize(40, 10);
     this.bigboss.create(950, 420, "bigboss").setSize(70, 20);
-    this.bigboss.create(900, 427, "bigboss").setSize(25, 17);
+    this.bigboss.create(900, 427, "bigboss").setSize(25, 17);*/
 
     //COMPUTADOR 6 (DIREITA DO 1), SPRITES DA DIREITA PRA ESQUERDA
     //+500 X A PARTIR DO 1
-    this.bigboss.create(965, 275, "bigboss");
-    this.bigboss.create(952, 260, "bigboss").setSize(40, 10);
+    this.bigboss.create(950, 282, "bigboss"); //bigboss 6, posiçao alterada
+    /*this.bigboss.create(952, 260, "bigboss").setSize(40, 10);
     this.bigboss.create(885, 260, "bigboss").setSize(70, 20);
     this.bigboss.create(835, 267, "bigboss").setSize(25, 17);
     
@@ -286,13 +287,12 @@ class scene1 extends Phaser.Scene {
 
     this.lights.enable().setAmbientColor(0xe0f7ff);
 
-    
     //console do meio
     this.consolelongo = this.physics.add.sprite(645, 350, "consolelongo");
     this.consolelongo.body.setSize(323, 25).setOffset(0, 27);
     this.consolelongo.body.allowGravity = false;
     this.consolelongo.setImmovable(true);
-    
+
     this.consolemedio = this.physics.add.group({
       allowGravity: false,
       immovable: true,
@@ -300,17 +300,22 @@ class scene1 extends Phaser.Scene {
     });
 
     //console de cima centro
-     this.consolemedio.create(640, 190, "consolemedio").setSize(255, 25).setOffset(0, 27);
-     
+    this.consolemedio
+      .create(640, 190, "consolemedio")
+      .setSize(255, 25)
+      .setOffset(0, 27);
+
     //console de baixo centro
-     this.consolemedio.create(640, 540, "consolemedio").setSize(255, 25).setOffset(0, 27);
-    
-    
+    this.consolemedio
+      .create(640, 540, "consolemedio")
+      .setSize(255, 25)
+      .setOffset(0, 27);
+
     //console_s da esquerda cima
-     this.consoles = this.physics.add.sprite(382, 258, "consoles");
-     this.consoles.body.setSize(102, 25).setOffset(0, 27);
-     this.consoles.body.allowGravity = false;
-     this.consoles.setImmovable(true);
+    this.consoles = this.physics.add.sprite(382, 258, "consoles");
+    this.consoles.body.setSize(102, 25).setOffset(0, 27);
+    this.consoles.body.allowGravity = false;
+    this.consoles.setImmovable(true);
 
     //console_w da esuqerda cima, com bigboss 1
     this.consolew = this.physics.add.sprite(446, 268, "consolew");
@@ -342,30 +347,118 @@ class scene1 extends Phaser.Scene {
     this.consolew3.body.allowGravity = false;
     this.consolew3.setImmovable(true);
 
+    //console_s da direita cima
+    this.consoles4 = this.physics.add.sprite(863, 261, "consoles");
+    this.consoles4.body.setSize(102, 25).setOffset(0, 27);
+    this.consoles4.body.allowGravity = false;
+    this.consoles4.setImmovable(true);
+
+    //console_w da direita cima, com bigboss 6
+    this.consolew4 = this.physics.add.sprite(930, 273, "consolew");
+    this.consolew4.body.setSize(47, 17).setOffset(15, 20);
+    this.consolew4.body.allowGravity = false;
+    this.consolew4.setImmovable(true);
+
+    //console_s da direita meio
+    this.consoles5 = this.physics.add.sprite(915, 423, "consoles");
+    this.consoles5.body.setSize(102, 25).setOffset(0, 27);
+    this.consoles5.body.allowGravity = false;
+    this.consoles5.setImmovable(true);
+
+    //console_w da direita meio, com bigboss 5
+    this.consolew5 = this.physics.add.sprite(989, 434, "consolew");
+    this.consolew5.body.setSize(47, 17).setOffset(15, 20);
+    this.consolew5.body.allowGravity = false;
+    this.consolew5.setImmovable(true);
+
+    //console_s da direita baixo
+    this.consoles6 = this.physics.add.sprite(950, 580, "consoles");
+    this.consoles6.body.setSize(102, 25).setOffset(0, 27);
+    this.consoles6.body.allowGravity = false;
+    this.consoles6.setImmovable(true);
+
+    //console_w da direita baixo, com bigboss 4
+    this.consolew6 = this.physics.add.sprite(1022, 590, "consolew");
+    this.consolew6.body.setSize(47, 17).setOffset(15, 20);
+    this.consolew6.body.allowGravity = false;
+    this.consolew6.setImmovable(true);
+
+    //exterior da nave antenas
+    this.antenas = this.physics.add.group({
+      allowGravity: false,
+      immovable: true,
+      pipeline: "Light2D",
+    });
+
+    this.antenas
+      .create(537, 1324, "NewPiskel")
+      .setScale(-1, 1)
+      .body.setSize(20, 30)
+      .setOffset(27, 0);
+
+    this.antenas
+      .create(880, 1355, "NewPiskel")
+      .setScale(-1, 1)
+      .body.setSize(20, 30)
+      .setOffset(27, 0);
+
+    this.antenas
+      .create(1170, 1327, "NewPiskel")
+      .body.setSize(20, 30)
+      .setOffset(10, 0);
+
+    this.antenas
+      .create(820, 1420, "NewPiskel")
+      .setScale(-1, 1)
+      .body.setSize(20, 30)
+      .setOffset(27, 0);
+
+    this.antenas
+      .create(433, 1483, "NewPiskel")
+      .body.setSize(20, 30)
+      .setOffset(10, 0);
+
+      this.antenas
+        .create(880, 1514, "NewPiskel")
+        .setScale(-1, 1)
+        .body.setSize(20, 30)
+        .setOffset(27, 0);
+
+        this.antenas
+          .create(175, 1546, "NewPiskel")
+          .body.setSize(20, 30)
+          .setOffset(10, 0);
 
     
 
     //adiciona o player roxo
-    this.playerroxo = this.physics.add.sprite(640, 290, "playerroxo");
-    this.playerroxo.body.setSize(25, 10).setOffset(19, 52)
-    .body.allowGravity = false;
+    this.playerroxo = this.physics.add.sprite(650, 1437, "playerroxo"); //640,290 interior //650, 1437 exterior
+    this.playerroxo.body.setSize(25, 10).setOffset(19, 52);
+    this.playerroxo.body.allowGravity = false;
 
     this.physics.add.collider(this.playerroxo, this.layerPiso);
     this.physics.add.collider(this.playerroxo, this.layerParede);
     this.physics.add.collider(this.playerroxo, this.consolelongo);
-    this.physics.add.collider(this.playerroxo, this.consolemedio);;
+    this.physics.add.collider(this.playerroxo, this.consolemedio);
     this.physics.add.collider(this.playerroxo, this.consoles);
     this.physics.add.collider(this.playerroxo, this.consoles2);
     this.physics.add.collider(this.playerroxo, this.consoles3);
+    this.physics.add.collider(this.playerroxo, this.consoles4);
+    this.physics.add.collider(this.playerroxo, this.consoles5);
+    this.physics.add.collider(this.playerroxo, this.consoles6);
     this.physics.add.collider(this.playerroxo, this.consolew);
     this.physics.add.collider(this.playerroxo, this.consolew2);
     this.physics.add.collider(this.playerroxo, this.consolew3);
+    this.physics.add.collider(this.playerroxo, this.consolew4);
+    this.physics.add.collider(this.playerroxo, this.consolew5);
+    this.physics.add.collider(this.playerroxo, this.consolew6);
     this.physics.add.collider(this.playerroxo, this.bigboss);
+    this.physics.add.collider(this.playerroxo, this.antenas);
 
     this.layerParede.setCollisionByProperty({ collides: true });
 
     //camera
-    this.cameras.main.startFollow(this.playerroxo, true, 0.1, 0.1).zoom = 1.5;
+    this.cameras.main.startFollow(this.playerroxo, true, 0.1, 0.1); //.zoom = 1.5;
     /*this.cameras.main.setBounds(
       0,
       0,
@@ -374,12 +467,14 @@ class scene1 extends Phaser.Scene {
     );*/
 
     // Texto de posição do playerroxo atualizado a cada segundo
-    this.positionText = this.add.text(200, 80, "X: 0 Y: 0", {
-      fontSize: "18px",
-      fill: "#ffffff",
-      backgroundColor: "rgba(0,0,0,0.5)",
-      padding: { x: 6, y: 4 },
-    }).setScrollFactor(0);
+    this.positionText = this.add
+      .text(200, 80, "X: 0 Y: 0", {
+        fontSize: "18px",
+        fill: "#ffffff",
+        backgroundColor: "rgba(0,0,0,0.5)",
+        padding: { x: 6, y: 4 },
+      })
+      .setScrollFactor(0);
 
     this.time.addEvent({
       delay: 1000,
