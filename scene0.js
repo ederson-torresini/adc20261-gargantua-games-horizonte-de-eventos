@@ -12,7 +12,10 @@ class scene0 extends Phaser.Scene {
     this.keys = null;
     this.cargaJp = 10;
     this.o2 = 100;
+    this.collectEng1 = false;
+    this.collectEng2 = false;
     this.collectEng3 = false;
+    this.collectEng5 = false;
     this.life = 6;
 
   }
@@ -99,12 +102,12 @@ class scene0 extends Phaser.Scene {
   create() {
 
     this.trilhasonora = this.sound
-      .add("trilhasonora", { loop: true, volume: 0.5 })
+      .add("trilhasonora", { loop: true, volume: .5 })
       .play();
     this.passos = this.sound.add("passos", { loop: true, volume: 1 });
 
     this.space = this.add.image(100, 800, "space");
-    this.space.setPipeline("Light2D").setOrigin(0, 0).setScrollFactor(0.1, 1);
+    this.space.setPipeline("Light2D").setOrigin(0, 0).setScrollFactor(.1, 1);
 
     this.anims.create({
       key: "gargantua-idle",
@@ -125,14 +128,14 @@ class scene0 extends Phaser.Scene {
       .create(650, 200, "gargantua") //873, 950 //400, 40
       .setScale(2)
       .setOrigin(0, 0)
-      .setScrollFactor(0.33)
+      .setScrollFactor(.33)
       .anims.play("gargantua-idle", true);
 
     this.blackHole
       .create(500, 430, "gargantua") //455, 1750 //200, 40
       .setScale(2)
       .setOrigin(0, 0)
-      .setScrollFactor(0.33)
+      .setScrollFactor(.33)
       .anims.play("gargantua-idle", true);
 
     this.tilemap = this.make.tilemap({ key: "todasfases" });
@@ -149,27 +152,27 @@ class scene0 extends Phaser.Scene {
         this.tilesetRemasterizedEnfeites,
       ])
       .setPipeline("Light2D")
-      .setScrollFactor(0.9, 1);
+      .setScrollFactor(.9, 1);
     this.layerEnfeites = this.tilemap
       .createLayer("enfeites", [this.tilesetRemasterizedEnfeites])
       .setPipeline("Light2D")
-      .setScrollFactor(0.9, 1);
+      .setScrollFactor(.9, 1);
     this.layerVidro = this.tilemap
       .createLayer("vidro", [this.tilesetRemasterized])
       .setPipeline("Light2D")
-      .setScrollFactor(0.9, 1);
+      .setScrollFactor(.9, 1);
     this.layerVidroh = this.tilemap
       .createLayer("vidroh", [this.tilesetRemasterized])
       .setPipeline("Light2D")
-      .setScrollFactor(0.9, 1);
+      .setScrollFactor(.9, 1);
     this.layerComp39 = this.tilemap
       .createLayer("comp39", [this.tilesetRemasterized])
       .setPipeline("Light2D")
-      .setScrollFactor(0.9, 1);
+      .setScrollFactor(.9, 1);
     this.layerPiso = this.tilemap
       .createLayer("piso", [this.tilesetRemasterized])
       .setPipeline("Light2D")
-      .setScrollFactor(0.9, 1);
+      .setScrollFactor(.9, 1);
 
     this.physics.world.setBounds(
       0,
@@ -338,29 +341,22 @@ class scene0 extends Phaser.Scene {
       pipeline: "Light2D",
     });
 
-    this.engrenagens
+    this.engrenagem1 = this.engrenagens
       .create(1138, 968, "engrenagem")
       .setScale(0.3)
       .anims.play("engrenagem-idle", true);
-    this.engrenagens
+    
+    this.engrenagem2 = this.engrenagens
       .create(1059, 1652, "engrenagem")
       .setScale(0.3)
       .anims.play("engrenagem-idle", true);
     
-    this.engrenagem3 = this.physics.add.sprite(1209, 2604, "engrnagem");
-    this.engrenagem3
-      .setScale(.3)
-      .anims.play("engrenagem-idle", true)
-      .setImmovable(true)
-      .setPipeline("light2D")
-      .body.allowGravity = false;
-    
-        /*this.engrenagens
+    this.engrenagem3 = this.engrenagens
       .create(1209, 2604, "engrenagem")
       .setScale(0.3)
-      .anims.play("engrenagem-idle", true);*/
+      .anims.play("engrenagem-idle", true);
 
-    this.engrenagens
+    this.engrenagem5 = this.engrenagens
       .create(531, 3340, "engrenagem")
       .setScale(0.3)
       .anims.play("engrenagem-idle", true);
@@ -467,93 +463,102 @@ class scene0 extends Phaser.Scene {
     //porta N da fase N
     this.door11 = this.physics.add.sprite(92, 1056, "door", 0);
     this.door11
-      .setScrollFactor(0.95, 1)
+      .setScrollFactor(.95, 1)
       .setPipeline("Light2D").body.allowGravity = false;
 
     this.door21 = this.physics.add.sprite(430, 897, "door", 0);
     this.door21
-      .setScrollFactor(0.95, 1)
+      .setScrollFactor(.95, 1)
       .setPipeline("Light2D").body.allowGravity = false;
 
     this.door12 = this.physics.add.sprite(108, 1825, "door", 7);
     this.door12
-      .setScrollFactor(0.95, 1)
+      .setScrollFactor(.95, 1)
       .setPipeline("Light2D").body.allowGravity = false;
 
     this.door22 = this.physics.add.sprite(1185, 1825, "door", 0);
     this.door22
-      .setScrollFactor(0.95, 1)
+      .setScrollFactor(.95, 1)
       .setPipeline("Light2D").body.allowGravity = false;
 
     this.door13 = this.physics.add.sprite(69, 2496, "door", 7);
     this.door13
-      .setScrollFactor(0.95, 1)
+      .setScrollFactor(.95, 1)
       .setPipeline("Light2D").body.allowGravity = false;
 
     this.door23 = this.physics.add.sprite(1224, 2432, "door", 0);
     this.door23
-      .setScrollFactor(0.95, 1)
+      .setScrollFactor(.95, 1)
       .setPipeline("Light2D").body.allowGravity = false;
 
     this.door14 = this.physics.add.sprite(92, 288, "door", 7);
     this.door14
-      .setScrollFactor(0.95, 1)
+      .setScrollFactor(.95, 1)
       .setPipeline("Light2D").body.allowGravity = false;
 
     this.door24 = this.physics.add.sprite(1152, 288, "door", 0);
     this.door24
-      .setScrollFactor(0.95, 1)
+      .setScrollFactor(.95, 1)
       .setPipeline("Light2D").body.allowGravity = false;
 
     this.door15 = this.physics.add.sprite(92, 3520, "door", 7);
     this.door15
-      .setScrollFactor(0.95, 1)
+      .setScrollFactor(.95, 1)
       .setPipeline("Light2D").body.allowGravity = false;
 
     this.door25 = this.physics.add.sprite(1152, 3520, "door", 0);
     this.door25
-      .setScrollFactor(0.95, 1)
+      .setScrollFactor(.95, 1)
       .setPipeline("Light2D").body.allowGravity = false;
 
-    this.plataformG = this.physics.add.sprite(431, 930, "plataformG");
-    this.plataformG
-      .setImmovable(true)
-      .setScrollFactor(0.99, 1)
-      .setPipeline("Light2D").body.allowGravity = false;
+    this.platforms = this.physics.add.group({
+      allowGravity: false,
+      immovable: true,
+      pipeline: "Light2D",
+    });
 
-    this.plataformG2 = this.physics.add.sprite(1059, 1666, "plataformG");
-    this.plataformG2
-      .setImmovable(true)
-      .setScrollFactor(0.99, 1)
-      .setPipeline("Light2D").body.allowGravity = false;
+    this.platforms.create(431, 930, "plataformG")
+      .setScrollFactor(.99, 1);
 
-    //cria plataforma 1 e defne como imovível e de velocidade x = 100 além de fazê-la ignorar a gravidade
-    this.plataform1 = this.physics.add.sprite(680, 1094, "plataform");
-    this.plataform1
+    this.platforms.create(1059, 1666, "plataformG")
+      .setScrollFactor(.99, 1);
+
+    //cria plataforma 1 e defne como imovível e de velocidade x = 100 além de fazê-la ignorar a gravidade680, 1094
+    this.platform1 = this.physics.add.sprite(680, 1094, "plataform");
+    this.platform1
       .setImmovable(true)
       .setVelocityX(-100)
       .setPipeline("Light2D").body.allowGravity = false;
 
     setInterval(() => {
-      this.plataform1.setVelocityX(this.plataform1.body.velocity.x * -1);
+      this.platform1.setVelocityX(this.platform1.body.velocity.x * -1);
     }, 3000);
 
-    //num intervalo de 3400ms, inverte a velocidade da plataforma 1
+    //num intervalo de 3400ms, inverte a velocidade da plataforma 1 
 
-    this.plataform2 = this.physics.add.sprite(1140, 980, "plataform");
-    this.plataform2
-      .setImmovable(true)
-      .setScrollFactor(0.99, 1)
-      .setPipeline("Light2D").body.allowGravity = false;
-
-    this.plataform3 = this.physics.add.sprite(1050, 935, "plataform");
-    this.plataform3
+    this.platforms.create(1140, 980, "plataform")
+      .setScrollFactor(.99, 1);
+    this.platforms.create(160, 1710, "plataform")
+      .setScrollFactor(.99, 1);
+    this.platforms.create(280, 3365, "plataform")
+      .setScrollFactor(.99, 1);
+    this.platforms.create(115, 3420, "plataform")
+      .setScrollFactor(.99, 1);
+    this.platforms.create(769, 3495, "plataform")
+      .setScrollFactor(.99, 1);
+    this.platforms.create(841, 3400, "plataform")
+      .setScrollFactor(.99, 1);
+    this.platforms.create(1230, 3375, "plataform")
+      .setScrollFactor(.99, 1);
+    
+    this.platform3 = this.physics.add.sprite(1050, 935, "plataform");
+    this.platform3
       .setImmovable(true)
       .setVelocityX(-150)
       .setPipeline("Light2D").body.allowGravity = false;
 
     setInterval(() => {
-      this.plataform3.setVelocityX(this.plataform3.body.velocity.x * -1);
+      this.platform3.setVelocityX(this.platform3.body.velocity.x * -1);
     }, 3490);
 
     this.plataform4 = this.physics.add.sprite(855, 1796, "plataform");
@@ -566,94 +571,59 @@ class scene0 extends Phaser.Scene {
       this.plataform4.setVelocityX(this.plataform4.body.velocity.x * -1);
     }, 1500);
 
-    this.plataform5 = this.physics.add.sprite(802, 1764, "plataform");
-    this.plataform5
+    this.platform5 = this.physics.add.sprite(802, 1764, "plataform");
+    this.platform5
       .setImmovable(true)
       .setVelocityX(-150)
       .setPipeline("Light2D").body.allowGravity = false;
     setInterval(() => {
-      this.plataform5.setVelocityX(this.plataform5.body.velocity.x * -1);
+      this.platform5.setVelocityX(this.platform5.body.velocity.x * -1);
     }, 1000);
 
-    this.plataform6 = this.physics.add.sprite(640, 1732, "plataform");
-    this.plataform6
+    this.platform6 = this.physics.add.sprite(640, 1732, "plataform");
+    this.platform6
       .setImmovable(true)
       .setPipeline("Light2D")
       .setVelocityX(-150).body.allowGravity = false;
     setInterval(() => {
-      this.plataform6.setVelocityX(this.plataform6.body.velocity.x * -1);
+      this.platform6.setVelocityX(this.platform6.body.velocity.x * -1);
     }, 2300);
 
-    this.plataform7 = this.physics.add.sprite(160, 1710, "plataform");
-    this.plataform7
-      .setImmovable(true)
-      .setScrollFactor(0.99, 1)
-      .setPipeline("Light2D").body.allowGravity = false;
 
-    this.plataform8 = this.physics.add.sprite(560, 1640, "plataform");
-    this.plataform8
+    this.platform8 = this.physics.add.sprite(560, 1640, "plataform");
+    this.platform8
       .setImmovable(true)
-      .setScrollFactor(0.99, 1)
+      .setScrollFactor(.99, 1)
       .setPipeline("Light2D")
       .setVelocityX(-150).body.allowGravity = false;
     setInterval(() => {
-      this.plataform8.setVelocityX(this.plataform8.body.velocity.x * -1);
+      this.platform8.setVelocityX(this.platform8.body.velocity.x * -1);
     }, 2400);
 
-    this.plataform9 = this.physics.add.sprite(625, 1640, "plataform");
-    this.plataform9
+    this.platform9 = this.physics.add.sprite(625, 1640, "plataform");
+    this.platform9
       .setImmovable(true)
       .setVelocityX(150)
       .setPipeline("Light2D").body.allowGravity = false;
     setInterval(() => {
-      this.plataform9.setVelocityX(this.plataform9.body.velocity.x * -1);
+      this.platform9.setVelocityX(this.platform9.body.velocity.x * -1);
     }, 2400);
 
-    this.plataform10 = this.physics.add.sprite(280, 3365, "plataform");
-    this.plataform10
+
+    this.platform12 = this.physics.add.sprite(425, 3425, "plataform");
+    this.platform12
       .setImmovable(true)
-      .setScrollFactor(0.99, 1)
+      .setScrollFactor(.99, 1)
       .setPipeline("Light2D").body.allowGravity = false;
 
-    this.plataform11 = this.physics.add.sprite(115, 3420, "plataform");
-    this.plataform11
-      .setImmovable(true)
-      .setScrollFactor(0.99, 1)
-      .setPipeline("Light2D").body.allowGravity = false;
-
-    this.plataform12 = this.physics.add.sprite(425, 3425, "plataform");
-    this.plataform12
-      .setImmovable(true)
-      .setScrollFactor(0.99, 1)
-      .setPipeline("Light2D").body.allowGravity = false;
-
-    this.plataform13 = this.physics.add.sprite(769, 3495, "plataform");
-    this.plataform13
-      .setImmovable(true)
-      .setScrollFactor(0.99, 1)
-      .setPipeline("Light2D").body.allowGravity = false;
-
-    this.plataform14 = this.physics.add.sprite(841, 3400, "plataform");
-    this.plataform14
-      .setImmovable(true)
-      .setScrollFactor(0.99, 1)
-      .setPipeline("Light2D").body.allowGravity = false;
-
-    this.plataform15 = this.physics.add.sprite(955, 3375, "plataform");
-    this.plataform15
-      .setImmovable(true)
-      .setScrollFactor(0.99, 1)
-      .setPipeline("Light2D").body.allowGravity = false;
-
-    this.plataform16 = this.physics.add.sprite(1230, 3375, "plataform");
-    this.plataform16
+    this.platform15 = this.physics.add.sprite(955, 3375, "plataform");
+    this.platform15
       .setImmovable(true)
       .setScrollFactor(.99, 1)
       .setPipeline("Light2D").body.allowGravity = false;
 
     this.invisible = this.physics.add.sprite(421, 3396, "invisible");
     this.invisible
-      //.setAlpha(0)
       .setImmovable(true)
       .setPipeline("Light2D").body.allowGravity = false;
 
@@ -715,61 +685,75 @@ class scene0 extends Phaser.Scene {
       this,
     );
 
-    this.physics.add.overlap(
-      this.player,
-      this.engrenagem3,
-      this.collect3Eng,
-      null,
-      this,
-    );
-
-    this.physics.add.collider(this.engrenagens, this.plataform2);
-    this.physics.add.collider(this.engrenagens, this.plataformG2);
+    this.physics.add.overlap(this.player, this.engrenagem1, () => {
+      this.engrenagem1.disableBody(true, true);
+      this.collectEng1 = true;
+    });
+    this.physics.add.overlap(this.player, this.engrenagem2, () => {
+      this.engrenagem2.disableBody(true, true);
+      this.collectEng2 = true;
+    });
+    this.physics.add.overlap(this.player, this.engrenagem3, () => {
+      this.engrenagem3.disableBody(true, true);
+      this.collectEng3 = true;
+    });
+    this.physics.add.overlap(this.player, this.engrenagem5, () => {
+      this.engrenagem5.disableBody(true, true);
+      this.collectEng5 = true;
+    });
 
     this.physics.add.collider(this.player, this.layerPiso);
-    this.physics.add.collider(this.player, this.plataformG);
-    this.physics.add.collider(this.player, this.plataformG2);
-    this.physics.add.collider(this.player, this.plataform1);
-    this.physics.add.collider(this.player, this.plataform2);
-    this.physics.add.collider(this.player, this.plataform3);
-    this.physics.add.collider(this.player, this.plataform4);
-    this.physics.add.collider(this.player, this.plataform5);
-    this.physics.add.collider(this.player, this.plataform6);
-    this.physics.add.collider(this.player, this.plataform7);
-    this.physics.add.collider(this.player, this.plataform8);
-    this.physics.add.collider(this.player, this.plataform9);
-    this.physics.add.collider(this.player, this.plataform10);
-    this.physics.add.collider(this.player, this.plataform11);
-    this.physics.add.collider(this.player, this.plataform12);
-    this.physics.add.collider(this.player, this.plataform13);
-    this.physics.add.collider(this.player, this.plataform14);
-    this.physics.add.collider(this.player, this.plataform15);
-    this.physics.add.collider(this.player, this.plataform16);
+    this.physics.add.collider(this.player, this.platforms);
+    this.physics.add.collider(this.player, this.platforms1);
+    this.physics.add.collider(this.player, this.platforms3);
+    this.physics.add.collider(this.player, this.platforms4);
+    this.physics.add.collider(this.player, this.platforms5);
+    this.physics.add.collider(this.player, this.platforms6);
+    this.physics.add.collider(this.player, this.platforms8);
+    this.physics.add.collider(this.player, this.platforms9);
+    this.physics.add.collider(this.player, this.platforms12);
+    this.physics.add.collider(this.player, this.platforms15);
 
     this.physics.add.overlap(this.player, this.invisible, () => {
       this.invisible.disableBody(true, true);
       this.fase5 = false;
-      this.plataform12.setVelocityX(150);
+      this.platform12.setVelocityX(150);
       setInterval(() => {
-        this.plataform12.setVelocityX(this.plataform12.body.velocity.x * -1);
+        this.platform12.setVelocityX(this.platform12.body.velocity.x * -1);
       }, 1650);
-      this.plataform15.setVelocityX(150);
+      this.platform15.setVelocityX(150);
       setInterval(() => {
-        this.plataform15.setVelocityX(this.plataform15.body.velocity.x * -1);
+        this.platform15.setVelocityX(this.platform15.body.velocity.x * -1);
       }, 1300);
     });
 
     this.physics.add.overlap(this.player, this.boxes, () => {
-      this.player.setPosition(82, 2508).setVelocity(0, 0);
+      this.player.setPosition(82, 2508).setVelocity(0, 0).anims.play("idleRight");
+          this.direction = true;
       this.cargaJp = 10;
       this.cargaJpText.setText("Cargas: " + this.cargaJp);
-      if (this.collectEng3) {
-        
+      if (this.collectEng3 === true) {
+
+        this.score -= 1;
+        this.scoreText.setText("Engrenagens: " + this.score + "/4");
+
+        this.engrenagem3.enableBody(true, 1209, 2604, true, true);
+
+        this.collectEng3 = false;
       }
     });
 
     this.physics.add.overlap(this.player, this.cai, () => {
-      this.player.setPosition(92, 1066).setVelocity(0, 0);
+      this.player.setPosition(92, 1066).setVelocity(0, 0).anims.play("idleRight");
+          this.direction = true;
+      if (this.collectEng1 === true) {
+
+        this.score -= 1;
+        this.scoreText.setText("Engrenagens: " + this.score + "/4");
+        this.engrenagem1.enableBody(true, 1138, 968, true, true);
+        this.collectEng1 = false;
+
+      }
     });
 
     this.physics.add.overlap(this.player, this.door21, () => {
@@ -777,7 +761,7 @@ class scene0 extends Phaser.Scene {
       this.light22 = this.lights
         .addLight(this.door22.x, 1802, 35)
         .setIntensity(0.5)
-        .setScrollFactor(0.95, 1)
+        .setScrollFactor(.95, 1)
         .setColor(0xff0000);
       this.door21.once("animationcomplete", (anim, frame) => {
         if (anim.key === "open-door") {
@@ -791,12 +775,12 @@ class scene0 extends Phaser.Scene {
               this.light12 = this.lights
                 .addLight(this.door12.x, 1802, 35)
                 .setIntensity(0.5)
-                .setScrollFactor(0.95, 1)
+                .setScrollFactor(.95, 1)
                 .setColor(0xff0000);
 
               this.jetBag = this.physics.add.sprite(595, 1584, "jetBag");
               this.jetBag
-                .setScrollFactor(0.9, 1)
+                .setScrollFactor(.9, 1)
                 .setPipeline("Light2D")
                 .setVelocityY(100).body.allowGravity = false;
               this.physics.add.collider(this.jetBag, this.layerPiso);
@@ -819,7 +803,7 @@ class scene0 extends Phaser.Scene {
         this.lights
           .addLight(this.door22.x, 1802, 35)
           .setIntensity(0.5)
-          .setScrollFactor(0.95, 1)
+          .setScrollFactor(.95, 1)
           .setColor(0x90ee90);
 
         this.door22.anims.play("open-door", true);
@@ -837,7 +821,7 @@ class scene0 extends Phaser.Scene {
 
                   .addLight(this.door13.x, 2473, 35)
                   .setIntensity(0.5)
-                  .setScrollFactor(0.95, 1)
+                  .setScrollFactor(.95, 1)
                   .setColor(0xff0000);
               }
             });
@@ -863,7 +847,7 @@ class scene0 extends Phaser.Scene {
 
                 .addLight(this.door14.x, 265, 35)
                 .setIntensity(0.5)
-                .setScrollFactor(0.95, 1)
+                .setScrollFactor(.95, 1)
                 .setColor(0xff0000);
             }
           });
@@ -887,7 +871,7 @@ class scene0 extends Phaser.Scene {
               this.light15 = this.lights
                 .addLight(this.door15.x, 3497, 35) //ANA VITORIA
                 .setIntensity(0.5)
-                .setScrollFactor(0.95, 1)
+                .setScrollFactor(.95, 1)
                 .setColor(0xff0000);
             }
           });
@@ -1113,9 +1097,8 @@ class scene0 extends Phaser.Scene {
       }
     }
   }
-
+  
   collectEng(player, engrenagens) {
-    engrenagens.disableBody(true, true);
 
     this.iaBox.setVelocityX(-100);
 
@@ -1123,15 +1106,7 @@ class scene0 extends Phaser.Scene {
     this.scoreText.setText("Engrenagens: " + this.score + "/4");
   }
 
-    collect3Eng(player, engrenagem3) {
-      engrenagem3.disableBody(true, true);
 
-      this.collectEng3 = true;
-
-    this.score += 1;
-    this.scoreText.setText("Engrenagens: " + this.score + "/4");
-    }
-  
   collectBag(player, jetBag) {
     jetBag.disableBody(true, true);
 
