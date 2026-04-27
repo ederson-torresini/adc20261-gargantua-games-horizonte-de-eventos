@@ -19,6 +19,7 @@ class Game extends Phaser.Game {
     this.cargaJp;
     this.cargaJpText;
     this.o2;
+    this.estoutrabalhando;
     
     this.scene.add("start", start);
     this.scene.add("scene0", scene0);

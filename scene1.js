@@ -3,11 +3,8 @@ class scene1 extends Phaser.Scene {
     super("scene1");
 
     this.speed = 200;
-    /*this.direction = true;
-    this.doubleJump = false;
-    this.score = 0;
-    this.scoreText;
-    this.jetPack = false;*/
+    this.estoutrabalhando = true;
+  
   }
 
   preload() {
@@ -15,12 +12,6 @@ class scene1 extends Phaser.Scene {
 
     this.load.audio("passos", "walkamongus.mp3");
     this.load.audio("trilhasonora", "trilhasonora.mp3");
-
-    //preload o asset do espaço ao fundo
-    //this.load.image("space", "assets-usados/space1.png", {
-    //  frameWidth: 1536,
-    //  frameHeight: 3000,
-    //});
 
     //preload do tilemap da faseortogonal
     this.load.tilemapTiledJSON(
@@ -482,7 +473,7 @@ class scene1 extends Phaser.Scene {
 
 
     //adiciona o player roxo
-    this.playerroxo = this.physics.add.sprite(650, 1437, "playerroxo"); //640,290 interior //650, 1437 exterior
+    this.playerroxo = this.physics.add.sprite(640, 290, "playerroxo"); //640,290 interior //650, 1437 exterior //spawn
     this.playerroxo.body.setSize(25, 10).setOffset(19, 52);
     this.playerroxo.body.allowGravity = false;
 
@@ -507,21 +498,22 @@ class scene1 extends Phaser.Scene {
     this.physics.add.collider(this.playerroxo, this.antenas);
     this.physics.add.collider(this.playerroxo, this.telescopios);
     this.physics.add.collider(this.playerroxo, this.osciloscopios);
-    //this.physics.add.collider(this.playerroxo, this.limitenorte);
-    this.physics.add.collider(this.playerroxo, this.limitesul);
-    this.physics.add.collider(this.playerroxo, this.limiteoeste);
-    this.physics.add.collider(this.playerroxo, this.limiteleste);
+    
+    if (this.estoutrabalhando === false) {
+      this.physics.add.collider(this.playerroxo, this.limitenorte);
+      this.physics.add.collider(this.playerroxo, this.limitesul);
+      this.physics.add.collider(this.playerroxo, this.limiteoeste);
+      this.physics.add.collider(this.playerroxo, this.limiteleste);
+    }
 
     this.layerParede.setCollisionByProperty({ collides: true });
 
     //camera
-    this.cameras.main.startFollow(this.playerroxo, true, 0.1, 0.1).zoom = 1.5;
-    /*this.cameras.main.setBounds(
-      0,
-      0,
-      this.tilemap.widthInPixels,
-      this.tilemap.heightInPixels,
-    );*/
+    this.cameras.main.startFollow(this.playerroxo, true, 0.1, 0.1);
+
+    if (this.estoutrabalhando === false) {
+      this.cameras.main.startFollow(this.playerroxo, true, 0.1, 0.1).zoom = 1.5;
+    }
 
     // Texto de posição do playerroxo atualizado a cada segundo
     this.positionText = this.add
@@ -543,12 +535,6 @@ class scene1 extends Phaser.Scene {
       },
     });
 
-    /*this.physics.world.setBounds(
-      0,
-      0,
-      this.tilemap.widthInPixels,
-      this.tilemap.heightInPixels,
-    );*/
   } //fim create
 
   update() {
@@ -598,28 +584,21 @@ class scene1 extends Phaser.Scene {
       this.limites,
     );
 
-    if (isOverlapLimites) {
-      // Define as bounds da câmera baseado no sprite limites
-      const limitesLeft = 40
-      const limitesTop = 950
-      const limitesRight = 1302;
-      const limitesBottom = 1720;
+    if (this.estoutrabalhando === false) {
+      if (isOverlapLimites) {
+        // Define as bounds da câmera baseado no sprite limites
+        const limitesLeft = 40
+        const limitesTop = 950
+        const limitesRight = 1302;
+        const limitesBottom = 1720;
 
-      this.cameras.main.setBounds(
-        limitesLeft,
-        limitesTop,
-        limitesRight - limitesLeft,
-        limitesBottom - limitesTop,)
-     // );
-    } /*else {
-      // Remove as bounds quando sair do overlap
-      this.cameras.main.setBounds(
-        0,
-        0,
-        this.sys.game.config.width * 100,
-        this.sys.game.config.height * 100,
-      );
-    }*/
+        this.cameras.main.setBounds(
+          limitesLeft,
+          limitesTop,
+          limitesRight - limitesLeft,
+          limitesBottom - limitesTop,)
+      }
+    }
 
     // Animações e som baseado no movimento
     const moving = Math.abs(horizontal) > 0.1 || Math.abs(vertical) > 0.1;
