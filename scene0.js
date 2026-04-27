@@ -1,3 +1,4 @@
+import start from "./start.js";
 class scene0 extends Phaser.Scene {
   constructor() {
     super("scene0");
@@ -9,7 +10,6 @@ class scene0 extends Phaser.Scene {
     this.fase5 = false;
     this.jetPack = false;
     this.energy = true;
-    this.minEnergy = false;
     this.keys = null;
     this.cargaJp = 10;
     this.o2 = 100;
@@ -651,6 +651,7 @@ class scene0 extends Phaser.Scene {
       this.direction = true;
 
       this.o2 = 100;
+      this.life -= 1;
       
     }
     }, 200);
@@ -741,7 +742,8 @@ class scene0 extends Phaser.Scene {
 
     this.physics.add.overlap(this.player, this.boxes, () => {
       this.player.setPosition(82, 2508).setVelocity(0, 0).anims.play("idleRight");
-          this.direction = true;
+      this.direction = true;
+      this.life -= 1;
       this.cargaJp = 10;
       this.cargaJpText.setText("Cargas: " + this.cargaJp);
       if (this.collectEng3 === true) {
@@ -756,6 +758,8 @@ class scene0 extends Phaser.Scene {
     });
 
     this.physics.add.overlap(this.player, this.cai, () => {
+      this.life -= 1;
+      //this.scoreText.setText("Engrenagens: " + this.life + "/4");
       this.player.setPosition(92, 1066).setVelocity(0, 0).anims.play("idleRight");
           this.direction = true;
       if (this.collectEng1 === true) {
@@ -878,7 +882,6 @@ class scene0 extends Phaser.Scene {
           this.lamp
             .setIntensity(.95);
           this.energy = false;
-          this.minEnergy = true;
           this.fase5 = true;
           this.door15.anims.play("close-door", true);
           this.door15.once("animationcomplete", (anim, frame) => {
@@ -935,8 +938,16 @@ class scene0 extends Phaser.Scene {
 
   update() {
 
+   /* if (this.life === 0) {
+      
+      this.life = 6;
+      this.scene.reload("scene0");
+      this.scene.start("start");
+     // this.life = 6;
+    }*/
 
-    if (this.minEnergy === false && this.fase5 === false && this.energy === true) {
+
+    if (this.fase5 === false && this.energy === true) {
       this.lights.enable().setAmbientColor(0xe0f7ff);
       
    } else if (this.fase5 === true && this.energy === false) {
