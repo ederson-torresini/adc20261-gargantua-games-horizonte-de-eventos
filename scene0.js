@@ -10,9 +10,10 @@ class scene0 extends Phaser.Scene {
     this.jetPack = false;
     this.energy = true;
     this.keys = null;
-    this.cargaJp = 8;
+    this.cargaJp = 10;
     this.o2 = 100;
     this.collectEng3 = false;
+    this.life = 6;
 
   }
   preload() {
@@ -345,10 +346,20 @@ class scene0 extends Phaser.Scene {
       .create(1059, 1652, "engrenagem")
       .setScale(0.3)
       .anims.play("engrenagem-idle", true);
-    this.engrenagem3 = this.engrenagens
+    
+    this.engrenagem3 = this.physics.add.sprite(1209, 2604, "engrnagem");
+    this.engrenagem3
+      .setScale(.3)
+      .anims.play("engrenagem-idle", true)
+      .setImmovable(true)
+      .setPipeline("light2D")
+      .body.allowGravity = false;
+    
+        /*this.engrenagens
       .create(1209, 2604, "engrenagem")
       .setScale(0.3)
-      .anims.play("engrenagem-idle", true);
+      .anims.play("engrenagem-idle", true);*/
+
     this.engrenagens
       .create(531, 3340, "engrenagem")
       .setScale(0.3)
@@ -704,6 +715,14 @@ class scene0 extends Phaser.Scene {
       this,
     );
 
+    this.physics.add.overlap(
+      this.player,
+      this.engrenagem3,
+      this.collect3Eng,
+      null,
+      this,
+    );
+
     this.physics.add.collider(this.engrenagens, this.plataform2);
     this.physics.add.collider(this.engrenagens, this.plataformG2);
 
@@ -742,8 +761,11 @@ class scene0 extends Phaser.Scene {
 
     this.physics.add.overlap(this.player, this.boxes, () => {
       this.player.setPosition(82, 2508).setVelocity(0, 0);
-      this.cargaJp = 7;
+      this.cargaJp = 10;
       this.cargaJpText.setText("Cargas: " + this.cargaJp);
+      if (this.collectEng3) {
+        
+      }
     });
 
     this.physics.add.overlap(this.player, this.cai, () => {
@@ -1100,6 +1122,16 @@ class scene0 extends Phaser.Scene {
     this.score += 1;
     this.scoreText.setText("Engrenagens: " + this.score + "/4");
   }
+
+    collect3Eng(player, engrenagem3) {
+      engrenagem3.disableBody(true, true);
+
+      this.collectEng3 = true;
+
+    this.score += 1;
+    this.scoreText.setText("Engrenagens: " + this.score + "/4");
+    }
+  
   collectBag(player, jetBag) {
     jetBag.disableBody(true, true);
 
