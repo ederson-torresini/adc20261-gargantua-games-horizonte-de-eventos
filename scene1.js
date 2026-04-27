@@ -3,8 +3,8 @@ class scene1 extends Phaser.Scene {
     super("scene1");
 
     this.speed = 200;
-    this.direction = true;
-    /*this.doubleJump = false;
+    /*this.direction = true;
+    this.doubleJump = false;
     this.score = 0;
     this.scoreText;
     this.jetPack = false;*/
@@ -22,7 +22,7 @@ class scene1 extends Phaser.Scene {
     //  frameHeight: 3000,
     //});
 
-    //preload do tilemap da faseortogonal1(troquei de arquivo pois na salaortogonal tem tilesets que não estão sendo usados e estava dando erro)
+    //preload do tilemap da faseortogonal
     this.load.tilemapTiledJSON(
       "faseortogonal",
       "mapasv4/faseortogonalatualizada.json",
@@ -119,6 +119,8 @@ class scene1 extends Phaser.Scene {
       .setPipeline("Light2D")
       .setAlpha(0);
     // .setScrollFactor(0.9, 1);
+
+    this.lights.enable().setAmbientColor(0xe0f7ff);
 
     //animações
     this.anims.create({
@@ -287,8 +289,6 @@ class scene1 extends Phaser.Scene {
     this.bigboss.create(650, 549, "bigboss").setSize(210, 17);
     this.bigboss.create(530, 555, "bigboss").setSize(30, 20);*/
 
-    this.lights.enable().setAmbientColor(0xe0f7ff);
-
     //console do meio
     this.consolelongo = this.physics.add.sprite(645, 350, "consolelongo");
     this.consolelongo.body.setSize(323, 25).setOffset(0, 27);
@@ -392,19 +392,44 @@ class scene1 extends Phaser.Scene {
       pipeline: "Light2D",
     });
 
-    this.antenas.create(537, 1324, "NewPiskel").setScale(-1, 1).body.setSize(20, 30).setOffset(27, 0);
+    this.antenas
+      .create(537, 1324, "NewPiskel")
+      .setScale(-1, 1)
+      .body.setSize(20, 30)
+      .setOffset(27, 0);
 
-    this.antenas.create(880, 1355, "NewPiskel").setScale(-1, 1).body.setSize(20, 30).setOffset(27, 0);
+    this.antenas
+      .create(880, 1355, "NewPiskel")
+      .setScale(-1, 1)
+      .body.setSize(20, 30)
+      .setOffset(27, 0);
 
-    this.antenas.create(1170, 1327, "NewPiskel").body.setSize(20, 30).setOffset(10, 0);
+    this.antenas
+      .create(1170, 1327, "NewPiskel")
+      .body.setSize(20, 30)
+      .setOffset(10, 0);
 
-    this.antenas.create(820, 1420, "NewPiskel").setScale(-1, 1).body.setSize(20, 30).setOffset(27, 0);
+    this.antenas
+      .create(820, 1420, "NewPiskel")
+      .setScale(-1, 1)
+      .body.setSize(20, 30)
+      .setOffset(27, 0);
 
-    this.antenas.create(433, 1483, "NewPiskel").body.setSize(20, 30).setOffset(10, 0);
+    this.antenas
+      .create(433, 1483, "NewPiskel")
+      .body.setSize(20, 30)
+      .setOffset(10, 0);
 
-      this.antenas.create(880, 1514, "NewPiskel").setScale(-1, 1).body.setSize(20, 30).setOffset(27, 0);
+    this.antenas
+      .create(880, 1514, "NewPiskel")
+      .setScale(-1, 1)
+      .body.setSize(20, 30)
+      .setOffset(27, 0);
 
-      this.antenas.create(175, 1546, "NewPiskel").body.setSize(20, 30).setOffset(10, 0);
+    this.antenas
+      .create(175, 1546, "NewPiskel")
+      .body.setSize(20, 30)
+      .setOffset(10, 0);
 
     //telescopios exterior
     this.telescopios = this.physics.add.group({
@@ -430,11 +455,38 @@ class scene1 extends Phaser.Scene {
 
     this.osciloscopios.create(980, 1560, "osciloscopio").body.setSize(35, 17);
 
+    this.limitenorte = this.physics.add.sprite(670, 1270, "bigboss"); //662, 1347 667 1460
+    this.limitenorte.body.allowGravity = false;
+    this.limitenorte.setImmovable(true);
+    this.limitenorte.setSize(1280, 17);
+
+    this.limitesul = this.physics.add.sprite(670, 1735, "bigboss"); //662, 1347 667 1460
+    this.limitesul.body.allowGravity = false;
+    this.limitesul.setImmovable(true);
+    this.limitesul.setSize(1280, 17);
+
+    this.limiteoeste = this.physics.add.sprite(27, 1502, "bigboss"); //662, 1347 667 1460
+    this.limiteoeste.body.allowGravity = false;
+    this.limiteoeste.setImmovable(true);
+    this.limiteoeste.setSize(17, 448);
+
+    this.limiteleste = this.physics.add.sprite(1315, 1502, "bigboss"); //662, 1347 667 1460
+    this.limiteleste.body.allowGravity = false;
+    this.limiteleste.setImmovable(true);
+    this.limiteleste.setSize(17, 448);
+
+    this.limites = this.physics.add.sprite(670, 1347, "bigboss"); //662, 1347 667 1460
+    this.limites.body.allowGravity = false;
+    this.limites.setImmovable(true);
+    this.limites.setSize(1280, 768);
+
+
     //adiciona o player roxo
     this.playerroxo = this.physics.add.sprite(650, 1437, "playerroxo"); //640,290 interior //650, 1437 exterior
     this.playerroxo.body.setSize(25, 10).setOffset(19, 52);
     this.playerroxo.body.allowGravity = false;
 
+    //colisoes
     this.physics.add.collider(this.playerroxo, this.layerPiso);
     this.physics.add.collider(this.playerroxo, this.layerParede);
     this.physics.add.collider(this.playerroxo, this.consolelongo);
@@ -455,6 +507,10 @@ class scene1 extends Phaser.Scene {
     this.physics.add.collider(this.playerroxo, this.antenas);
     this.physics.add.collider(this.playerroxo, this.telescopios);
     this.physics.add.collider(this.playerroxo, this.osciloscopios);
+    //this.physics.add.collider(this.playerroxo, this.limitenorte);
+    this.physics.add.collider(this.playerroxo, this.limitesul);
+    this.physics.add.collider(this.playerroxo, this.limiteoeste);
+    this.physics.add.collider(this.playerroxo, this.limiteleste);
 
     this.layerParede.setCollisionByProperty({ collides: true });
 
@@ -535,6 +591,35 @@ class scene1 extends Phaser.Scene {
     // Aplica velocidade
     this.playerroxo.setVelocityX(horizontal * this.speed);
     this.playerroxo.setVelocityY(vertical * this.speed);
+
+    // Verifica overlap com limites e ajusta as bounds da câmera
+    const isOverlapLimites = this.physics.overlap(
+      this.playerroxo,
+      this.limites,
+    );
+
+    if (isOverlapLimites) {
+      // Define as bounds da câmera baseado no sprite limites
+      const limitesLeft = 40
+      const limitesTop = 950
+      const limitesRight = 1302;
+      const limitesBottom = 1720;
+
+      this.cameras.main.setBounds(
+        limitesLeft,
+        limitesTop,
+        limitesRight - limitesLeft,
+        limitesBottom - limitesTop,)
+     // );
+    } /*else {
+      // Remove as bounds quando sair do overlap
+      this.cameras.main.setBounds(
+        0,
+        0,
+        this.sys.game.config.width * 100,
+        this.sys.game.config.height * 100,
+      );
+    }*/
 
     // Animações e som baseado no movimento
     const moving = Math.abs(horizontal) > 0.1 || Math.abs(vertical) > 0.1;
