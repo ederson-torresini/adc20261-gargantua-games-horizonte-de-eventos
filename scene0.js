@@ -102,7 +102,7 @@ class scene0 extends Phaser.Scene {
       frameHeight: 23,
     });
 
-    this.load.spritesheet("inimigo", "inimigo.png", {
+    this.load.spritesheet("inimigo", "inimigo3.png", {
       frameWidth: 102,
       frameHeight: 70,
     });
@@ -1232,12 +1232,12 @@ class scene0 extends Phaser.Scene {
         if (this.inimigo.y === 1837) {
           
          if (this.player.x - this.inimigo.x > 1) {
-            //this.inimigo.flipX = false;
+            this.inimigo.flipX = true;
            this.inimigo.setVelocityX(90)
              .anims.play("enemyWalk", true);
            
           } else if (this.player.x - this.inimigo.x < 1) {
-            //this.inimigo.flipX = true;
+            this.inimigo.flipX = false;
            this.inimigo.setVelocityX(-90)
             .anims.play("enemyWalk", true);
          }
