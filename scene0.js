@@ -13,6 +13,7 @@ class scene0 extends Phaser.Scene {
     this.keys = null;
     this.cargaJp = 10;
     this.o2 = 100;
+    this.o2Ship = true;//1231 3351
     this.collectEng1 = false;
     this.collectEng2 = false;
     this.collectEng3 = false;
@@ -324,14 +325,14 @@ class scene0 extends Phaser.Scene {
     
     this.o2Text = this.add
       .text(100, 100, "O2: " + this.o2 + "%", {
-        fontSize: "32px",
-        fill: "#000000",
+        fontSize: "16px",
+        fill: "#ffffff",
       })
       .setScrollFactor(0);
 
     this.scoreText = this.add
       .text(100, 80, "Engrenagens: " + this.score + "/4", {
-        fontSize: "32px",
+        fontSize: "16px",
         fill: "#000",
       })
       .setScrollFactor(0);
@@ -635,13 +636,19 @@ class scene0 extends Phaser.Scene {
     this.invisible
       .setImmovable(true)
       .setPipeline("Light2D").body.allowGravity = false;
+    
+    this.invisible2 = this.physics.add.sprite(1231, 3351, "invisible");
+    this.invisible2
+      .setImmovable(true)
+      .setPipeline("Light2D").body.allowGravity = false;
 
-     setInterval(() => {
-    if (this.o2 < 100 && this.fase5 === false) {
+    setInterval(() => {
+       
+    if (this.o2 < 100 && this.o2Ship === true) {
       this.o2 += 1;
       this.o2Text.setText("O2: " + this.o2 + "%");
 
-    } else if (this.o2 > 0 && this.fase5 === true) {
+    } else if (this.o2 > 0 && this.o2Ship === false) {
         this.o2 -= 1;
         this.o2Text.setText("O2: " + this.o2 + "%");
         
@@ -650,11 +657,26 @@ class scene0 extends Phaser.Scene {
       this.player.setPosition(92, 3532).setVelocity(0, 0).anims.play("idleRightJP");
       this.direction = true;
 
+      this.invisible.enableBody(true, 340, 3396, true, true);
+      this.platform12.setPosition(340, 3425);//.setVelocityX(0);
+      this.platform15.setPosition(955, 3375);//.setVelocityX(0);
+
+
       this.o2 = 100;
+      this.fase5 = true;
       this.life -= 1;
+
+      if (this.collectEng5) {
+
+        this.engrenagem5.enableBody(true, 531, 3340, true, true);
+
+        this.score -= 1;
+        this.scoreText.setText("Engrenagens: " + this.score + "/4");
+
+      }
       
     }
-    }, 200);
+    }, 500);
 
     this.light21 = this.lights
       .addLight(this.door21.x, 880, 40)
@@ -738,6 +760,11 @@ class scene0 extends Phaser.Scene {
         this.platform15.setVelocityX(this.platform15.body.velocity.x * -1);
       }, 1300);
     }
+    });
+
+    this.physics.add.overlap(this.player, this.invisible2, () => {
+      this.invisible.disableBody(true, true);
+      this.o2Ship = true;
     });
 
     this.physics.add.overlap(this.player, this.boxes, () => {
@@ -883,6 +910,7 @@ class scene0 extends Phaser.Scene {
             .setIntensity(.95);
           this.energy = false;
           this.fase5 = true;
+          this.o2Ship = false;
           this.door15.anims.play("close-door", true);
           this.door15.once("animationcomplete", (anim, frame) => {
             if (anim.key === "close-door") {
@@ -901,7 +929,7 @@ class scene0 extends Phaser.Scene {
 
     this.cargaJpText = this.add
       .text(270, 50, "Cargas: " + this.cargaJp, {
-        fontSize: "32px",
+        fontSize: "16px",
         fill: "#ffffff00",
       })
       .setScrollFactor(0);
@@ -954,7 +982,7 @@ class scene0 extends Phaser.Scene {
       this.lights.setAmbientColor(0x000000);
      
     } else if (this.fase5 === false && this.energy === false) {
-      this.lights.enable().setAmbientColor(0x202020);
+      this.lights.setAmbientColor(0x202020);
     }
 
       this.lamp.x = this.player.x;
