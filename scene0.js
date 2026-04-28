@@ -954,7 +954,7 @@ class scene0 extends Phaser.Scene {
       this.lights.setAmbientColor(0x000000);
      
     } else if (this.fase5 === false && this.energy === false) {
-      this.lights.setAmbientColor(0x101010);
+      this.lights.enable().setAmbientColor(0x202020);
     }
 
       this.lamp.x = this.player.x;
