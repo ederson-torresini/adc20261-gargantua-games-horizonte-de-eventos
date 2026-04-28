@@ -101,7 +101,7 @@ class scene0 extends Phaser.Scene {
       frameHeight: 23,
     });
 
-    this.load.spritesheet("inimigo", "playerroxo.png", {
+    this.load.spritesheet("inimigo", "inimigo.png", {
       frameWidth: 64,
       frameHeight: 64
     });
@@ -746,10 +746,25 @@ class scene0 extends Phaser.Scene {
       this.collectEng5 = true;
     });
 
-    // Overlap entre inimigo e player 
-    /*this.physics.add.overlap(this.player, this.inimigo, () => {
-      //aqui da pra por que diminui uma vida do player
-    });*/
+    // Overlap entre inimigo e player //voltar
+    this.physics.add.overlap(this.player, this.inimigo, () => {
+      this.player
+        .setPosition(108, 1836)
+        .setVelocity(0, 0)
+        .anims.play("idleRight");
+      this.direction = true;
+      this.life -= 1;
+      this.cargaJp = 10;
+      this.cargaJpText.setText("Cargas: " + this.cargaJp);
+      if (this.collectEng2 === true) {
+        this.score -= 1;
+        this.scoreText.setText("Engrenagens: " + this.score + "/4");
+
+        this.engrenagem2.enableBody(true, 1209, 2604, true, true);
+
+        this.collectEng2 = false;
+      }
+    });
 
     this.physics.add.collider(this.player, this.layerPiso);
     this.physics.add.collider(this.player, this.platforms);
