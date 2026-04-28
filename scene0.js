@@ -102,8 +102,8 @@ class scene0 extends Phaser.Scene {
     });
 
     this.load.spritesheet("inimigo", "inimigo.png", {
-      frameWidth: 64,
-      frameHeight: 64
+      frameWidth: 102,
+      frameHeight: 70,
     });
   }
 
@@ -1208,10 +1208,10 @@ class scene0 extends Phaser.Scene {
       if (this.inimigo.body.blocked.down || this.inimigo.body.touching.down) { //se inimigo estiver no chão, ele segue o player
         if (this.player.x - this.inimigo.x > 32) {
           this.inimigo.flipX = false;
-          this.inimigo.setVelocityX(100);
+          this.inimigo.setVelocityX(80);
         } else if (this.inimigo.x - this.player.x > 32) {
           this.inimigo.flipX = true;
-          this.inimigo.setVelocityX(-100);
+          this.inimigo.setVelocityX(-80);
         } else {
           this.inimigo.setVelocityX(0);
         }
