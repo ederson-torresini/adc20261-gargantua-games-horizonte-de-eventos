@@ -19,6 +19,7 @@ class scene0 extends Phaser.Scene {
     this.collectEng3 = false;
     this.collectEng5 = false;
     this.life = 6;
+    this.enemyGravity = false;
 
 
   }
@@ -327,6 +328,16 @@ class scene0 extends Phaser.Scene {
         end: 0,
       }),
       frameRate: 2,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "enemyWalk",
+      frames: this.anims.generateFrameNumbers("inimigo", {
+        start: 26,
+        end: 33,
+      }),
+      frameRate: 12,
       repeat: -1,
     });
     
@@ -713,7 +724,11 @@ class scene0 extends Phaser.Scene {
 
     //inimigo
       this.inimigo = this.physics.add.sprite(595, 1584, "inimigo", 0);
-      this.inimigo.body.allowGravity = false;
+      this.inimigo
+        .setPipeline("Light2D")
+        .body.setSize(30, 37)
+        .setOffset(40, 17)
+        .allowGravity = false;
     
     
     this.lamp = this.lights
@@ -753,14 +768,17 @@ class scene0 extends Phaser.Scene {
         .setVelocity(0, 0)
         .anims.play("idleRight");
       this.direction = true;
+      this.inimigo
+        .setVelocity(0, 0)
+        .setPosition(595, 1584);
+      this.enemyGravity = true;
       this.life -= 1;
-      this.cargaJp = 10;
-      this.cargaJpText.setText("Cargas: " + this.cargaJp);
+      
       if (this.collectEng2 === true) {
         this.score -= 1;
         this.scoreText.setText("Engrenagens: " + this.score + "/4");
 
-        this.engrenagem2.enableBody(true, 1209, 2604, true, true);
+        this.engrenagem2.enableBody(true, 1059, 1652, true, true);
 
         this.collectEng2 = false;
       }
@@ -855,7 +873,8 @@ class scene0 extends Phaser.Scene {
                 .setIntensity(0.5)
                 .setScrollFactor(.95, 1)
                 .setColor(0xff0000);
-
+              this.enemyGravity = true;
+    
               this.jetBag = this.physics.add.sprite(595, 1584, "jetBag");
               this.jetBag
                 .setScrollFactor(.9, 1)
@@ -988,6 +1007,8 @@ class scene0 extends Phaser.Scene {
       },
     });
 
+
+
     this.keys = this.input.keyboard.addKeys({
       left: Phaser.Input.Keyboard.KeyCodes.A,
       right: Phaser.Input.Keyboard.KeyCodes.D,
@@ -1007,7 +1028,6 @@ class scene0 extends Phaser.Scene {
        this.scene.start("start");
       // this.life = 6;
      }*/
-
 
     if (this.fase5 === false && this.energy === true) {
       this.lights.enable().setAmbientColor(0xe0f7ff);
@@ -1199,23 +1219,37 @@ class scene0 extends Phaser.Scene {
     }
 
     // movimentação inimigo
-      if (this.inimigo.y != this.player.y) {
-        this.inimigo.body.allowGravity = false;
-        this.inimigo.setVelocityY(100); //quando ele está caindo, e gravidade n funciona e a vel y é 100
-      } else {
-        this.inimigo.body.allowGravity = true;
+      if (this.enemyGravity === true) {
+        //this.inimigo.body.allowGravity = false;
+        this.inimigo.setVelocity(0, 90);
+        this.enemyGravity = false//quando ele está caindo, e gravidade n funciona e a vel y é 100
+       } else if(this.enemyGravity === false) {
+          this.inimigo.body.allowGravity = false;
       }
-      if (this.inimigo.body.blocked.down || this.inimigo.body.touching.down) { //se inimigo estiver no chão, ele segue o player
-        if (this.player.x - this.inimigo.x > 32) {
-          this.inimigo.flipX = false;
-          this.inimigo.setVelocityX(80);
-        } else if (this.inimigo.x - this.player.x > 32) {
-          this.inimigo.flipX = true;
-          this.inimigo.setVelocityX(-80);
-        } else {
+        if (this.inimigo.body.blocked.down) { //se inimigo estiver no chão, ele segue o player
+      setInterval(() => {
+        
+        if (this.inimigo.y === 1837) {
+          
+         if (this.player.x - this.inimigo.x > 1) {
+            //this.inimigo.flipX = false;
+           this.inimigo.setVelocityX(90)
+             .anims.play("enemyWalk", true);
+           
+          } else if (this.player.x - this.inimigo.x < 1) {
+            //this.inimigo.flipX = true;
+           this.inimigo.setVelocityX(-90)
+            .anims.play("enemyWalk", true);
+         }
+          
+        } else if (this.inimigo.y != 1837) {
           this.inimigo.setVelocityX(0);
         }
-      }
+        
+      }, 100);
+      
+        }
+    
     }
   
   
