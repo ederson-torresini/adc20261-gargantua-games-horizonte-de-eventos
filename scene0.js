@@ -712,6 +712,8 @@ class scene0 extends Phaser.Scene {
 
     //inimigo
     this.inimigo = this.physics.add.sprite(595, 1584, "inimigo", 0);
+    //this.inimigo.body.allowGravity = false;
+    
 
     this.lamp = this.lights
       .addLight(this.player.x, this.player.y, 40)
@@ -742,6 +744,11 @@ class scene0 extends Phaser.Scene {
       this.engrenagem5.disableBody(true, true);
       this.collectEng5 = true;
     });
+
+    // Overlap entre inimigo e player 
+    /*this.physics.add.overlap(this.player, this.inimigo, () => {
+      //aqui da pra por que diminui uma vida do player
+    });*/
 
     this.physics.add.collider(this.player, this.layerPiso);
     this.physics.add.collider(this.player, this.platforms);
@@ -1176,21 +1183,25 @@ class scene0 extends Phaser.Scene {
       }
     }
 
-    // comportamento simples do inimigo: perseguir o player
-    if (this.inimigo.body.blocked.down || this.inimigo.body.touching.down) {
-      if (this.player && this.inimigo) {
+    // movimentação inimigo
+    if (this.inimigo.y != this.player.y) {
+      this.inimigo.body.allowGravity = false;
+      this.inimigo.setVelocityY(100); //quando ele está caindo, e gravidade n funciona e a vel y é 100
+    } else {
+      this.inimigo.body.allowGravity = true;}
+    if (this.inimigo.body.blocked.down || this.inimigo.body.touching.down) { //se inimigo estiver no chão, ele segue o player
         if (this.player.x - this.inimigo.x > 32) {
           this.inimigo.flipX = false;
-          this.inimigo.setVelocityX(50);
+          this.inimigo.setVelocityX(100);
         } else if (this.inimigo.x - this.player.x > 32) {
           this.inimigo.flipX = true;
-          this.inimigo.setVelocityX(-50);
+          this.inimigo.setVelocityX(-100);
         } else {
           this.inimigo.setVelocityX(0);
-        }
       }
     }
   }
+  
   
   collectEng(player, engrenagens) {
 
