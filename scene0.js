@@ -20,6 +20,7 @@ class scene0 extends Phaser.Scene {
     this.collectEng5 = false;
     this.life = 6;
 
+
   }
   preload() {
 
@@ -71,7 +72,7 @@ class scene0 extends Phaser.Scene {
       frameHeight: 8,
     });
 
-    this.load.spritesheet("door", "porta64x64.png", {
+    this.load.spritesheet("door", "porta.png", {
       frameHeight: 64,
       frameWidth: 64,
     });
@@ -703,7 +704,7 @@ class scene0 extends Phaser.Scene {
       .setPipeline("Light2D")
       .anims.play("iaSpeak").body.allowGravity = false;
 
-    this.player = this.physics.add.sprite(108, 1836, "player", 3); //fase1:92, 1066/445, 911//fase2:108, 1836/1138, 1836//fase3: 69, 2496/1256,2356//fase4: 92,300//fase5:92, 3532//
+    this.player = this.physics.add.sprite(92, 1066, "player", 3); //fase1:92, 1066/445, 911//fase2:108, 1836/1138, 1836//fase3: 69, 2496/1256,2356//fase4: 92,300//fase5:92, 3532//
     this.player.body.setSize(20, 40);
     this.cameras.main.startFollow(this.player, false, 1, 0).zoom = 1.2;
     this.cameras.main.scrollY =
@@ -711,10 +712,10 @@ class scene0 extends Phaser.Scene {
     this.player.anims.play("idleRight", true).setPipeline("Light2D");
 
     //inimigo
-    this.inimigo = this.physics.add.sprite(595, 1584, "inimigo", 0);
-    //this.inimigo.body.allowGravity = false;
+      this.inimigo = this.physics.add.sprite(595, 1584, "inimigo", 0);
+      this.inimigo.body.allowGravity = false;
     
-
+    
     this.lamp = this.lights
       .addLight(this.player.x, this.player.y, 40)
       .setIntensity(0)
@@ -846,7 +847,6 @@ class scene0 extends Phaser.Scene {
                 .setPipeline("Light2D")
                 .setVelocityY(100).body.allowGravity = false;
               this.physics.add.collider(this.jetBag, this.layerPiso);
-
               this.physics.add.overlap(
                 this.player,
                 this.jetBag,
@@ -1184,12 +1184,13 @@ class scene0 extends Phaser.Scene {
     }
 
     // movimentação inimigo
-    if (this.inimigo.y != this.player.y) {
-      this.inimigo.body.allowGravity = false;
-      this.inimigo.setVelocityY(100); //quando ele está caindo, e gravidade n funciona e a vel y é 100
-    } else {
-      this.inimigo.body.allowGravity = true;}
-    if (this.inimigo.body.blocked.down || this.inimigo.body.touching.down) { //se inimigo estiver no chão, ele segue o player
+      if (this.inimigo.y != this.player.y) {
+        this.inimigo.body.allowGravity = false;
+        this.inimigo.setVelocityY(100); //quando ele está caindo, e gravidade n funciona e a vel y é 100
+      } else {
+        this.inimigo.body.allowGravity = true;
+      }
+      if (this.inimigo.body.blocked.down || this.inimigo.body.touching.down) { //se inimigo estiver no chão, ele segue o player
         if (this.player.x - this.inimigo.x > 32) {
           this.inimigo.flipX = false;
           this.inimigo.setVelocityX(100);
@@ -1198,9 +1199,9 @@ class scene0 extends Phaser.Scene {
           this.inimigo.setVelocityX(-100);
         } else {
           this.inimigo.setVelocityX(0);
+        }
       }
     }
-  }
   
   
   collectEng(player, engrenagens) {
