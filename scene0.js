@@ -81,9 +81,9 @@ class scene0 extends Phaser.Scene {
       frameHeight: 8,
     });
 
-    this.load.spritesheet("engrenagem", "engrenagem.png", {
-      frameWidth: 64,
-      frameHeight: 64,
+    this.load.spritesheet("engrenagem", "engrenagemnova.png", {
+      frameWidth: 32,
+      frameHeight: 32,
     });
 
     this.load.spritesheet("box", "box.png", {
@@ -99,7 +99,13 @@ class scene0 extends Phaser.Scene {
       frameWidth: 20,
       frameHeight: 23,
     });
+
+    this.load.spritesheet("inimigo", "playerroxo.png", {
+      frameWidth: 64,
+      frameHeight: 64
+    });
   }
+
 
   create() {
 
@@ -345,22 +351,22 @@ class scene0 extends Phaser.Scene {
 
     this.engrenagem1 = this.engrenagens
       .create(1138, 968, "engrenagem")
-      .setScale(0.3)
+      .setScale(0.7)
       .anims.play("engrenagem-idle", true);
     
     this.engrenagem2 = this.engrenagens
       .create(1059, 1652, "engrenagem")
-      .setScale(0.3)
+      .setScale(0.7)
       .anims.play("engrenagem-idle", true);
     
     this.engrenagem3 = this.engrenagens
       .create(1209, 2604, "engrenagem")
-      .setScale(0.3)
+      .setScale(0.7)
       .anims.play("engrenagem-idle", true);
 
     this.engrenagem5 = this.engrenagens
       .create(531, 3340, "engrenagem")
-      .setScale(0.3)
+      .setScale(0.7)
       .setPipeline("Light2D")
       .anims.play("engrenagem-idle", true);
 
@@ -540,25 +546,25 @@ class scene0 extends Phaser.Scene {
     //num intervalo de 3400ms, inverte a velocidade da plataforma 1 
 
     this.platforms.create(1140, 980, "plataform")
-     .setScrollFactor(.99, 1).setPipeline("Light2D");
+      .setScrollFactor(.99, 1).setPipeline("Light2D");
 
     this.platforms.create(160, 1710, "plataform")
-     .setScrollFactor(.99, 1).setPipeline("Light2D");
+      .setScrollFactor(.99, 1).setPipeline("Light2D");
 
     this.platforms.create(220, 3365, "plataform")
-     .setScrollFactor(.99, 1).setPipeline("Light2D");
+      .setScrollFactor(.99, 1).setPipeline("Light2D");
 
     this.platforms.create(115, 3420, "plataform")
-     .setScrollFactor(.99, 1).setPipeline("Light2D");
+      .setScrollFactor(.99, 1).setPipeline("Light2D");
 
     this.platforms.create(769, 3495, "plataform")
-     .setScrollFactor(.99, 1).setPipeline("Light2D");
+      .setScrollFactor(.99, 1).setPipeline("Light2D");
 
     this.platforms.create(841, 3400, "plataform")
-     .setScrollFactor(.99, 1).setPipeline("Light2D");
+      .setScrollFactor(.99, 1).setPipeline("Light2D");
 
     this.platforms.create(1230, 3375, "plataform")
-     .setScrollFactor(.99, 1).setPipeline("Light2D");
+      .setScrollFactor(.99, 1).setPipeline("Light2D");
 
     
     this.platform3 = this.physics.add.sprite(1050, 935, "plataform");
@@ -644,38 +650,38 @@ class scene0 extends Phaser.Scene {
 
     setInterval(() => {
        
-    if (this.o2 < 100 && this.o2Ship === true) {
-      this.o2 += 1;
-      this.o2Text.setText("O2: " + this.o2 + "%");
+      if (this.o2 < 100 && this.o2Ship === true) {
+        this.o2 += 1;
+        this.o2Text.setText("O2: " + this.o2 + "%");
 
-    } else if (this.o2 > 0 && this.o2Ship === false) {
+      } else if (this.o2 > 0 && this.o2Ship === false) {
         this.o2 -= 1;
         this.o2Text.setText("O2: " + this.o2 + "%");
         
-    } else if (this.o2 === 0) {
+      } else if (this.o2 === 0) {
 
-      this.player.setPosition(92, 3532).setVelocity(0, 0).anims.play("idleRightJP");
-      this.direction = true;
+        this.player.setPosition(92, 3532).setVelocity(0, 0).anims.play("idleRightJP");
+        this.direction = true;
 
-      this.invisible.enableBody(true, 340, 3396, true, true);
-      this.platform12.setPosition(340, 3425);//.setVelocityX(0);
-      this.platform15.setPosition(955, 3375);//.setVelocityX(0);
+        this.invisible.enableBody(true, 340, 3396, true, true);
+        this.platform12.setPosition(340, 3425);//.setVelocityX(0);
+        this.platform15.setPosition(955, 3375);//.setVelocityX(0);
 
 
-      this.o2 = 100;
-      this.fase5 = true;
-      this.life -= 1;
+        this.o2 = 100;
+        this.fase5 = true;
+        this.life -= 1;
 
-      if (this.collectEng5) {
+        if (this.collectEng5) {
 
-        this.engrenagem5.enableBody(true, 531, 3340, true, true);
+          this.engrenagem5.enableBody(true, 531, 3340, true, true);
 
-        this.score -= 1;
-        this.scoreText.setText("Engrenagens: " + this.score + "/4");
+          this.score -= 1;
+          this.scoreText.setText("Engrenagens: " + this.score + "/4");
 
-      }
+        }
       
-    }
+      }
     }, 500);
 
     this.light21 = this.lights
@@ -697,17 +703,20 @@ class scene0 extends Phaser.Scene {
       .setPipeline("Light2D")
       .anims.play("iaSpeak").body.allowGravity = false;
 
-    this.player = this.physics.add.sprite(92, 1066, "player", 3); //fase1:92, 1066/445, 911//fase2:108, 1836/1138, 1836//fase3: 69, 2496/1256,2356//fase4: 92,300//fase5:92, 3532//
+    this.player = this.physics.add.sprite(108, 1836, "player", 3); //fase1:92, 1066/445, 911//fase2:108, 1836/1138, 1836//fase3: 69, 2496/1256,2356//fase4: 92,300//fase5:92, 3532//
     this.player.body.setSize(20, 40);
     this.cameras.main.startFollow(this.player, false, 1, 0).zoom = 1.2;
     this.cameras.main.scrollY =
       this.player.y - this.cameras.main.height / 2 - 120; // Ajuste para começar mais para cima (100 pixels acima do centro do jogador)
     this.player.anims.play("idleRight", true).setPipeline("Light2D");
 
+    //inimigo
+    this.inimigo = this.physics.add.sprite(595, 1584, "inimigo", 0);
+
     this.lamp = this.lights
       .addLight(this.player.x, this.player.y, 40)
       .setIntensity(0)
-      .setColor(0xf5f5f5); 
+      .setColor(0xf5f5f5);
     
     this.physics.add.overlap(
       this.player,
@@ -746,20 +755,23 @@ class scene0 extends Phaser.Scene {
     this.physics.add.collider(this.player, this.platform12);
     this.physics.add.collider(this.player, this.platform15);
 
+    //inimigo
+    this.physics.add.collider(this.inimigo, this.layerPiso);
+
     this.physics.add.overlap(this.player, this.invisible, () => {
       this.invisible.disableBody(true, true);
       this.fase5 = false;
 
       if (this.fase5 === false && this.energy === false) {
-      this.platform12.setVelocityX(150);
-      setInterval(() => {
-        this.platform12.setVelocityX(this.platform12.body.velocity.x * -1);
-      }, 2200);
-      this.platform15.setVelocityX(150);
-      setInterval(() => {
-        this.platform15.setVelocityX(this.platform15.body.velocity.x * -1);
-      }, 1300);
-    }
+        this.platform12.setVelocityX(150);
+        setInterval(() => {
+          this.platform12.setVelocityX(this.platform12.body.velocity.x * -1);
+        }, 2200);
+        this.platform15.setVelocityX(150);
+        setInterval(() => {
+          this.platform15.setVelocityX(this.platform15.body.velocity.x * -1);
+        }, 1300);
+      }
     });
 
     this.physics.add.overlap(this.player, this.invisible2, () => {
@@ -788,7 +800,7 @@ class scene0 extends Phaser.Scene {
       this.life -= 1;
       //this.scoreText.setText("Engrenagens: " + this.life + "/4");
       this.player.setPosition(92, 1066).setVelocity(0, 0).anims.play("idleRight");
-          this.direction = true;
+      this.direction = true;
       if (this.collectEng1 === true) {
 
         this.score -= 1;
@@ -966,27 +978,27 @@ class scene0 extends Phaser.Scene {
 
   update() {
 
-   /* if (this.life === 0) {
-      
-      this.life = 6;
-      this.scene.reload("scene0");
-      this.scene.start("start");
-     // this.life = 6;
-    }*/
+    /* if (this.life === 0) {
+       
+       this.life = 6;
+       this.scene.reload("scene0");
+       this.scene.start("start");
+      // this.life = 6;
+     }*/
 
 
     if (this.fase5 === false && this.energy === true) {
       this.lights.enable().setAmbientColor(0xe0f7ff);
       
-   } else if (this.fase5 === true && this.energy === false) {
+    } else if (this.fase5 === true && this.energy === false) {
       this.lights.setAmbientColor(0x000000);
      
     } else if (this.fase5 === false && this.energy === false) {
       this.lights.setAmbientColor(0x202020);
     }
 
-      this.lamp.x = this.player.x;
-      this.lamp.y = this.player.y;
+    this.lamp.x = this.player.x;
+    this.lamp.y = this.player.y;
     
     if (this.fase3) {
       this.cargaJpText.setFill("#000000");
@@ -1161,6 +1173,21 @@ class scene0 extends Phaser.Scene {
         (this.player.body.blocked.down || this.player.body.blocked.up)
       ) {
         this.player.anims.play("idleLeftJP", true);
+      }
+    }
+
+    // comportamento simples do inimigo: perseguir o player
+    if (this.inimigo.body.blocked.down || this.inimigo.body.touching.down) {
+      if (this.player && this.inimigo) {
+        if (this.player.x - this.inimigo.x > 32) {
+          this.inimigo.flipX = false;
+          this.inimigo.setVelocityX(50);
+        } else if (this.inimigo.x - this.player.x > 32) {
+          this.inimigo.flipX = true;
+          this.inimigo.setVelocityX(-50);
+        } else {
+          this.inimigo.setVelocityX(0);
+        }
       }
     }
   }
