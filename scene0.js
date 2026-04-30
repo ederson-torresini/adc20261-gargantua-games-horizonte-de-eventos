@@ -863,6 +863,7 @@ class scene0 extends Phaser.Scene {
         if (anim.key === "open-door") {
           this.player.setPosition(108, 1835).setVelocity(0, 0).anims.play("idleRight");
           this.direction = true;
+          this.enemyGravity = true;
           this.cameras.main.scrollY =
             this.player.y - this.cameras.main.height / 2 - 120;
           this.door12.anims.play("close-door", true);
@@ -873,7 +874,6 @@ class scene0 extends Phaser.Scene {
                 .setIntensity(0.5)
                 .setScrollFactor(.95, 1)
                 .setColor(0xff0000);
-              this.enemyGravity = true;
     
               this.jetBag = this.physics.add.sprite(595, 1584, "jetBag");
               this.jetBag
@@ -1221,7 +1221,7 @@ class scene0 extends Phaser.Scene {
     // movimentação inimigo
       if (this.enemyGravity === true) {
         //this.inimigo.body.allowGravity = false;
-        this.inimigo.setVelocity(0, 90);
+        this.inimigo.setVelocity(0, 70);
         this.enemyGravity = false//quando ele está caindo, e gravidade n funciona e a vel y é 100
        } else if(this.enemyGravity === false) {
           this.inimigo.body.allowGravity = false;
@@ -1232,14 +1232,20 @@ class scene0 extends Phaser.Scene {
         if (this.inimigo.y === 1837) {
           
          if (this.player.x - this.inimigo.x > 1) {
-            this.inimigo.flipX = true;
-           this.inimigo.setVelocityX(90)
-             .anims.play("enemyWalk", true);
+           this.inimigo.setVelocityX(120)
+             .anims.play("enemyWalk", true)
+             .setPipeline("Light2D")
+             .body.setSize(30, 37)
+             .setOffset(35, 17);
+           this.inimigo.flipX = true;
            
           } else if (this.player.x - this.inimigo.x < 1) {
-            this.inimigo.flipX = false;
-           this.inimigo.setVelocityX(-90)
-            .anims.play("enemyWalk", true);
+           this.inimigo.setVelocityX(-120)
+             .anims.play("enemyWalk", true)
+             .setPipeline("Light2D")
+             .body.setSize(30, 37)
+             .setOffset(40, 17);
+           this.inimigo.flipX = false;
          }
           
         } else if (this.inimigo.y != 1837) {
