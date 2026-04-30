@@ -20,6 +20,7 @@ class scene0 extends Phaser.Scene {
     this.collectEng5 = false;
     this.life = 6;
     this.enemyGravity = false;
+    this.enemySlap = true;
 
 
   }
@@ -347,8 +348,8 @@ class scene0 extends Phaser.Scene {
         start: 2,
         end: 5,
       }),
-        frameRate: 12,
-        repeat: -1, 
+      frameRate: 12,
+      repeat: -1,
     })
     
     this.o2Text = this.add
@@ -733,12 +734,12 @@ class scene0 extends Phaser.Scene {
     this.player.anims.play("idleRight", true).setPipeline("Light2D");
 
     //inimigo
-      this.inimigo = this.physics.add.sprite(595, 1584, "inimigo", 0);
-      this.inimigo
-        .setPipeline("Light2D")
-        .body.setSize(30, 37)
-        .setOffset(40, 17)
-        .allowGravity = false;
+    this.inimigo = this.physics.add.sprite(595, 1584, "inimigo", 0);
+    this.inimigo
+      .setPipeline("Light2D")
+      .body.setSize(30, 37)
+      .setOffset(40, 17)
+      .allowGravity = false;
     
     
     this.lamp = this.lights
@@ -772,29 +773,7 @@ class scene0 extends Phaser.Scene {
     });
 
     // Overlap entre inimigo e player //voltar
-    this.physics.add.overlap(this.player, this.inimigo, () => {
-      //this.inimigo.anims.play("enemyAtack",true);
-
-      this.player
-        .setPosition(108, 1836)
-        .setVelocity(0, 0)
-        .anims.play("idleRight");
-      this.direction = true;
-      this.inimigo
-        .setVelocity(0, 0)
-        .setPosition(595, 1584);
-      this.enemyGravity = true;
-      this.life -= 1;
-      
-      if (this.collectEng2 === true) {
-        this.score -= 1;
-        this.scoreText.setText("Engrenagens: " + this.score + "/4");
-
-        this.engrenagem2.enableBody(true, 1059, 1652, true, true);
-
-        this.collectEng2 = false;
-      }
-    });
+    this.physics.add.overlap(this.player, this.inimigo, this.enemyAt, null, this,);
 
     this.physics.add.collider(this.player, this.layerPiso);
     this.physics.add.collider(this.player, this.platforms);
@@ -1231,45 +1210,84 @@ class scene0 extends Phaser.Scene {
     }
 
     // movimentação inimigo
-      if (this.enemyGravity === true) {
-        //this.inimigo.body.allowGravity = false;
-        this.inimigo.setVelocity(0, 70);
-        this.enemyGravity = false//quando ele está caindo, e gravidade n funciona e a vel y é 100
-       } else if(this.enemyGravity === false) {
-          this.inimigo.body.allowGravity = false;
-      }
-        if (this.inimigo.body.blocked.down) { //se inimigo estiver no chão, ele segue o player
+    if (this.enemyGravity === true) {
+      //this.inimigo.body.allowGravity = false;
+      this.inimigo.setVelocity(0, 70);
+      this.enemyGravity = false//quando ele está caindo, e gravidade n funciona e a vel y é 100
+    } else if (this.enemyGravity === false) {
+      this.inimigo.body.allowGravity = false;
+    }
+    if (this.inimigo.body.blocked.down) { //se inimigo estiver no chão, ele segue o player
       setInterval(() => {
         
         if (this.inimigo.y === 1837) {
           
-         if (this.player.x - this.inimigo.x > 1) {
-           this.inimigo.setVelocityX(120)
-             .anims.play("enemyWalk", true)
-             .setPipeline("Light2D")
-             .body.setSize(30, 37)
-             .setOffset(33, 17);
-           this.inimigo.flipX = true;
-           
-          } else if (this.player.x - this.inimigo.x < 1) {
-           this.inimigo.setVelocityX(-120)
-             .anims.play("enemyWalk", true)
-             .setPipeline("Light2D")
-             .body.setSize(30, 37)
-             .setOffset(40, 17);
-           this.inimigo.flipX = false;
-         }
+          this.enemySlap = false;
           
-        } else if (this.inimigo.y != 1837) {
-          this.inimigo.setVelocityX(0);
+          if (this.player.x - this.inimigo.x > 1 && this.enemySlap === false) {
+            this.inimigo.setVelocityX(120)
+              .anims.play("enemyWalk", true)
+              .setPipeline("Light2D")
+              .body.setSize(30, 37)
+              .setOffset(33, 17);
+            this.inimigo.flipX = true;
+           
+          } else if (this.player.x - this.inimigo.x < 1 && this.enemySlap === false) {
+            this.inimigo.setVelocityX(-120)
+              .anims.play("enemyWalk", true)
+              .setPipeline("Light2D")
+              .body.setSize(30, 37)
+              .setOffset(40, 17);
+            this.inimigo.flipX = false;
+          }
+          
+        } else if (this.inimigo.y != 1837 && this.enemySlap === true) {
+          this.inimigo.setVelocityX(0)
+              .anims.stop();
         }
         
       }, 100);
       
-        }
-    
     }
+    
+  }
   
+  enemyAt(player, inimigo) {
+
+    this.enemySlap = true;
+
+    //this.inimigo.anims.stop("enemyWalk").anims.play("enemyAtack", true);
+    //this.inimigo.once("animationcomplete", (anim, frame) => {
+      //if (anim.key === "enemyAtack") {
+            
+        this.player
+          .setPosition(108, 1836)
+          .setVelocity(0, 0)
+          .anims.play("idleRight");
+        this.direction = true;
+        this.inimigo
+          .setVelocity(0, 0)
+          .setPosition(595, 1584);
+          
+        this.enemyGravity = true;
+        this.enemySlap = false;
+        this.life -= 1;
+        
+        if (this.collectEng2 === true) {
+          this.score -= 1;
+          this.scoreText.setText("Engrenagens: " + this.score + "/4");
+    
+          this.engrenagem2.enableBody(true, 1059, 1652, true, true);
+    
+          this.collectEng2 = false;
+        }
+              
+    //  };
+  
+    //});
+
+
+  }
   
   collectEng(player, engrenagens) {
 
