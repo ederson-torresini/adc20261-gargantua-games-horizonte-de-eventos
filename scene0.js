@@ -340,6 +340,16 @@ class scene0 extends Phaser.Scene {
       frameRate: 12,
       repeat: -1,
     });
+
+    this.anims.create({
+      key: "enemyAtack",
+      frame: this.anims.generateFrameNumbers("inimigo", {
+        start: 2,
+        end: 5,
+      }),
+        frameRate: 12,
+        repeat: -1, 
+    })
     
     this.o2Text = this.add
       .text(100, 100, "O2: " + this.o2 + "%", {
@@ -763,6 +773,8 @@ class scene0 extends Phaser.Scene {
 
     // Overlap entre inimigo e player //voltar
     this.physics.add.overlap(this.player, this.inimigo, () => {
+      //this.inimigo.anims.play("enemyAtack",true);
+
       this.player
         .setPosition(108, 1836)
         .setVelocity(0, 0)
@@ -1236,7 +1248,7 @@ class scene0 extends Phaser.Scene {
              .anims.play("enemyWalk", true)
              .setPipeline("Light2D")
              .body.setSize(30, 37)
-             .setOffset(35, 17);
+             .setOffset(33, 17);
            this.inimigo.flipX = true;
            
           } else if (this.player.x - this.inimigo.x < 1) {
