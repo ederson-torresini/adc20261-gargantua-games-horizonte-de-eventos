@@ -234,6 +234,36 @@ class scene1 extends Phaser.Scene {
       repeat: -1,
     });
 
+    this.anims.create({
+      key: "enemyAtaque",
+      frames: this.anims.generateFrameNumbers("inimigo3", {
+        start: 2,
+        end: 5,
+      }),
+      frameRate: 12,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "enemyAtaqueBaixo",
+      frames: this.anims.generateFrameNumbers("inimigo3", {
+        start: 7,
+        end: 8,
+      }),
+      frameRate: 12,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "enemyAtaqueCima",
+      frames: this.anims.generateFrameNumbers("inimigo3", {
+        start: 11,
+        end: 12,
+      }),
+      frameRate: 12,
+      repeat: -1,
+    });
+
     //anim porta
     this.anims.create({
       key: "portaabrindo",
@@ -603,6 +633,35 @@ class scene1 extends Phaser.Scene {
 
     this.physics.add.collider(this.playerroxo, this.inimigosaliens);
     this.physics.add.collider(this.inimigosaliens, this.inimigosaliens);
+    this.physics.add.overlap(
+      this.playerroxo,
+      this.inimigosaliens,
+      this.enemyAttack,
+      null,
+      this,
+    );
+  }
+
+  enemyAttack(playerroxo, enemy) {
+    // Para o movimento do inimigo
+    enemy.setVelocity(0, 0);
+
+    // Calcula a direção em relação ao player
+    const dx = playerroxo.x - enemy.x;
+    const dy = playerroxo.y - enemy.y;
+
+    // Escolhe animação baseado na direção predominante
+    if (Math.abs(dx) > Math.abs(dy)) {
+      // Movimento horizontal predominante
+      enemy.anims.play("enemyAtaque", true);
+      enemy.setFlipX(dx > 0);
+    } else if (dy < 0) {
+      // Player está acima
+      enemy.anims.play("enemyAtaqueCima", true);
+    } else {
+      // Player está abaixo
+      enemy.anims.play("enemyAtaqueBaixo", true);
+    }
   }
 
   update() {
