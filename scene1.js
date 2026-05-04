@@ -633,7 +633,11 @@ class scene1 extends Phaser.Scene {
 
     this.physics.add.collider(this.playerroxo, this.inimigosaliens);
     this.physics.add.collider(this.inimigosaliens, this.inimigosaliens);
-    this.physics.add.overlap(
+    this.physics.add.collider(this.inimigosaliens, this.limitenorte);
+    this.physics.add.collider(this.inimigosaliens, this.limitesul);
+    this.physics.add.collider(this.inimigosaliens, this.limiteleste);
+    this.physics.add.collider(this.inimigosaliens, this.limiteoeste);
+    this.physics.add.collider(
       this.playerroxo,
       this.inimigosaliens,
       this.enemyAttack,
@@ -643,6 +647,7 @@ class scene1 extends Phaser.Scene {
   }
 
   enemyAttack(playerroxo, enemy) {
+
     // Para o movimento do inimigo
     enemy.setVelocity(0, 0);
 
