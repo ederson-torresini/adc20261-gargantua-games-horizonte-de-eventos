@@ -55,7 +55,7 @@ class scene1 extends Phaser.Scene {
     });
 
     this.load.spritesheet("inimigo3", "inimigo3.png", {
-      frameWidth: 102,
+      frameWidth: 117,
       frameHeight: 70,
     });
   }
