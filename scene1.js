@@ -3,8 +3,7 @@ class scene1 extends Phaser.Scene {
     super("scene1");
 
     this.speed = 200;
-    this.estoutrabalhando = false;
-  
+    this.estoutrabalhando = true;
   }
 
   preload() {
@@ -48,6 +47,16 @@ class scene1 extends Phaser.Scene {
     this.load.spritesheet("porta", "porta64x64.png", {
       frameWidth: 64,
       frameHeight: 64,
+    });
+
+    this.load.spritesheet("ativaraliens", "ativaraliens.png", {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
+
+    this.load.spritesheet("inimigo3", "inimigo3.png", {
+      frameWidth: 102,
+      frameHeight: 70,
     });
   }
 
@@ -191,6 +200,37 @@ class scene1 extends Phaser.Scene {
         end: 59,
       }),
       frameRate: 11,
+      repeat: -1,
+    });
+
+    //animação inimigo
+    this.anims.create({
+      key: "enemyWalk",
+      frames: this.anims.generateFrameNumbers("inimigo3", {
+        start: 26,
+        end: 33,
+      }),
+      frameRate: 12,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "enemyWalkCima",
+      frames: this.anims.generateFrameNumbers("inimigo3", {
+        start: 18,
+        end: 25,
+      }),
+      frameRate: 12,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "enemyWalkBaixo",
+      frames: this.anims.generateFrameNumbers("inimigo3", {
+        start: 34,
+        end: 41,
+      }),
+      frameRate: 12,
       repeat: -1,
     });
 
@@ -471,9 +511,13 @@ class scene1 extends Phaser.Scene {
     this.limites.setImmovable(true);
     this.limites.setSize(1280, 768);
 
+    //ativar aliens
+    this.ativaraliens = this.physics.add.sprite(717, 1484, "ativaraliens", 0);
+    this.ativaraliens.body.allowGravity = false;
+    this.ativaraliens.setImmovable(true);
 
     //adiciona o player roxo
-    this.playerroxo = this.physics.add.sprite(640, 290, "playerroxo"); //640,290 interior //650, 1437 exterior //spawn
+    this.playerroxo = this.physics.add.sprite(650, 1437, "playerroxo"); //640,290 interior //650, 1437 exterior //spawn
     this.playerroxo.body.setSize(25, 10).setOffset(19, 52);
     this.playerroxo.body.allowGravity = false;
 
@@ -498,13 +542,22 @@ class scene1 extends Phaser.Scene {
     this.physics.add.collider(this.playerroxo, this.antenas);
     this.physics.add.collider(this.playerroxo, this.telescopios);
     this.physics.add.collider(this.playerroxo, this.osciloscopios);
-    
+
     if (this.estoutrabalhando === false) {
       this.physics.add.collider(this.playerroxo, this.limitenorte);
       this.physics.add.collider(this.playerroxo, this.limitesul);
       this.physics.add.collider(this.playerroxo, this.limiteoeste);
       this.physics.add.collider(this.playerroxo, this.limiteleste);
     }
+
+    //ativar aliens
+    this.physics.add.overlap(
+      this.playerroxo,
+      this.ativaraliens,
+      this.ativarAliens,
+      null,
+      this,
+    );
 
     this.layerParede.setCollisionByProperty({ collides: true });
 
@@ -534,8 +587,23 @@ class scene1 extends Phaser.Scene {
         );
       },
     });
-
   } //fim create
+
+  ativarAliens() {
+    this.ativaraliens.disableBody(true, true);
+
+    this.inimigosaliens = this.physics.add.group({
+      allowGravity: false,
+      immovable: false,
+      pipeline: "Light2D",
+    });
+
+    this.inimigosaliens.create(452, 1323, "inimigo3");
+    this.inimigosaliens.create(1020, 1423, "inimigo3");
+
+    this.physics.add.collider(this.playerroxo, this.inimigosaliens);
+    this.physics.add.collider(this.inimigosaliens, this.inimigosaliens);
+  }
 
   update() {
     // Captura entrada do teclado
@@ -587,8 +655,8 @@ class scene1 extends Phaser.Scene {
     if (this.estoutrabalhando === false) {
       if (isOverlapLimites) {
         // Define as bounds da câmera baseado no sprite limites
-        const limitesLeft = 40
-        const limitesTop = 950
+        const limitesLeft = 40;
+        const limitesTop = 950;
         const limitesRight = 1302;
         const limitesBottom = 1720;
 
@@ -596,7 +664,8 @@ class scene1 extends Phaser.Scene {
           limitesLeft,
           limitesTop,
           limitesRight - limitesLeft,
-          limitesBottom - limitesTop,)
+          limitesBottom - limitesTop,
+        );
       }
     }
 
@@ -631,6 +700,34 @@ class scene1 extends Phaser.Scene {
           this.playerroxo.anims.play("idlecostas", true);
         }
       }
+    }
+
+    // Movimento dos inimigos aliens
+    if (this.inimigosaliens) {
+      this.inimigosaliens.children.each((enemy) => {
+        const dx = this.playerroxo.x - enemy.x;
+        const dy = this.playerroxo.y - enemy.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance > 0) {
+          enemy.setVelocityX((dx / distance) * 80);
+          enemy.setVelocityY((dy / distance) * 80);
+
+          // Escolhe animação conforme direção predominante
+          if (Math.abs(dx) > Math.abs(dy)) {
+            enemy.anims.play("enemyWalk", true);
+            enemy.setFlipX(dx > 0);
+          } else if (dy < 0) {
+            enemy.anims.play("enemyWalkCima", true);
+            enemy.setFlipX(false);
+          } else {
+            enemy.anims.play("enemyWalkBaixo", true);
+            enemy.setFlipX(false);
+          }
+        } else {
+          enemy.setVelocity(0);
+          enemy.anims.stop();
+        }
+      });
     }
   }
 }
