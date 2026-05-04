@@ -104,7 +104,7 @@ class scene0 extends Phaser.Scene {
     });
 
     this.load.spritesheet("inimigo", "inimigo3.png", {
-      frameWidth: 102,
+      frameWidth: 117,
       frameHeight: 70,
     });
   }
@@ -344,12 +344,12 @@ class scene0 extends Phaser.Scene {
 
     this.anims.create({
       key: "enemyAtack",
-      frame: this.anims.generateFrameNumbers("inimigo", {
+      frames: this.anims.generateFrameNumbers("inimigo", {
         start: 2,
         end: 5,
       }),
-      frameRate: 12,
-      repeat: -1,
+      frameRate: 13,
+      repeat: 0,
     })
     
     this.o2Text = this.add
@@ -1222,9 +1222,7 @@ class scene0 extends Phaser.Scene {
         
         if (this.inimigo.y === 1837) {
           
-          this.enemySlap = false;
-          
-          if (this.player.x - this.inimigo.x > 1 && this.enemySlap === false) {
+          if (this.player.x - this.inimigo.x > 50) {
             this.inimigo.setVelocityX(120)
               .anims.play("enemyWalk", true)
               .setPipeline("Light2D")
@@ -1232,18 +1230,18 @@ class scene0 extends Phaser.Scene {
               .setOffset(33, 17);
             this.inimigo.flipX = true;
            
-          } else if (this.player.x - this.inimigo.x < 1 && this.enemySlap === false) {
+          } else if (this.player.x - this.inimigo.x < -50) {
             this.inimigo.setVelocityX(-120)
               .anims.play("enemyWalk", true)
               .setPipeline("Light2D")
               .body.setSize(30, 37)
-              .setOffset(40, 17);
+              .setOffset(55, 17);
             this.inimigo.flipX = false;
+            
           }
-          
-        } else if (this.inimigo.y != 1837 && this.enemySlap === true) {
+        } else if (this.inimigo.y != 1837) {
           this.inimigo.setVelocityX(0)
-              .anims.stop();
+              .setFrame("14");
         }
         
       }, 100);
@@ -1254,11 +1252,11 @@ class scene0 extends Phaser.Scene {
   
   enemyAt(player, inimigo) {
 
-    this.enemySlap = true;
-
-    //this.inimigo.anims.stop("enemyWalk").anims.play("enemyAtack", true);
-    //this.inimigo.once("animationcomplete", (anim, frame) => {
-      //if (anim.key === "enemyAtack") {
+    this.inimigo
+    .setVelocityX(0)
+    .anims.play("enemyAtack", true);
+    this.inimigo.once("animationcomplete", (anim, frame) => {
+      if (anim.key === "enemyAtack") {
             
         this.player
           .setPosition(108, 1836)
@@ -1270,7 +1268,6 @@ class scene0 extends Phaser.Scene {
           .setPosition(595, 1584);
           
         this.enemyGravity = true;
-        this.enemySlap = false;
         this.life -= 1;
         
         if (this.collectEng2 === true) {
@@ -1281,10 +1278,11 @@ class scene0 extends Phaser.Scene {
     
           this.collectEng2 = false;
         }
+      }
               
-    //  };
+      
   
-    //});
+    });
 
 
   }
