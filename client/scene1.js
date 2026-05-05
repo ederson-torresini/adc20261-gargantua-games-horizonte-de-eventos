@@ -4,6 +4,7 @@ class scene1 extends Phaser.Scene {
 
     this.speed = 200;
     this.estoutrabalhando = true;
+    this.door1Open = false;
   }
 
   preload() {
@@ -573,6 +574,10 @@ class scene1 extends Phaser.Scene {
     this.physics.add.collider(this.playerroxo, this.telescopios);
     this.physics.add.collider(this.playerroxo, this.osciloscopios);
 
+    this.physics.add.overlap(this.playerroxo, this.porta, () => {
+      this.door1Open = true;
+    });
+
     if (this.estoutrabalhando === false) {
       this.physics.add.collider(this.playerroxo, this.limitenorte);
       this.physics.add.collider(this.playerroxo, this.limitesul);
@@ -684,6 +689,16 @@ class scene1 extends Phaser.Scene {
   }*/
 
   update() {
+
+        try {
+      this.game.socket.emit("scene1", this.game.room, {
+        door1Open: {
+          key: this.door1Open,
+        },
+      });
+    } catch (e) {
+      console.error("Error updating player:", e);
+    }
     // Captura entrada do teclado
     const cursors = this.input.keyboard.createCursorKeys();
     const wasd = this.input.keyboard.addKeys("W,S,A,D");

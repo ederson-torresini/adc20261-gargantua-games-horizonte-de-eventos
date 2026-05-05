@@ -20,6 +20,7 @@ class scene0 extends Phaser.Scene {
     this.collectEng5 = false;
     this.life = 6;
     this.enemyGravity = false;
+    this.door1Open = false;
   }
   preload() {
     this.load.setPath("assets/");
@@ -854,6 +855,8 @@ class scene0 extends Phaser.Scene {
     });
 
     this.physics.add.overlap(this.player, this.door21, () => {
+
+      if(this.door1Open === true){
       this.door21.anims.play("open-door", true);
       this.light22 = this.lights
         .addLight(this.door22.x, 1802, 35)
@@ -896,6 +899,7 @@ class scene0 extends Phaser.Scene {
           });
         }
       });
+    }
     });
 
     this.physics.add.overlap(this.player, this.door22, () => {
@@ -1027,6 +1031,11 @@ class scene0 extends Phaser.Scene {
       down: Phaser.Input.Keyboard.KeyCodes.S,
       action: Phaser.Input.Keyboard.KeyCodes.X,
       space: Phaser.Input.Keyboard.KeyCodes.SPACE,
+    });
+
+    this.game.socket.on("scene1", (door1Open) => {
+        this.door1Open = door1Open.key;
+
     });
 
   }
