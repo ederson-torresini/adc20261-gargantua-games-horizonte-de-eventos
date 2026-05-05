@@ -44,9 +44,9 @@ class scene1 extends Phaser.Scene {
       frameHeight: 25,
     });
 
-    this.load.spritesheet("porta", "porta64x64.png", {
-      frameWidth: 64,
-      frameHeight: 64,
+    this.load.spritesheet("porta", "porta64x64(2).png", {
+      frameWidth: 128,
+      frameHeight: 32,
     });
 
     this.load.spritesheet("ativaraliens", "ativaraliens.png", {
@@ -280,8 +280,8 @@ class scene1 extends Phaser.Scene {
     });
 
     //adicionar porta
-    this.porta = this.physics.add.sprite(645, 707, "porta", 0);
-    this.porta.setAngle(180);
+    this.porta = this.physics.add.sprite(638, 719, "porta", 0);
+    //this.porta.setAngle(180);
     this.porta.body.allowGravity = false;
 
     //faz um grupo para os bigbosses
@@ -542,9 +542,9 @@ class scene1 extends Phaser.Scene {
     this.limites.setSize(1280, 768);
 
     //ativar aliens
-    this.ativaraliens = this.physics.add.sprite(717, 1484, "ativaraliens", 0);
+    /*this.ativaraliens = this.physics.add.sprite(717, 1484, "ativaraliens", 0);
     this.ativaraliens.body.allowGravity = false;
-    this.ativaraliens.setImmovable(true);
+    this.ativaraliens.setImmovable(true);*/
 
     //adiciona o player roxo
     this.playerroxo = this.physics.add.sprite(650, 1437, "playerroxo"); //640,290 interior //650, 1437 exterior //spawn
@@ -579,15 +579,29 @@ class scene1 extends Phaser.Scene {
       this.physics.add.collider(this.playerroxo, this.limiteoeste);
       this.physics.add.collider(this.playerroxo, this.limiteleste);
     }
-
+    
     //ativar aliens
-    this.physics.add.overlap(
+    /*this.physics.add.overlap(
       this.playerroxo,
       this.ativaraliens,
       this.ativarAliens,
       null,
       this,
-    );
+      );*/
+      
+      this.inimigosaliens = this.physics.add.group({
+        allowGravity: false,
+        immovable: false,
+        pipeline: "Light2D",
+      });
+      
+      this.inimigosaliens.create(452, 1323, "inimigo3").body.setSize(30, 37);
+      //this.inimigosaliens.create(1020, 1423, "inimigo3").body.setSize(30, 37);
+      this.physics.add.collider(this.inimigosaliens, this.limitenorte);
+      this.physics.add.collider(this.inimigosaliens, this.limitesul);
+      this.physics.add.collider(this.inimigosaliens, this.limiteoeste);
+    this.physics.add.collider(this.inimigosaliens, this.limiteleste);
+    this.physics.add.collider(this.playerroxo, this.inimigosaliens);
 
     this.layerParede.setCollisionByProperty({ collides: true });
 
@@ -619,7 +633,7 @@ class scene1 extends Phaser.Scene {
     });
   } //fim create
 
-  ativarAliens() {
+  /*ativarAliens() {
     this.ativaraliens.disableBody(true, true);
 
     this.inimigosaliens = this.physics.add.group({
@@ -667,7 +681,7 @@ class scene1 extends Phaser.Scene {
       // Player está abaixo
       enemy.anims.play("enemyAtaqueBaixo", true);
     }
-  }
+  }*/
 
   update() {
     // Captura entrada do teclado
@@ -794,6 +808,7 @@ class scene1 extends Phaser.Scene {
       });
     }
   }
+
 }
 
 export default scene1;
