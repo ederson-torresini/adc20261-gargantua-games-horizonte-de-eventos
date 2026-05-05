@@ -739,7 +739,7 @@ class scene0 extends Phaser.Scene {
       .setPipeline("Light2D")
       .body.setSize(30, 37)
       .setOffset(40, 17)
-      .allowGravity = false;
+      .body.allowGravity = false;
     
     
     this.lamp = this.lights
