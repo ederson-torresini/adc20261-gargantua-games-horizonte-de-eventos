@@ -20,7 +20,7 @@ class scene0 extends Phaser.Scene {
     this.collectEng5 = false;
     this.life = 6;
     this.enemyGravity = false;
-    this.door1Open = false;
+    this.doorOpen = 0;
   }
   preload() {
     this.load.setPath("assets/");
@@ -301,7 +301,7 @@ class scene0 extends Phaser.Scene {
       key: "jetBag-idle",
       frames: this.anims.generateFrameNumbers("jetBag", {
         start: 0,
-        end: 2,
+        end: 1,
       }),
       frameRate: 4,
       repeat: -1,
@@ -348,7 +348,7 @@ class scene0 extends Phaser.Scene {
     });
 
     this.o2Text = this.add
-      .text(100, 100, "O2: " + this.o2 + "%", {
+      .text(100, 100, "O2: " + this.doorOpen + "%", {
         fontSize: "16px",
         fill: "#ffffff",
       })
@@ -856,54 +856,54 @@ class scene0 extends Phaser.Scene {
 
     this.physics.add.overlap(this.player, this.door21, () => {
 
-      if(this.door1Open === true){
-      this.door21.anims.play("open-door", true);
-      this.light22 = this.lights
-        .addLight(this.door22.x, 1802, 35)
-        .setIntensity(0.5)
-        .setScrollFactor(0.95, 1)
-        .setColor(0xff0000);
-      this.door21.once("animationcomplete", (anim, frame) => {
-        if (anim.key === "open-door") {
-          this.player
-            .setPosition(108, 1835)
-            .setVelocity(0, 0)
-            .anims.play("idleRight");
-          this.direction = true;
-          this.enemyGravity = true;
-          this.cameras.main.scrollY =
-            this.player.y - this.cameras.main.height / 2 - 120;
-          this.door12.anims.play("close-door", true);
-          this.door12.once("animationcomplete", (anim, frame) => {
-            if (anim.key === "close-door") {
-              this.light12 = this.lights
-                .addLight(this.door12.x, 1802, 35)
-                .setIntensity(0.5)
-                .setScrollFactor(0.95, 1)
-                .setColor(0xff0000);
+      if (this.doorOpen === 1) {
+        this.door21.anims.play("open-door", true);
+        this.light22 = this.lights
+          .addLight(this.door22.x, 1802, 35)
+          .setIntensity(0.5)
+          .setScrollFactor(0.95, 1)
+          .setColor(0xff0000);
+        this.door21.once("animationcomplete", (anim, frame) => {
+          if (anim.key === "open-door") {
+            this.player
+              .setPosition(108, 1835)
+              .setVelocity(0, 0)
+              .anims.play("idleRight");
+            this.direction = true;
+            this.enemyGravity = true;
+            this.cameras.main.scrollY =
+              this.player.y - this.cameras.main.height / 2 - 120;
+            this.door12.anims.play("close-door", true);
+            this.door12.once("animationcomplete", (anim, frame) => {
+              if (anim.key === "close-door") {
+                this.light12 = this.lights
+                  .addLight(this.door12.x, 1802, 35)
+                  .setIntensity(0.5)
+                  .setScrollFactor(0.95, 1)
+                  .setColor(0xff0000);
 
-              this.jetBag = this.physics.add.sprite(595, 1584, "jetBag");
-              this.jetBag
-                .setScrollFactor(0.9, 1)
-                .setPipeline("Light2D")
-                .setVelocityY(100).body.allowGravity = false;
-              this.physics.add.collider(this.jetBag, this.layerPiso);
-              this.physics.add.overlap(
-                this.player,
-                this.jetBag,
-                this.collectBag,
-                null,
-                this,
-              );
-            }
-          });
-        }
-      });
-    }
+                this.jetBag = this.physics.add.sprite(595, 1584, "jetBag");
+                this.jetBag
+                  .setScrollFactor(0.9, 1)
+                  .setPipeline("Light2D")
+                  .setVelocityY(100).body.allowGravity = false;
+                this.physics.add.collider(this.jetBag, this.layerPiso);
+                this.physics.add.overlap(
+                  this.player,
+                  this.jetBag,
+                  this.collectBag,
+                  null,
+                  this,
+                );
+              }
+            });
+          }
+        });
+      }
     });
 
     this.physics.add.overlap(this.player, this.door22, () => {
-      if (this.jetPack) {
+      if (this.jetPack && this.doorOpen >= 2) {
         this.lights
           .addLight(this.door22.x, 1802, 35)
           .setIntensity(0.5)
@@ -938,6 +938,7 @@ class scene0 extends Phaser.Scene {
     });
 
     this.physics.add.overlap(this.player, this.door23, () => {
+      if (this.doorOpen >= 3) {
       this.door23.anims.play("open-door", true);
       this.door23.once("animationcomplete", (anim, frame) => {
         if (anim.key === "open-door") {
@@ -964,9 +965,11 @@ class scene0 extends Phaser.Scene {
           });
         }
       });
+    }
     });
 
     this.physics.add.overlap(this.player, this.door24, () => {
+      if (this.doorOpen >= 4) {
       this.door24.anims.play("open-door", true);
       this.door24.once("animationcomplete", (anim, frame) => {
         if (anim.key === "open-door") {
@@ -993,6 +996,7 @@ class scene0 extends Phaser.Scene {
           });
         }
       });
+    }
     });
 
     this.layerPiso.setCollisionByProperty({ collides: true });
@@ -1033,14 +1037,15 @@ class scene0 extends Phaser.Scene {
       space: Phaser.Input.Keyboard.KeyCodes.SPACE,
     });
 
-    this.game.socket.on("scene1", (door1Open) => {
-        this.door1Open = door1Open.key;
+    this.game.socket.on("scene1", (state) => {
+
+          this.doorOpen = state.doorOpen.key;
 
     });
-
   }
 
   update() {
+    
     /* if (this.life === 0) {
        
        this.life = 6;
@@ -1048,19 +1053,6 @@ class scene0 extends Phaser.Scene {
        this.scene.start("start");
       // this.life = 6;
      }*/
-
-    try {
-      this.game.socket.emit("scene0", this.game.room, {
-        player: {
-          x: this.player.x,
-          y: this.player.y,
-          key: this.player.anims.currentAnim.key,
-          frame: this.player.anims.currentFrame.index,
-        },
-      });
-    } catch (e) {
-      console.error("Error updating player:", e);
-    }
 
     if (this.fase5 === false && this.energy === true) {
       this.lights.enable().setAmbientColor(0xe0f7ff);

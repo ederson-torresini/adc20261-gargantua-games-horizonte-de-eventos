@@ -4,7 +4,7 @@ class scene1 extends Phaser.Scene {
 
     this.speed = 200;
     this.estoutrabalhando = true;
-    this.door1Open = false;
+    this.doorOpen = 0;
   }
 
   preload() {
@@ -575,7 +575,7 @@ class scene1 extends Phaser.Scene {
     this.physics.add.collider(this.playerroxo, this.osciloscopios);
 
     this.physics.add.overlap(this.playerroxo, this.porta, () => {
-      this.door1Open = true;
+      this.doorOpen += 1;
     });
 
     if (this.estoutrabalhando === false) {
@@ -692,13 +692,14 @@ class scene1 extends Phaser.Scene {
 
         try {
       this.game.socket.emit("scene1", this.game.room, {
-        door1Open: {
-          key: this.door1Open,
+        doorOpen: {
+          key: this.doorOpen,
         },
       });
     } catch (e) {
       console.error("Error updating player:", e);
-    }
+        }
+    
     // Captura entrada do teclado
     const cursors = this.input.keyboard.createCursorKeys();
     const wasd = this.input.keyboard.addKeys("W,S,A,D");
