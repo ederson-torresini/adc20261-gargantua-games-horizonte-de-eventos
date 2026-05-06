@@ -556,17 +556,25 @@ class scene1 extends Phaser.Scene {
     this.physics.add.collider(this.playerroxo, this.layerPiso);
     this.physics.add.collider(this.playerroxo, this.layerParede);
     this.physics.add.collider(this.playerroxo, this.consolelongo);
-    this.physics.add.collider(this.playerroxo, this.consolemedio);
+    this.physics.add.collider(this.playerroxo, this.consolemedio, () => {
+      this.doorOpen = 4;
+    });
     this.physics.add.collider(this.playerroxo, this.consoles);
     this.physics.add.collider(this.playerroxo, this.consoles2);
     this.physics.add.collider(this.playerroxo, this.consoles3);
     this.physics.add.collider(this.playerroxo, this.consoles4);
-    this.physics.add.collider(this.playerroxo, this.consoles5);
-    this.physics.add.collider(this.playerroxo, this.consoles6);
+    this.physics.add.collider(this.playerroxo, this.consoles5, () => {
+      this.doorOpen = 1;
+    });
+    this.physics.add.collider(this.playerroxo, this.consoles6, () => {
+      this.doorOpen = 3;
+    });
     this.physics.add.collider(this.playerroxo, this.consolew);
     this.physics.add.collider(this.playerroxo, this.consolew2);
     this.physics.add.collider(this.playerroxo, this.consolew3);
-    this.physics.add.collider(this.playerroxo, this.consolew4);
+    this.physics.add.collider(this.playerroxo, this.consolew4, () => {
+      this.doorOpen = 2;
+    });
     this.physics.add.collider(this.playerroxo, this.consolew5);
     this.physics.add.collider(this.playerroxo, this.consolew6);
     this.physics.add.collider(this.playerroxo, this.bigboss);
@@ -574,9 +582,9 @@ class scene1 extends Phaser.Scene {
     this.physics.add.collider(this.playerroxo, this.telescopios);
     this.physics.add.collider(this.playerroxo, this.osciloscopios);
 
-    this.physics.add.overlap(this.playerroxo, this.porta, () => {
+    /*this.physics.add.overlap(this.playerroxo, this.porta, () => {
       this.doorOpen += 1;
-    });
+    });*/
 
     if (this.estoutrabalhando === false) {
       this.physics.add.collider(this.playerroxo, this.limitenorte);

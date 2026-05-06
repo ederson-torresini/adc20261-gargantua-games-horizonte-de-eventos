@@ -1042,10 +1042,11 @@ class scene0 extends Phaser.Scene {
           this.doorOpen = state.doorOpen.key;
 
     });
+    
   }
 
   update() {
-    
+
     /* if (this.life === 0) {
        
        this.life = 6;
