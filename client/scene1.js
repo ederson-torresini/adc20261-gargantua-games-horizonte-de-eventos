@@ -13,7 +13,7 @@ class scene1 extends Phaser.Scene {
     this.load.audio("passos", "walkamongus.mp3");
     this.load.audio("trilhasonora", "trilhasonora.mp3");
 
-    //preload do tilemap da faseortogonal
+    //preload do tilemap da faseortogonal    
     this.load.tilemapTiledJSON(
       "faseortogonal",
       "mapasv4/faseortogonalatualizada.json",
@@ -558,6 +558,15 @@ class scene1 extends Phaser.Scene {
     this.physics.add.collider(this.playerroxo, this.consolelongo);
     this.physics.add.collider(this.playerroxo, this.consolemedio, () => {
       this.doorOpen = 4;
+              try {
+      this.game.socket.emit("scene1", this.game.room, {
+        doorOpen: {
+          key: this.doorOpen,
+        },
+      });
+    } catch (e) {
+      console.error("Error updating player:", e);
+        }
     });
     this.physics.add.collider(this.playerroxo, this.consoles);
     this.physics.add.collider(this.playerroxo, this.consoles2);
@@ -565,15 +574,42 @@ class scene1 extends Phaser.Scene {
     this.physics.add.collider(this.playerroxo, this.consoles4);
     this.physics.add.collider(this.playerroxo, this.consoles5, () => {
       this.doorOpen = 1;
+              try {
+      this.game.socket.emit("scene1", this.game.room, {
+        doorOpen: {
+          key: this.doorOpen,
+        },
+      });
+    } catch (e) {
+      console.error("Error updating player:", e);
+        }
     });
     this.physics.add.collider(this.playerroxo, this.consoles6, () => {
       this.doorOpen = 3;
+              try {
+      this.game.socket.emit("scene1", this.game.room, {
+        doorOpen: {
+          key: this.doorOpen,
+        },
+      });
+    } catch (e) {
+      console.error("Error updating player:", e);
+        }
     });
     this.physics.add.collider(this.playerroxo, this.consolew);
     this.physics.add.collider(this.playerroxo, this.consolew2);
     this.physics.add.collider(this.playerroxo, this.consolew3);
     this.physics.add.collider(this.playerroxo, this.consolew4, () => {
       this.doorOpen = 2;
+              try {
+      this.game.socket.emit("scene1", this.game.room, {
+        doorOpen: {
+          key: this.doorOpen,
+        },
+      });
+    } catch (e) {
+      console.error("Error updating player:", e);
+        }
     });
     this.physics.add.collider(this.playerroxo, this.consolew5);
     this.physics.add.collider(this.playerroxo, this.consolew6);
@@ -697,16 +733,6 @@ class scene1 extends Phaser.Scene {
   }*/
 
   update() {
-
-        try {
-      this.game.socket.emit("scene1", this.game.room, {
-        doorOpen: {
-          key: this.doorOpen,
-        },
-      });
-    } catch (e) {
-      console.error("Error updating player:", e);
-        }
     
     // Captura entrada do teclado
     const cursors = this.input.keyboard.createCursorKeys();

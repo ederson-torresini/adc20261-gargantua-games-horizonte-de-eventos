@@ -60,6 +60,12 @@ class scene0 extends Phaser.Scene {
       frameWidth: 16,
       frameHeight: 16,
     });
+    
+    this.load.spritesheet("invisibleH", "invisibleH.png", {
+      frameWidth: 16,
+      frameHeight: 300,
+    });
+
 
     this.load.spritesheet("plataform", "plataform.png", {
       frameWidth: 64,
@@ -348,7 +354,7 @@ class scene0 extends Phaser.Scene {
     });
 
     this.o2Text = this.add
-      .text(100, 100, "O2: " + this.doorOpen + "%", {
+      .text(100, 100, "O2: " + this.o2 + "%", {
         fontSize: "16px",
         fill: "#ffffff",
       })
@@ -674,11 +680,16 @@ class scene0 extends Phaser.Scene {
     this.invisible = this.physics.add.sprite(340, 3396, "invisible");
     this.invisible.setImmovable(true).setPipeline("Light2D").body.allowGravity =
       false;
+    
+    this.invisibleH = this.physics.add.sprite(942, 1068, "invisibleH");
+    this.invisibleH.setImmovable(true).setPipeline("Light2D").body.allowGravity =
+      false;
 
     this.invisible2 = this.physics.add.sprite(1231, 3351, "invisible");
     this.invisible2
       .setImmovable(true)
       .setPipeline("Light2D").body.allowGravity = false;
+
 
     setInterval(() => {
       if (this.o2 < 100 && this.o2Ship === true) {
@@ -728,7 +739,15 @@ class scene0 extends Phaser.Scene {
       .setOrigin(0, 0)
       .setScrollFactor(0)
       .setPipeline("Light2D")
-      .anims.play("iaSpeak").body.allowGravity = false;
+      .body.allowGravity = false;
+    
+    const texto1 = "Olá, eu sou ... e estou aqui para\nte ajudar a sair daqui.";
+    const texto2 = "Você pode se apoiar na parede para saltar mais alto.";
+    this.iaText = this.add.text(735, 40, '', { font: '13px', fill: '#fffc51' })
+      .setScrollFactor(0).setPipeline('Light2D').setOrigin(0, 0);
+    
+
+        let i = 0;
 
     this.player = this.physics.add.sprite(92, 1066, "player", 3); //fase1:92, 1066/445, 911//fase2:108, 1836/1138, 1836//fase3: 69, 2496/1256,2356//fase4: 92,300//fase5:92, 3532//
     this.player.body.setSize(20, 40);
@@ -815,8 +834,39 @@ class scene0 extends Phaser.Scene {
     });
 
     this.physics.add.overlap(this.player, this.invisible2, () => {
-      this.invisible.disableBody(true, true);
+      this.invisible2.disableBody(true, true);
       this.o2Ship = true;
+    });
+
+    this.physics.add.overlap(this.player, this.invisibleH, () => {
+      this.invisibleH.disableBody(true, true);
+      this.iaBox.setVelocityX(-100);
+
+      setTimeout(() => {
+        this.iaBox.setVelocityX(0);
+        this.iaBox.anims.play("iaSpeak", true);
+
+        this.time.addEvent({
+        delay: 50, // Velocidade da digitação em ms
+        callback: () => {
+          this.iaText.setText(texto1.substring(0, i));
+            i++;
+        },
+        repeat: texto1.length - 1
+        });
+        setTimeout(() => {
+          this.time.addEvent({
+            delay: 50, // Velocidade da digitação em ms
+            callback: () => {
+                this.iaText.setText(texto2);
+              i++;
+            },
+            repeat: texto2.length - 1
+          });
+        }, 4500);
+        
+      }, 3237);
+
     });
 
     this.physics.add.overlap(this.player, this.boxes, () => {
@@ -1309,7 +1359,7 @@ class scene0 extends Phaser.Scene {
   }
 
   collectEng(player, engrenagens) {
-    this.iaBox.setVelocityX(-100);
+    //this.iaBox.setVelocityX(-100);
 
     this.score += 1;
     this.scoreText.setText("Engrenagens: " + this.score + "/4");
