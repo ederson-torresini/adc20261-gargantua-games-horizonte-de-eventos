@@ -89,7 +89,6 @@ class start extends Phaser.Scene {
   }
 
   update() {
-    
     const pad =
       this.input.gamepad && this.input.gamepad.total > 0
         ? this.input.gamepad.getPad(0)
@@ -101,9 +100,18 @@ class start extends Phaser.Scene {
       horizontal = pad.axes[0].getValue();
       jumpPressed = !!pad.X;
     }
-  
 
     if (jumpPressed) {
+      this.scene.start("scene0");
+    }
+ 
+    const qe = this.input.keyboard.addKeys("Q,E");
+
+    if (qe.Q.isDown) {
+      this.scene.start("scene1");
+    }
+
+    if (qe.E.isDown) {
       this.scene.start("scene0");
     }
   }
