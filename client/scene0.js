@@ -11,7 +11,8 @@ class scene0 extends Phaser.Scene {
     this.jetPack = false;
     this.energy = true;
     this.keys = null;
-    this.cargaJp = 10;
+    this.cargaJp = 1000;
+    this.cargaJPpercentage = this.cargaJp / 100;
     this.o2 = 100;
     this.o2Ship = true; //1231 3351
     this.collectEng1 = false;
@@ -60,12 +61,11 @@ class scene0 extends Phaser.Scene {
       frameWidth: 16,
       frameHeight: 16,
     });
-    
+
     this.load.spritesheet("invisibleH", "invisibleH.png", {
       frameWidth: 16,
       frameHeight: 300,
     });
-
 
     this.load.spritesheet("plataform", "plataform.png", {
       frameWidth: 64,
@@ -680,16 +680,23 @@ class scene0 extends Phaser.Scene {
     this.invisible = this.physics.add.sprite(340, 3396, "invisible");
     this.invisible.setImmovable(true).setPipeline("Light2D").body.allowGravity =
       false;
-    
-    this.invisibleH = this.physics.add.sprite(942, 1068, "invisibleH");
-    this.invisibleH.setImmovable(true).setPipeline("Light2D").body.allowGravity =
-      false;
+
+    this.invisibleH2 = this.physics.add.sprite(475, 870, "invisibleH");
+    this.invisibleH2
+      .setImmovable(true)
+      .setPipeline("Light2D")
+      .setScale(0.5).body.allowGravity = false;
+
+    this.invisibleH = this.physics.add.sprite(942, 1020, "invisibleH");
+    this.invisibleH
+      .setImmovable(true)
+      .setPipeline("Light2D")
+      .setScale(0.5).body.allowGravity = false;
 
     this.invisible2 = this.physics.add.sprite(1231, 3351, "invisible");
     this.invisible2
       .setImmovable(true)
       .setPipeline("Light2D").body.allowGravity = false;
-
 
     setInterval(() => {
       if (this.o2 < 100 && this.o2Ship === true) {
@@ -734,20 +741,29 @@ class scene0 extends Phaser.Scene {
       .setScrollFactor(0.95, 1)
       .setColor(0xff0000);
 
-    this.iaBox = this.physics.add.sprite(1009, 33, "iaBox"); //687
+    this.iaBox = this.physics.add.sprite(1009, 33, "iaBox");
     this.iaBox
       .setOrigin(0, 0)
       .setScrollFactor(0)
-      .setPipeline("Light2D")
-      .body.allowGravity = false;
-    
-    const texto1 = "Olá, eu sou ... e estou aqui para\nte ajudar a sair daqui.";
-    const texto2 = "Você pode se apoiar na parede para saltar mais alto.";
-    this.iaText = this.add.text(735, 40, '', { font: '13px', fill: '#fffc51' })
-      .setScrollFactor(0).setPipeline('Light2D').setOrigin(0, 0);
-    
+      .setPipeline("Light2D").body.allowGravity = false;
 
-        let i = 0;
+    const texto = " ";
+    const texto1 =
+      "Olá, eu sou ... e estou aqui para\najudar vocês a sairem daqui.";
+    const texto2 = "Você pode saltar nas paredes para\nir mais alto.";
+    const texto3 =
+      "Você pode coletar as engrenagens\npara conseguir uma fuga melhor.";
+    const texto4 =
+      "Porém mesmo que você não consiga\ncoletar as engrenagens vocês\nconseguiram sair daqui.";
+    const texto5 = "Fuja deste alien até que o Roxo\nelimine ele.";
+    const texto6 =
+      "Assim você pode pegar o jetpack\ndele e para passar pela próxima\nsala.";
+    this.iaText = this.add
+      .text(735, 38, texto, { font: "13px", fill: "#fffc51" })
+      .setScrollFactor(0)
+      .setPipeline("Light2D")
+      .setOrigin(0, 0);
+    this.iaTypingEvent = null;
 
     this.player = this.physics.add.sprite(92, 1066, "player", 3); //fase1:92, 1066/445, 911//fase2:108, 1836/1138, 1836//fase3: 69, 2496/1256,2356//fase4: 92,300//fase5:92, 3532//
     this.player.body.setSize(20, 40);
@@ -846,28 +862,45 @@ class scene0 extends Phaser.Scene {
         this.iaBox.setVelocityX(0);
         this.iaBox.anims.play("iaSpeak", true);
 
-        this.time.addEvent({
-        delay: 50, // Velocidade da digitação em ms
-        callback: () => {
-          this.iaText.setText(texto1.substring(0, i));
-            i++;
-        },
-        repeat: texto1.length - 1
-        });
-        setTimeout(() => {
-          this.time.addEvent({
-            delay: 50, // Velocidade da digitação em ms
-            callback: () => {
-                this.iaText.setText(texto2);
-              i++;
-            },
-            repeat: texto2.length - 1
+        this.typeIaText(texto1, 50, () => {
+          this.time.delayedCall(500, () => {
+            this.typeIaText(texto2, 50, () => {
+              this.time.delayedCall(500, () => {
+                this.typeIaText(texto3, 50, () => {
+                  this.time.delayedCall(500, () => {
+                    this.typeIaText(texto4, 50);
+                  });
+                });
+              });
+            });
           });
-        }, 4500);
-        
+        });
       }, 3237);
-
     });
+
+    this.physics.add.overlap(this.player, this.invisibleH2, () => {
+      this.invisibleH2.disableBody(true, true);
+      this.iaBox.anims.stop();
+
+      this.typeIaText(texto, 50);
+      if (this.doorOpen != 1) {
+        this.iaBox.setVelocityX(100);
+        setTimeout(() => {
+          this.iaBox.setVelocityX(0);
+        }, 3237);
+      }
+    });
+
+    /*this.physics.add.overlap(this.player, this.invisible3, () => {
+      this.invisible3.disableBody(true, true);
+
+        this.typeIaText(texto3, 50, () => {
+          this.time.delayedCall(500, () => {
+            this.typeIaText(texto2, 50);
+          });
+        });
+
+    });*/
 
     this.physics.add.overlap(this.player, this.boxes, () => {
       this.player
@@ -876,8 +909,8 @@ class scene0 extends Phaser.Scene {
         .anims.play("idleRight");
       this.direction = true;
       this.life -= 1;
-      this.cargaJp = 10;
-      this.cargaJpText.setText("Cargas: " + this.cargaJp);
+      this.cargaJp = 1000;
+      this.cargaJpText.setText("Cargas: " + this.cargaJPpercentage + "%");
       if (this.collectEng3 === true) {
         this.score -= 1;
         this.scoreText.setText("Engrenagens: " + this.score + "/4");
@@ -895,6 +928,13 @@ class scene0 extends Phaser.Scene {
         .setPosition(92, 1066)
         .setVelocity(0, 0)
         .anims.play("idleRight");
+
+      this.iaBox.setPosition(1009, 33).setVelocityX(0).anims.stop();
+      this.typeIaText(texto, 50);
+
+      this.invisibleH.enableBody(true, 942, 1020, true, true);
+      this.invisibleH2.enableBody(true, 475, 870, true, true);
+
       this.direction = true;
       if (this.collectEng1 === true) {
         this.score -= 1;
@@ -905,9 +945,9 @@ class scene0 extends Phaser.Scene {
     });
 
     this.physics.add.overlap(this.player, this.door21, () => {
-
       if (this.doorOpen === 1) {
         this.door21.anims.play("open-door", true);
+        this.light21.setColor(0x90ee90);
         this.light22 = this.lights
           .addLight(this.door22.x, 1802, 35)
           .setIntensity(0.5)
@@ -915,6 +955,7 @@ class scene0 extends Phaser.Scene {
           .setColor(0xff0000);
         this.door21.once("animationcomplete", (anim, frame) => {
           if (anim.key === "open-door") {
+            this.iaBox.setVelocityX(0).setPosition(1009, 33);
             this.player
               .setPosition(108, 1835)
               .setVelocity(0, 0)
@@ -923,15 +964,28 @@ class scene0 extends Phaser.Scene {
             this.enemyGravity = true;
             this.cameras.main.scrollY =
               this.player.y - this.cameras.main.height / 2 - 120;
+            this.light12 = this.lights
+              .addLight(this.door12.x, 1802, 35)
+              .setIntensity(0.5)
+              .setScrollFactor(0.95, 1)
+              .setColor(0x90ee90);
             this.door12.anims.play("close-door", true);
+
+            this.iaBox.setVelocityX(-100);
+            setTimeout(() => {
+              this.iaBox.setVelocityX(0);
+              this.iaBox.anims.play("iaSpeak", true);
+
+              this.typeIaText(texto5, 50, () => {
+                this.time.delayedCall(500, () => {
+                  this.typeIaText(texto6, 50);
+                });
+              });
+            }, 3237);
+
             this.door12.once("animationcomplete", (anim, frame) => {
               if (anim.key === "close-door") {
-                this.light12 = this.lights
-                  .addLight(this.door12.x, 1802, 35)
-                  .setIntensity(0.5)
-                  .setScrollFactor(0.95, 1)
-                  .setColor(0xff0000);
-
+                this.light12.setColor(0xff0000);
                 this.jetBag = this.physics.add.sprite(595, 1584, "jetBag");
                 this.jetBag
                   .setScrollFactor(0.9, 1)
@@ -989,70 +1043,70 @@ class scene0 extends Phaser.Scene {
 
     this.physics.add.overlap(this.player, this.door23, () => {
       if (this.doorOpen >= 3) {
-      this.door23.anims.play("open-door", true);
-      this.door23.once("animationcomplete", (anim, frame) => {
-        if (anim.key === "open-door") {
-          this.player
-            .setPosition(92, 300)
-            .setVelocity(0, 0)
-            .setAngle(0)
-            .anims.play("idleRightJP");
-          this.direction = true;
-          this.cameras.main.scrollY =
-            this.player.y - this.cameras.main.height / 2 - 120;
-          this.fase3 = false;
-          this.cargaJp = 0;
-          this.door14.anims.play("close-door", true);
-          this.door14.once("animationcomplete", (anim, frame) => {
-            if (anim.key === "close-door") {
-              this.light14 = this.lights
+        this.door23.anims.play("open-door", true);
+        this.door23.once("animationcomplete", (anim, frame) => {
+          if (anim.key === "open-door") {
+            this.player
+              .setPosition(92, 300)
+              .setVelocity(0, 0)
+              .setAngle(0)
+              .anims.play("idleRightJP");
+            this.direction = true;
+            this.cameras.main.scrollY =
+              this.player.y - this.cameras.main.height / 2 - 120;
+            this.fase3 = false;
+            this.cargaJp = 0;
+            this.door14.anims.play("close-door", true);
+            this.door14.once("animationcomplete", (anim, frame) => {
+              if (anim.key === "close-door") {
+                this.light14 = this.lights
 
-                .addLight(this.door14.x, 265, 35)
-                .setIntensity(0.5)
-                .setScrollFactor(0.95, 1)
-                .setColor(0xff0000);
-            }
-          });
-        }
-      });
-    }
+                  .addLight(this.door14.x, 265, 35)
+                  .setIntensity(0.5)
+                  .setScrollFactor(0.95, 1)
+                  .setColor(0xff0000);
+              }
+            });
+          }
+        });
+      }
     });
 
     this.physics.add.overlap(this.player, this.door24, () => {
       if (this.doorOpen >= 4) {
-      this.door24.anims.play("open-door", true);
-      this.door24.once("animationcomplete", (anim, frame) => {
-        if (anim.key === "open-door") {
-          this.player
-            .setPosition(92, 3532)
-            .setVelocity(0, 0)
-            .anims.play("idleRghtJP");
-          this.direction = true;
-          this.cameras.main.scrollY =
-            this.player.y - this.cameras.main.height / 2 - 120;
-          this.lamp.setIntensity(0.95);
-          this.energy = false;
-          this.fase5 = true;
-          this.o2Ship = false;
-          this.door15.anims.play("close-door", true);
-          this.door15.once("animationcomplete", (anim, frame) => {
-            if (anim.key === "close-door") {
-              this.light15 = this.lights
-                .addLight(this.door15.x, 3497, 35) //ANA VITORIA
-                .setIntensity(0.5)
-                .setScrollFactor(0.95, 1)
-                .setColor(0xff0000);
-            }
-          });
-        }
-      });
-    }
+        this.door24.anims.play("open-door", true);
+        this.door24.once("animationcomplete", (anim, frame) => {
+          if (anim.key === "open-door") {
+            this.player
+              .setPosition(92, 3532)
+              .setVelocity(0, 0)
+              .anims.play("idleRghtJP");
+            this.direction = true;
+            this.cameras.main.scrollY =
+              this.player.y - this.cameras.main.height / 2 - 120;
+            this.lamp.setIntensity(0.95);
+            this.energy = false;
+            this.fase5 = true;
+            this.o2Ship = false;
+            this.door15.anims.play("close-door", true);
+            this.door15.once("animationcomplete", (anim, frame) => {
+              if (anim.key === "close-door") {
+                this.light15 = this.lights
+                  .addLight(this.door15.x, 3497, 35) //ANA VITORIA
+                  .setIntensity(0.5)
+                  .setScrollFactor(0.95, 1)
+                  .setColor(0xff0000);
+              }
+            });
+          }
+        });
+      }
     });
 
     this.layerPiso.setCollisionByProperty({ collides: true });
 
     this.cargaJpText = this.add
-      .text(270, 50, "Cargas: " + this.cargaJp, {
+      .text(270, 50, "Cargas: " + this.cargaJPpercentage + "%", {
         fontSize: "16px",
         fill: "#ffffff00",
       })
@@ -1088,22 +1142,45 @@ class scene0 extends Phaser.Scene {
     });
 
     this.game.socket.on("scene1", (state) => {
-
-          this.doorOpen = state.doorOpen.key;
-
+      this.doorOpen = state.doorOpen.key;
     });
-    
+  }
+
+  typeIaText(text, speed = 50, onComplete = null) {
+    if (!text || text.length === 0) {
+      this.iaText.setText("");
+      if (onComplete) {
+        onComplete();
+      }
+      return;
+    }
+
+    if (this.iaTypingEvent) {
+      this.iaTypingEvent.remove(false);
+      this.iaTypingEvent = null;
+    }
+
+    this.iaText.setText("");
+    let index = 0;
+
+    this.iaTypingEvent = this.time.addEvent({
+      delay: speed,
+      repeat: text.length - 1,
+      callback: () => {
+        index++;
+        this.iaText.setText(text.substring(0, index));
+        if (index >= text.length) {
+          this.iaTypingEvent = null;
+          if (onComplete) {
+            onComplete();
+          }
+        }
+      },
+    });
   }
 
   update() {
-
-    /* if (this.life === 0) {
-       
-       this.life = 6;
-       this.scene.reload("scene0");
-       this.scene.start("start");
-      // this.life = 6;
-     }*/
+    this.cargaJPpercentage = this.cargaJp / 10;
 
     if (this.fase5 === false && this.energy === true) {
       this.lights.enable().setAmbientColor(0xe0f7ff);
@@ -1207,14 +1284,14 @@ class scene0 extends Phaser.Scene {
         this.player.setVelocityY(-70);
         this.doubleJump = false;
         if (!this.player.body.blocked.down) {
-          this.cargaJp -= 1;
-          this.cargaJpText.setText("Cargas: " + this.cargaJp);
+          this.cargaJp -= 30;
+          this.cargaJpText.setText("Cargas: " + this.cargaJPpercentage + "%");
         }
 
         if (this.direction === true) {
-          this.player.setFrame("10");
+          this.player.setFrame("63");
         } else if (this.direction === false) {
-          this.player.setFrame("5");
+          this.player.setFrame("61");
         }
       } else if (!jumpPressed && this.player.body.velocity.y != 0) {
         this.doubleJump = true;
@@ -1231,9 +1308,17 @@ class scene0 extends Phaser.Scene {
         this.player.body.velocity.x != 0
       ) {
         if (this.direction === true) {
+          this.player.setFrame("58");
           this.player.setAngle(10);
+          if (this.cargaJp > 0) {
+            this.cargaJp -= 1;
+            this.cargaJpText.setText("Cargas: " + this.cargaJPpercentage + "%");
+          }
         } else if (this.direction === false) {
+          this.player.setFrame("56");
           this.player.setAngle(-10);
+          this.cargaJp -= 1;
+          this.cargaJpText.setText("Cargas: " + this.cargaJPpercentage + "%");
         }
       } else if (
         (this.player.body.velocity.y != 0 &&
