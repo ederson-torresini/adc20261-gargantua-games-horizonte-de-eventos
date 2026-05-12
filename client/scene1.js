@@ -3,7 +3,7 @@ class scene1 extends Phaser.Scene {
     super("scene1");
 
     this.speed = 200;
-    this.estoutrabalhando = true;
+    this.estoutrabalhando = false;
     this.doorOpen = 0;
   }
 
@@ -13,7 +13,7 @@ class scene1 extends Phaser.Scene {
     this.load.audio("passos", "walkamongus.mp3");
     this.load.audio("trilhasonora", "trilhasonora.mp3");
 
-    //preload do tilemap da faseortogonal    
+    //preload do tilemap da faseortogonal
     this.load.tilemapTiledJSON(
       "faseortogonal",
       "mapasv4/faseortogonalatualizada.json",
@@ -285,6 +285,10 @@ class scene1 extends Phaser.Scene {
     //this.porta.setAngle(180);
     this.porta.body.allowGravity = false;
 
+    //adicionar segunda porta
+    this.porta2 = this.physics.add.sprite(717, 1710, "porta", 0);
+    this.porta2.body.allowGravity = false;
+
     //faz um grupo para os bigbosses
     this.bigboss = this.physics.add.group({
       allowGravity: false,
@@ -517,6 +521,11 @@ class scene1 extends Phaser.Scene {
 
     this.osciloscopios.create(980, 1560, "osciloscopio").body.setSize(35, 17);
 
+    this.limiteporta = this.physics.add.sprite(638, 750, "bigboss");
+    this.limiteporta.body.allowGravity = false;
+    this.limiteporta.setSize(128, 32);
+    this.limiteporta.setImmovable(true);
+
     this.limitenorte = this.physics.add.sprite(670, 1270, "bigboss"); //662, 1347 667 1460
     this.limitenorte.body.allowGravity = false;
     this.limitenorte.setImmovable(true);
@@ -548,9 +557,18 @@ class scene1 extends Phaser.Scene {
     this.ativaraliens.setImmovable(true);*/
 
     //adiciona o player roxo
-    this.playerroxo = this.physics.add.sprite(650, 1437, "playerroxo"); //640,290 interior //650, 1437 exterior //spawn
+    this.playerroxo = this.physics.add.sprite(640, 448, "playerroxo"); //640,448 interior //650, 1437 exterior //spawn
     this.playerroxo.body.setSize(25, 10).setOffset(19, 52);
     this.playerroxo.body.allowGravity = false;
+
+    this.caixa = this.physics.add.sprite(
+      this.playerroxo.x,
+      this.playerroxo.y,
+      "bigboss",
+    );
+    this.caixa.body.setSize(45, 55);
+    this.caixa.body.allowGravity = false;
+    //this.caixa.immovable = false;
 
     //colisoes
     this.physics.add.collider(this.playerroxo, this.layerPiso);
@@ -558,15 +576,15 @@ class scene1 extends Phaser.Scene {
     this.physics.add.collider(this.playerroxo, this.consolelongo);
     this.physics.add.collider(this.playerroxo, this.consolemedio, () => {
       this.doorOpen = 4;
-              try {
-      this.game.socket.emit("scene1", this.game.room, {
-        doorOpen: {
-          key: this.doorOpen,
-        },
-      });
-    } catch (e) {
-      console.error("Error updating player:", e);
-        }
+      try {
+        this.game.socket.emit("scene1", this.game.room, {
+          doorOpen: {
+            key: this.doorOpen,
+          },
+        });
+      } catch (e) {
+        console.error("Error updating player:", e);
+      }
     });
     this.physics.add.collider(this.playerroxo, this.consoles);
     this.physics.add.collider(this.playerroxo, this.consoles2);
@@ -574,42 +592,42 @@ class scene1 extends Phaser.Scene {
     this.physics.add.collider(this.playerroxo, this.consoles4);
     this.physics.add.collider(this.playerroxo, this.consoles5, () => {
       this.doorOpen = 1;
-              try {
-      this.game.socket.emit("scene1", this.game.room, {
-        doorOpen: {
-          key: this.doorOpen,
-        },
-      });
-    } catch (e) {
-      console.error("Error updating player:", e);
-        }
+      try {
+        this.game.socket.emit("scene1", this.game.room, {
+          doorOpen: {
+            key: this.doorOpen,
+          },
+        });
+      } catch (e) {
+        console.error("Error updating player:", e);
+      }
     });
     this.physics.add.collider(this.playerroxo, this.consoles6, () => {
       this.doorOpen = 3;
-              try {
-      this.game.socket.emit("scene1", this.game.room, {
-        doorOpen: {
-          key: this.doorOpen,
-        },
-      });
-    } catch (e) {
-      console.error("Error updating player:", e);
-        }
+      try {
+        this.game.socket.emit("scene1", this.game.room, {
+          doorOpen: {
+            key: this.doorOpen,
+          },
+        });
+      } catch (e) {
+        console.error("Error updating player:", e);
+      }
     });
     this.physics.add.collider(this.playerroxo, this.consolew);
     this.physics.add.collider(this.playerroxo, this.consolew2);
     this.physics.add.collider(this.playerroxo, this.consolew3);
     this.physics.add.collider(this.playerroxo, this.consolew4, () => {
       this.doorOpen = 2;
-              try {
-      this.game.socket.emit("scene1", this.game.room, {
-        doorOpen: {
-          key: this.doorOpen,
-        },
-      });
-    } catch (e) {
-      console.error("Error updating player:", e);
-        }
+      try {
+        this.game.socket.emit("scene1", this.game.room, {
+          doorOpen: {
+            key: this.doorOpen,
+          },
+        });
+      } catch (e) {
+        console.error("Error updating player:", e);
+      }
     });
     this.physics.add.collider(this.playerroxo, this.consolew5);
     this.physics.add.collider(this.playerroxo, this.consolew6);
@@ -617,6 +635,21 @@ class scene1 extends Phaser.Scene {
     this.physics.add.collider(this.playerroxo, this.antenas);
     this.physics.add.collider(this.playerroxo, this.telescopios);
     this.physics.add.collider(this.playerroxo, this.osciloscopios);
+    this.physics.add.collider(this.playerroxo, this.limiteporta);
+    this.physics.add.overlap(
+      this.playerroxo,
+      this.porta,
+      this.teletransporte,
+      null,
+      this,
+    );
+    this.physics.add.overlap(
+      this.playerroxo,
+      this.porta2,
+      this.teletransporte2,
+      null,
+      this,
+    );
 
     /*this.physics.add.overlap(this.playerroxo, this.porta, () => {
       this.doorOpen += 1;
@@ -628,7 +661,7 @@ class scene1 extends Phaser.Scene {
       this.physics.add.collider(this.playerroxo, this.limiteoeste);
       this.physics.add.collider(this.playerroxo, this.limiteleste);
     }
-    
+
     //ativar aliens
     /*this.physics.add.overlap(
       this.playerroxo,
@@ -637,20 +670,20 @@ class scene1 extends Phaser.Scene {
       null,
       this,
       );*/
-      
-      this.inimigosaliens = this.physics.add.group({
-        allowGravity: false,
-        immovable: false,
-        pipeline: "Light2D",
-      });
-      
-      this.inimigosaliens.create(452, 1323, "inimigo3").body.setSize(30, 37);
-      //this.inimigosaliens.create(1020, 1423, "inimigo3").body.setSize(30, 37);
-      this.physics.add.collider(this.inimigosaliens, this.limitenorte);
-      this.physics.add.collider(this.inimigosaliens, this.limitesul);
-      this.physics.add.collider(this.inimigosaliens, this.limiteoeste);
+
+    this.inimigosaliens = this.physics.add.group({
+      allowGravity: false,
+      immovable: false,
+      pipeline: "Light2D",
+    });
+
+    this.inimigosaliens.create(452, 1323, "inimigo3").body.setSize(30, 37);
+    //this.inimigosaliens.create(1020, 1423, "inimigo3").body.setSize(30, 37);
+    this.physics.add.collider(this.inimigosaliens, this.limitenorte);
+    this.physics.add.collider(this.inimigosaliens, this.limitesul);
+    this.physics.add.collider(this.inimigosaliens, this.limiteoeste);
     this.physics.add.collider(this.inimigosaliens, this.limiteleste);
-    this.physics.add.collider(this.playerroxo, this.inimigosaliens);
+    this.physics.add.collider(this.caixa, this.inimigosaliens); //this.enemyAttack, null, this);
 
     this.layerParede.setCollisionByProperty({ collides: true });
 
@@ -709,14 +742,14 @@ class scene1 extends Phaser.Scene {
     );
   }
 
-  enemyAttack(playerroxo, enemy) {
+  enemyAttack(caixa, enemy) {
 
     // Para o movimento do inimigo
     enemy.setVelocity(0, 0);
 
     // Calcula a direção em relação ao player
-    const dx = playerroxo.x - enemy.x;
-    const dy = playerroxo.y - enemy.y;
+    const dx = caixa.x - enemy.x;
+    const dy = caixa.y - enemy.y;
 
     // Escolhe animação baseado na direção predominante
     if (Math.abs(dx) > Math.abs(dy)) {
@@ -733,7 +766,8 @@ class scene1 extends Phaser.Scene {
   }*/
 
   update() {
-    
+    this.caixa.setPosition(this.playerroxo.x, this.playerroxo.y);
+
     // Captura entrada do teclado
     const cursors = this.input.keyboard.createCursorKeys();
     const wasd = this.input.keyboard.addKeys("W,S,A,D");
@@ -794,6 +828,10 @@ class scene1 extends Phaser.Scene {
           limitesRight - limitesLeft,
           limitesBottom - limitesTop,
         );
+      }
+      else if (!isOverlapLimites) {
+        // Se não estiver mais sobre os limites, redefine as bounds para o tamanho total do mapa
+        this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, this.tilemap.heightInPixels);
       }
     }
 
@@ -858,7 +896,25 @@ class scene1 extends Phaser.Scene {
       });
     }
   }
+  teletransporte() {
+    {
+      this.porta.anims.play("portaabrindo", true);
+      this.time.delayedCall(1000, () => {
+        this.playerroxo.setPosition(650, 1437); //teletransporte para o exterior da nave
+        this.porta.anims.play("portafechando", true);
+      });
+    }
+  }
 
+  teletransporte2() {
+    {
+      this.porta2.anims.play("portaabrindo", true);
+      this.time.delayedCall(1000, () => {
+        this.playerroxo.setPosition(640, 448); //teletransporte para o interior da nave
+        this.porta2.anims.play("portafechando", true);
+      });
+    }
+  }
 }
 
 export default scene1;
