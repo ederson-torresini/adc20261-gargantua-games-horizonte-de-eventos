@@ -3,7 +3,7 @@ class scene1 extends Phaser.Scene {
     super("scene1");
 
     this.speed = 200;
-    this.estoutrabalhando = true;
+    this.estoutrabalhando = false;
     this.doorOpen = 0;
   }
 
@@ -521,6 +521,11 @@ class scene1 extends Phaser.Scene {
 
     this.osciloscopios.create(980, 1560, "osciloscopio").body.setSize(35, 17);
 
+    this.limiteporta = this.physics.add.sprite(638, 750, "bigboss");
+    this.limiteporta.body.allowGravity = false;
+    this.limiteporta.setSize(128, 32);
+    this.limiteporta.setImmovable(true);
+
     this.limitenorte = this.physics.add.sprite(670, 1270, "bigboss"); //662, 1347 667 1460
     this.limitenorte.body.allowGravity = false;
     this.limitenorte.setImmovable(true);
@@ -552,7 +557,7 @@ class scene1 extends Phaser.Scene {
     this.ativaraliens.setImmovable(true);*/
 
     //adiciona o player roxo
-    this.playerroxo = this.physics.add.sprite(640, 290, "playerroxo"); //640,290 interior //650, 1437 exterior //spawn
+    this.playerroxo = this.physics.add.sprite(640, 448, "playerroxo"); //640,448 interior //650, 1437 exterior //spawn
     this.playerroxo.body.setSize(25, 10).setOffset(19, 52);
     this.playerroxo.body.allowGravity = false;
 
@@ -630,6 +635,7 @@ class scene1 extends Phaser.Scene {
     this.physics.add.collider(this.playerroxo, this.antenas);
     this.physics.add.collider(this.playerroxo, this.telescopios);
     this.physics.add.collider(this.playerroxo, this.osciloscopios);
+    this.physics.add.collider(this.playerroxo, this.limiteporta);
     this.physics.add.overlap(
       this.playerroxo,
       this.porta,
@@ -823,6 +829,10 @@ class scene1 extends Phaser.Scene {
           limitesBottom - limitesTop,
         );
       }
+      else if (!isOverlapLimites) {
+        // Se não estiver mais sobre os limites, redefine as bounds para o tamanho total do mapa
+        this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, this.tilemap.heightInPixels);
+      }
     }
 
     // Animações e som baseado no movimento
@@ -891,6 +901,7 @@ class scene1 extends Phaser.Scene {
       this.porta.anims.play("portaabrindo", true);
       this.time.delayedCall(1000, () => {
         this.playerroxo.setPosition(650, 1437); //teletransporte para o exterior da nave
+        this.porta.anims.play("portafechando", true);
       });
     }
   }
@@ -899,7 +910,8 @@ class scene1 extends Phaser.Scene {
     {
       this.porta2.anims.play("portaabrindo", true);
       this.time.delayedCall(1000, () => {
-        this.playerroxo.setPosition(640, 290); //teletransporte para o interior da nave
+        this.playerroxo.setPosition(640, 448); //teletransporte para o interior da nave
+        this.porta2.anims.play("portafechando", true);
       });
     }
   }
