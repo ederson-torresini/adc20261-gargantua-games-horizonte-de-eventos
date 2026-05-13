@@ -3,16 +3,17 @@ class scene0 extends Phaser.Scene {
   constructor() {
     super("scene0");
 
-    this.direction = true;
+    this.direction = true; 
     this.doubleJump = false;
     this.score = 0;
     this.fase3 = false;
+    this.fase4 = false;
     this.fase5 = false;
     this.jetPack = false;
     this.energy = true;
     this.keys = null;
     this.cargaJp = 1000;
-    this.cargaJPpercentage = this.cargaJp / 100;
+    this.cargaJPpercentage = this.cargaJp / 10;
     this.o2 = 100;
     this.o2Ship = true; //1231 3351
     this.collectEng1 = false;
@@ -547,7 +548,6 @@ class scene0 extends Phaser.Scene {
     this.platforms = this.physics.add.group({
       allowGravity: false,
       immovable: true,
-      pipeline: "Light2D",
     });
 
     this.platforms
@@ -588,22 +588,22 @@ class scene0 extends Phaser.Scene {
       .setScrollFactor(0.99, 1)
       .setPipeline("Light2D");
 
-    this.platforms
+    this.platform51 = this.platforms
       .create(115, 3420, "plataform")
       .setScrollFactor(0.99, 1)
       .setPipeline("Light2D");
 
-    this.platforms
+    this.platform52 = this.platforms
       .create(769, 3495, "plataform")
       .setScrollFactor(0.99, 1)
       .setPipeline("Light2D");
 
-    this.platforms
+    this.platform53 = this.platforms
       .create(841, 3400, "plataform")
       .setScrollFactor(0.99, 1)
       .setPipeline("Light2D");
 
-    this.platforms
+    this.platform54 = this.platforms
       .create(1230, 3375, "plataform")
       .setScrollFactor(0.99, 1)
       .setPipeline("Light2D");
@@ -730,16 +730,64 @@ class scene0 extends Phaser.Scene {
     }, 500);
 
     this.light21 = this.lights
-      .addLight(this.door21.x, 880, 40)
+      .addLight(this.door21.x, (this.door21.y - 20), 40)
       .setIntensity(1.5)
       .setScrollFactor(0.95, 1)
       .setColor(0xff0000);
 
     this.lights
-      .addLight(this.door11.x, 1040, 40)
+      .addLight(this.door11.x, (this.door11.y - 20), 40)
       .setIntensity(1.5)
       .setScrollFactor(0.95, 1)
       .setColor(0xff0000);
+    
+    this.light12 = this.lights
+       .addLight(this.door12.x, (this.door12.y - 20), 40)
+       .setIntensity(1.5)
+       .setScrollFactor(0.95, 1)
+       .setColor(0x90ee90);
+
+    this.light22 = this.lights
+       .addLight(this.door22.x, (this.door22.y - 20), 40)
+       .setIntensity(1.5)
+       .setScrollFactor(0.95, 1)
+       .setColor(0xff0000);
+
+    this.light13 = this.lights
+       .addLight(this.door13.x, (this.door13.y - 20), 40)
+       .setIntensity(1.5)
+       .setScrollFactor(0.95, 1)
+      .setColor(0x90ee90);
+    
+    this.light23 = this.lights
+       .addLight(this.door23.x, (this.door23.y - 20), 40)
+       .setIntensity(1.5)
+       .setScrollFactor(0.95, 1)
+       .setColor(0xff0000);
+    
+    this.light14 = this.lights
+       .addLight(this.door14.x, (this.door14.y - 20), 40)
+       .setIntensity(1.5)
+       .setScrollFactor(0.95, 1)
+      .setColor(0x90ee90);
+    
+    this.light24 = this.lights
+       .addLight(this.door24.x, (this.door24.y - 20), 40)
+       .setIntensity(1.5)
+       .setScrollFactor(0.95, 1)
+      .setColor(0xff0000);
+    
+    this.light15 = this.lights
+       .addLight(this.door15.x, (this.door15.y - 20), 40)
+       .setIntensity(1.5)
+       .setScrollFactor(0.95, 1)
+      .setColor(0x90ee90);
+    
+    this.light25 = this.lights
+       .addLight(this.door25.x, (this.door25.y - 20), 40)
+       .setIntensity(1.5)
+       .setScrollFactor(0.95, 1)
+       .setColor(0xff0000);
 
     this.iaBox = this.physics.add.sprite(1009, 33, "iaBox");
     this.iaBox
@@ -948,11 +996,7 @@ class scene0 extends Phaser.Scene {
       if (this.doorOpen === 1) {
         this.door21.anims.play("open-door", true);
         this.light21.setColor(0x90ee90);
-        this.light22 = this.lights
-          .addLight(this.door22.x, 1802, 35)
-          .setIntensity(0.5)
-          .setScrollFactor(0.95, 1)
-          .setColor(0xff0000);
+
         this.door21.once("animationcomplete", (anim, frame) => {
           if (anim.key === "open-door") {
             this.iaBox.setVelocityX(0).setPosition(1009, 33);
@@ -964,11 +1008,7 @@ class scene0 extends Phaser.Scene {
             this.enemyGravity = true;
             this.cameras.main.scrollY =
               this.player.y - this.cameras.main.height / 2 - 120;
-            this.light12 = this.lights
-              .addLight(this.door12.x, 1802, 35)
-              .setIntensity(0.5)
-              .setScrollFactor(0.95, 1)
-              .setColor(0x90ee90);
+            
             this.door12.anims.play("close-door", true);
 
             this.iaBox.setVelocityX(-100);
@@ -1008,11 +1048,7 @@ class scene0 extends Phaser.Scene {
 
     this.physics.add.overlap(this.player, this.door22, () => {
       if (this.jetPack && this.doorOpen >= 2) {
-        this.lights
-          .addLight(this.door22.x, 1802, 35)
-          .setIntensity(0.5)
-          .setScrollFactor(0.95, 1)
-          .setColor(0x90ee90);
+        this.light22.setColor(0x90ee90);
 
         this.door22.anims.play("open-door", true);
         this.door22.once("animationcomplete", (anim, frame) => {
@@ -1028,12 +1064,7 @@ class scene0 extends Phaser.Scene {
             this.door13.anims.play("close-door", true);
             this.door13.once("animationcomplete", (anim, frame) => {
               if (anim.key === "close-door") {
-                this.light13 = this.lights
-
-                  .addLight(this.door13.x, 2473, 35)
-                  .setIntensity(0.5)
-                  .setScrollFactor(0.95, 1)
-                  .setColor(0xff0000);
+                this.light13.setColor(0xff0000);
               }
             });
           }
@@ -1059,12 +1090,17 @@ class scene0 extends Phaser.Scene {
             this.door14.anims.play("close-door", true);
             this.door14.once("animationcomplete", (anim, frame) => {
               if (anim.key === "close-door") {
-                this.light14 = this.lights
-
-                  .addLight(this.door14.x, 265, 35)
-                  .setIntensity(0.5)
-                  .setScrollFactor(0.95, 1)
-                  .setColor(0xff0000);
+                this.light14.setColor(0xff0000);
+                this.fase4 = true;
+              try {
+              this.game.socket.emit("scene0", this.game.room, {
+                fase4: {
+                      key: this.fase4,
+                    },
+              });
+              } catch (e) {
+                    console.error("Error updating player:", e);
+                  }
               }
             });
           }
@@ -1077,6 +1113,18 @@ class scene0 extends Phaser.Scene {
         this.door24.anims.play("open-door", true);
         this.door24.once("animationcomplete", (anim, frame) => {
           if (anim.key === "open-door") {
+            this.energy = false;
+            this.fase5 = true;
+            this.o2Ship = false;
+          try {
+            this.game.socket.emit("scene0", this.game.room, {
+             fase5: {
+                 key:this.fase5,
+                },
+            });
+          } catch (e) {
+            console.error("Error updating player:", e);
+          }
             this.player
               .setPosition(92, 3532)
               .setVelocity(0, 0)
@@ -1085,17 +1133,11 @@ class scene0 extends Phaser.Scene {
             this.cameras.main.scrollY =
               this.player.y - this.cameras.main.height / 2 - 120;
             this.lamp.setIntensity(0.95);
-            this.energy = false;
-            this.fase5 = true;
-            this.o2Ship = false;
+
             this.door15.anims.play("close-door", true);
             this.door15.once("animationcomplete", (anim, frame) => {
               if (anim.key === "close-door") {
-                this.light15 = this.lights
-                  .addLight(this.door15.x, 3497, 35) //ANA VITORIA
-                  .setIntensity(0.5)
-                  .setScrollFactor(0.95, 1)
-                  .setColor(0xff0000);
+                this.light15.setColor(0xff0000);
               }
             });
           }
@@ -1181,6 +1223,35 @@ class scene0 extends Phaser.Scene {
 
   update() {
     this.cargaJPpercentage = this.cargaJp / 10;
+    if (this.doorOpen >= 4) {
+      try {
+        this.game.socket.emit("scene0", this.game.room, {
+          player: {
+            x: this.player.x,
+            y: this.player.y,
+          },
+        });
+      } catch (e) {
+        console.error("Error updating player:", e);
+      };
+    }
+
+      try {
+        this.game.socket.emit("scene0", this.game.room, {
+         platforms: {
+           platform12X: this.platform12.x,
+           platform12Y: this.platform12.y,
+           
+           platform15X: this.platform15.x,
+           platform15Y: this.platform15.y,
+           
+        }
+        });
+      } catch (e) {
+        console.error("Error updating player:", e);
+   };
+
+     
 
     if (this.fase5 === false && this.energy === true) {
       this.lights.enable().setAmbientColor(0xe0f7ff);
