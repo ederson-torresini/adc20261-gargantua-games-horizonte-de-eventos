@@ -3,7 +3,7 @@ class scene0 extends Phaser.Scene {
   constructor() {
     super("scene0");
 
-    this.direction = true; 
+    this.direction = true;
     this.doubleJump = false;
     this.score = 0;
     this.fase3 = false;
@@ -88,7 +88,7 @@ class scene0 extends Phaser.Scene {
       frameHeight: 8,
     });
 
-    this.load.spritesheet("engrenagem", "engrenagemnova.png", {
+    this.load.spritesheet("engrenagem", "cartoes.png", {
       frameWidth: 32,
       frameHeight: 32,
     });
@@ -110,6 +110,11 @@ class scene0 extends Phaser.Scene {
     this.load.spritesheet("inimigo", "inimigo3.png", {
       frameWidth: 117,
       frameHeight: 70,
+    });
+
+    this.load.spritesheet("torreta", "torretaetiro.png", {
+      frameWidth: 32,
+      frameHeight: 32,
     });
   }
 
@@ -295,10 +300,40 @@ class scene0 extends Phaser.Scene {
     });
 
     this.anims.create({
-      key: "engrenagem-idle",
+      key: "engrenagem-idlelaranja",
       frames: this.anims.generateFrameNumbers("engrenagem", {
         start: 0,
         end: 1,
+      }),
+      frameRate: 2,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "engrenagem-idleroxo",
+      frames: this.anims.generateFrameNumbers("engrenagem", {
+        start: 2,
+        end: 3,
+      }),
+      frameRate: 2,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "engrenagem-idlerosa",
+      frames: this.anims.generateFrameNumbers("engrenagem", {
+        start: 4,
+        end: 5,
+      }),
+      frameRate: 2,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "engrenagem-idleciano",
+      frames: this.anims.generateFrameNumbers("engrenagem", {
+        start: 6,
+        end: 7,
       }),
       frameRate: 2,
       repeat: -1,
@@ -377,23 +412,23 @@ class scene0 extends Phaser.Scene {
     this.engrenagem1 = this.engrenagens
       .create(1138, 965, "engrenagem")
       .setScale(0.7)
-      .anims.play("engrenagem-idle", true);
+      .anims.play("engrenagem-idlelaranja", true);
 
     this.engrenagem2 = this.engrenagens
       .create(1059, 1652, "engrenagem")
       .setScale(0.7)
-      .anims.play("engrenagem-idle", true);
+      .anims.play("engrenagem-idleroxo", true);
 
     this.engrenagem3 = this.engrenagens
       .create(1209, 2604, "engrenagem")
       .setScale(0.7)
-      .anims.play("engrenagem-idle", true);
+      .anims.play("engrenagem-idlerosa", true);
 
     this.engrenagem5 = this.engrenagens
       .create(531, 3340, "engrenagem")
       .setScale(0.7)
       .setPipeline("Light2D")
-      .anims.play("engrenagem-idle", true);
+      .anims.play("engrenagem-idleciano", true);
 
     this.anims.create({
       key: "iaSpeak",
@@ -697,6 +732,10 @@ class scene0 extends Phaser.Scene {
     this.invisible2
       .setImmovable(true)
       .setPipeline("Light2D").body.allowGravity = false;
+    
+     this.torreta = this.physics.add.sprite(540, 1584, "torreta", 5);
+     this.torreta.setPipeline("Light2D").setImmovable(true).setScale(1.5);
+     this.torreta.body.allowGravity = false;
 
     setInterval(() => {
       if (this.o2 < 100 && this.o2Ship === true) {
@@ -730,64 +769,64 @@ class scene0 extends Phaser.Scene {
     }, 500);
 
     this.light21 = this.lights
-      .addLight(this.door21.x, (this.door21.y - 20), 40)
+      .addLight(this.door21.x, this.door21.y - 20, 40)
       .setIntensity(1.5)
       .setScrollFactor(0.95, 1)
       .setColor(0xff0000);
 
     this.lights
-      .addLight(this.door11.x, (this.door11.y - 20), 40)
+      .addLight(this.door11.x, this.door11.y - 20, 40)
       .setIntensity(1.5)
       .setScrollFactor(0.95, 1)
       .setColor(0xff0000);
-    
+
     this.light12 = this.lights
-       .addLight(this.door12.x, (this.door12.y - 20), 40)
-       .setIntensity(1.5)
-       .setScrollFactor(0.95, 1)
-       .setColor(0x90ee90);
+      .addLight(this.door12.x, this.door12.y - 20, 40)
+      .setIntensity(1.5)
+      .setScrollFactor(0.95, 1)
+      .setColor(0x90ee90);
 
     this.light22 = this.lights
-       .addLight(this.door22.x, (this.door22.y - 20), 40)
-       .setIntensity(1.5)
-       .setScrollFactor(0.95, 1)
-       .setColor(0xff0000);
+      .addLight(this.door22.x, this.door22.y - 20, 40)
+      .setIntensity(1.5)
+      .setScrollFactor(0.95, 1)
+      .setColor(0xff0000);
 
     this.light13 = this.lights
-       .addLight(this.door13.x, (this.door13.y - 20), 40)
-       .setIntensity(1.5)
-       .setScrollFactor(0.95, 1)
+      .addLight(this.door13.x, this.door13.y - 20, 40)
+      .setIntensity(1.5)
+      .setScrollFactor(0.95, 1)
       .setColor(0x90ee90);
-    
+
     this.light23 = this.lights
-       .addLight(this.door23.x, (this.door23.y - 20), 40)
-       .setIntensity(1.5)
-       .setScrollFactor(0.95, 1)
-       .setColor(0xff0000);
-    
-    this.light14 = this.lights
-       .addLight(this.door14.x, (this.door14.y - 20), 40)
-       .setIntensity(1.5)
-       .setScrollFactor(0.95, 1)
-      .setColor(0x90ee90);
-    
-    this.light24 = this.lights
-       .addLight(this.door24.x, (this.door24.y - 20), 40)
-       .setIntensity(1.5)
-       .setScrollFactor(0.95, 1)
+      .addLight(this.door23.x, this.door23.y - 20, 40)
+      .setIntensity(1.5)
+      .setScrollFactor(0.95, 1)
       .setColor(0xff0000);
-    
-    this.light15 = this.lights
-       .addLight(this.door15.x, (this.door15.y - 20), 40)
-       .setIntensity(1.5)
-       .setScrollFactor(0.95, 1)
+
+    this.light14 = this.lights
+      .addLight(this.door14.x, this.door14.y - 20, 40)
+      .setIntensity(1.5)
+      .setScrollFactor(0.95, 1)
       .setColor(0x90ee90);
-    
+
+    this.light24 = this.lights
+      .addLight(this.door24.x, this.door24.y - 20, 40)
+      .setIntensity(1.5)
+      .setScrollFactor(0.95, 1)
+      .setColor(0xff0000);
+
+    this.light15 = this.lights
+      .addLight(this.door15.x, this.door15.y - 20, 40)
+      .setIntensity(1.5)
+      .setScrollFactor(0.95, 1)
+      .setColor(0x90ee90);
+
     this.light25 = this.lights
-       .addLight(this.door25.x, (this.door25.y - 20), 40)
-       .setIntensity(1.5)
-       .setScrollFactor(0.95, 1)
-       .setColor(0xff0000);
+      .addLight(this.door25.x, this.door25.y - 20, 40)
+      .setIntensity(1.5)
+      .setScrollFactor(0.95, 1)
+      .setColor(0xff0000);
 
     this.iaBox = this.physics.add.sprite(1009, 33, "iaBox");
     this.iaBox
@@ -831,6 +870,18 @@ class scene0 extends Phaser.Scene {
       .addLight(this.player.x, this.player.y, 40)
       .setIntensity(0)
       .setColor(0xf5f5f5);
+
+   
+
+    this.anims.create({
+      key: "torretaidle",
+      frames: this.anims.generateFrameNumbers("torreta", {
+        start: 5,
+        end: 5,
+      }),
+      frameRate: 10,
+      repeat: -1,
+    });
 
     this.physics.add.overlap(
       this.player,
@@ -1008,7 +1059,7 @@ class scene0 extends Phaser.Scene {
             this.enemyGravity = true;
             this.cameras.main.scrollY =
               this.player.y - this.cameras.main.height / 2 - 120;
-            
+
             this.door12.anims.play("close-door", true);
 
             this.iaBox.setVelocityX(-100);
@@ -1092,15 +1143,15 @@ class scene0 extends Phaser.Scene {
               if (anim.key === "close-door") {
                 this.light14.setColor(0xff0000);
                 this.fase4 = true;
-              try {
-              this.game.socket.emit("scene0", this.game.room, {
-                fase4: {
+                try {
+                  this.game.socket.emit("scene0", this.game.room, {
+                    fase4: {
                       key: this.fase4,
                     },
-              });
-              } catch (e) {
-                    console.error("Error updating player:", e);
-                  }
+                  });
+                } catch (e) {
+                  console.error("Error updating player:", e);
+                }
               }
             });
           }
@@ -1116,15 +1167,15 @@ class scene0 extends Phaser.Scene {
             this.energy = false;
             this.fase5 = true;
             this.o2Ship = false;
-          try {
-            this.game.socket.emit("scene0", this.game.room, {
-             fase5: {
-                 key:this.fase5,
+            try {
+              this.game.socket.emit("scene0", this.game.room, {
+                fase5: {
+                  key: this.fase5,
                 },
-            });
-          } catch (e) {
-            console.error("Error updating player:", e);
-          }
+              });
+            } catch (e) {
+              console.error("Error updating player:", e);
+            }
             this.player
               .setPosition(92, 3532)
               .setVelocity(0, 0)
@@ -1183,8 +1234,22 @@ class scene0 extends Phaser.Scene {
       space: Phaser.Input.Keyboard.KeyCodes.SPACE,
     });
 
+    const jkl = this.input.keyboard.addKeys("J,K,L");
+
     this.game.socket.on("scene1", (state) => {
-      this.doorOpen = state.doorOpen.key;
+      const jklState = state.jkl || { J: false, L: false };
+      
+      if (jklState.J) {
+        this.torreta.setVelocityX(-170);
+      } else if (jklState.L) {
+        this.torreta.setVelocityX(170);
+      } else {
+        this.torreta.setVelocityX(0);
+      }
+     
+    });
+    this.game.socket.on("scene1", (state) => {
+     this.doorOpen = state.doorOpen?.key ?? state.doorOpen;
     });
   }
 
@@ -1233,25 +1298,22 @@ class scene0 extends Phaser.Scene {
         });
       } catch (e) {
         console.error("Error updating player:", e);
-      };
+      }
     }
 
-      try {
-        this.game.socket.emit("scene0", this.game.room, {
-         platforms: {
-           platform12X: this.platform12.x,
-           platform12Y: this.platform12.y,
-           
-           platform15X: this.platform15.x,
-           platform15Y: this.platform15.y,
-           
-        }
-        });
-      } catch (e) {
-        console.error("Error updating player:", e);
-   };
+    try {
+      this.game.socket.emit("scene0", this.game.room, {
+        platforms: {
+          platform12X: this.platform12.x,
+          platform12Y: this.platform12.y,
 
-     
+          platform15X: this.platform15.x,
+          platform15Y: this.platform15.y,
+        },
+      });
+    } catch (e) {
+      console.error("Error updating player:", e);
+    }
 
     if (this.fase5 === false && this.energy === true) {
       this.lights.enable().setAmbientColor(0xe0f7ff);

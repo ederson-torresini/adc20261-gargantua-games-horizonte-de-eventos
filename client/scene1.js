@@ -838,6 +838,21 @@ class scene1 extends Phaser.Scene {
   }*/
 
   update() {
+
+    const cursores = this.input.keyboard.createCursorKeys();
+    const jkl = this.input.keyboard.addKeys("J,K,L");
+
+     try {
+       this.game.socket.emit("scene1", this.game.room, {
+        jkl: {
+          J: cursores.left.isDown || jkl.J.isDown,
+          L: cursores.right.isDown || jkl.L.isDown,
+        },
+       });
+     } catch (e) {
+       console.error("Error updating player:", e);
+     }
+
     
     this.caixa.setPosition(this.playerroxo.x, this.playerroxo.y);
 
@@ -904,7 +919,7 @@ class scene1 extends Phaser.Scene {
       }
       else if (!isOverlapLimites) {
         // Se não estiver mais sobre os limites, redefine as bounds para o tamanho total do mapa
-        this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, this.tilemap.heightInPixels);
+        this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, 735); //this.tilemap.heightInPixels);
       }
     }
 
