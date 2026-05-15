@@ -97,44 +97,51 @@ class scene1 extends Phaser.Scene {
     
     this.layerEspaco = this.tilemap
     .createLayer("espaco", [this.tilesetSpace1])
-    .setPipeline("Light2D");
-    // .setScrollFactor(0.9, 1);
+    .setPipeline("Light2D")
+    .setScrollFactor(0.9, 1);
     
     this.layerPiso = this.tilemap
     .createLayer("piso", [this.tilesetx1, this.tilesetRemasterized2])
-    .setPipeline("Light2D");
-    //.setScrollFactor(0.9, 1);
+    .setPipeline("Light2D")
+    .setScrollFactor(0.9, 1);
 
     this.layerFundo = this.tilemap
       .createLayer("fundo", [this.tilesetRemasterized2,
         this.tilesetRemasterizedEnfeites
   ])
   .setPipeline("Light2D")
-// .setScrollFactor(0.9, 1);
+  .setScrollFactor(0.9, 1);
     
     this.layerParede = this.tilemap
       .createLayer("parede", [this.tilesetx1, this.tilesetRemasterizedEnfeites, this.tilesetRemasterized2])
-      .setPipeline("Light2D");
-    // .setScrollFactor(0.9, 1);
+      .setPipeline("Light2D")
+      .setScrollFactor(0.9, 1);
 
     this.layerNave = this.tilemap
       .createLayer("nave", [this.tilesetRemasterized2, this.tilesetRemasterizedEnfeites])
-      .setPipeline("Light2D");
-    //.setScrollFactor(0.9, 1);
+      .setPipeline("Light2D")
+    .setScrollFactor(0.9, 1);
 
     this.layerEnfeites = this.tilemap
       .createLayer("enfeites", [this.tilesetRemasterizedEnfeites])
-      .setPipeline("Light2D");
-    //.setScrollFactor(0.9, 1);
+      .setPipeline("Light2D")
+    .setScrollFactor(0.9, 1);
 
     this.layerConserto = this.tilemap
       .createLayer("conserto", [this.tilesetRemasterized2,
         this.tilesetRemasterizedEnfeites
       ])
       .setPipeline("Light2D")
-    // .setScrollFactor(0.9, 1);
+      .setScrollFactor(0.9, 1);
 
+    this.physics.world.setBounds(
+      0,
+      0,
+      this.tilemap.widthInPixels,
+      this.tilemap.heightInPixels,
+    );
 
+    
     this.lights.enable().setAmbientColor(0xe0f7ff);
 
     //animações
@@ -590,24 +597,28 @@ class scene1 extends Phaser.Scene {
     });
 
     this.platform51 = this.platforms
-      .create(136, 2228, "plataform")
+      .create(160, 2228, "plataform")
       //.setScrollFactor(0.99, 1)
       .setPipeline("Light2D");
 
     this.platform52 = this.platforms
-      .create(790, 2303, "plataform")
+      .create(814, 2303, "plataform")
       //.setScrollFactor(0.99, 1)
       .setPipeline("Light2D");
 
     this.platform53 = this.platforms
-      .create(862, 2208, "plataform")
+      .create(886, 2208, "plataform")
       //.setScrollFactor(0.99, 1)
       .setPipeline("Light2D");
 
     this.platform54 = this.platforms
-      .create(1251, 2183, "plataform")
+      .create(1275, 2183, "plataform")
       //.setScrollFactor(0.99, 1)
       .setPipeline("Light2D");
+    
+    this.platforms.create(265, 2173, "plataform")
+      //.setScrollFactor(0.99, 1)
+      .setPipeline("Light2D").body.allowGravity = false;
     
     this.platform12 = this.physics.add.sprite(361, 2233, "plataform");
     this.platform12
@@ -621,7 +632,7 @@ class scene1 extends Phaser.Scene {
       //.setScrollFactor(0.99, 1)
       .setPipeline("Light2D").body.allowGravity = false;
 
-    this.player2 = this.physics.add.sprite(113, 2340, "playerroxo");
+    this.player2 = this.physics.add.sprite(113, 2340, "playerroxo", 7);
     this.player2.body.allowGravity = false;
 
     //colisoes
@@ -763,7 +774,7 @@ class scene1 extends Phaser.Scene {
       loop: true,
       callback: () => {
         this.positionText.setText(
-          `X: ${Math.round(this.playerroxo.x)} Y: ${Math.round(this.playerroxo.y)}`,
+          `X: ${Math.round(this.player2.x)} Y: ${Math.round(this.player2.y)}`,
         );
       },
     });
@@ -773,16 +784,13 @@ class scene1 extends Phaser.Scene {
         this.fase4 = state.fase4.key;
       }
       if (state.player) {
-        this.player2.setPosition((state.player.x + 45), (state.player.y - 1192));
+        this.player2.setPosition((state.player.x), (state.player.y - 1184));
       }
-      if (state.plataforms) {
-        this.platform12.setPosition((state.plataforms.platform12X + 45), (state.plataforms.platform12Y - 1192));
-        this.platform15.setPosition((state.plataforms.platform15X + 45), (state.plataforms.platform15Y - 1192));
-        /*this.platform51.setPosition((state.plataforms.platform51X + 45), (state.plataforms.platform51Y - 1192));
-        this.platform52.setPosition((state.plataforms.platform52X + 45), (state.plataforms.platform52Y - 1192));
-        this.platform53.setPosition((state.plataforms.platform53X + 45), (state.plataforms.platform53Y - 1192));
-        this.platform54.setPosition((state.plataforms.platform54X + 45), (state.plataforms.platform54Y - 1192));*/
-      }
+      
+        this.platform12.setPosition((state.platform12.x), (state.platform12.y - 1192));
+        this.platform15.setPosition((state.platform15.x), (state.platform15.y - 1192));
+        
+      
     });
   }
 //fim create
@@ -840,13 +848,17 @@ class scene1 extends Phaser.Scene {
   update() {
 
     const cursores = this.input.keyboard.createCursorKeys();
+    const qe = this.input.keyboard.addKeys("E, Q");
+
+    //const cursores = this.input.keyboard.createCursorKeys();
     const jkl = this.input.keyboard.addKeys("J,K,L");
 
      try {
        this.game.socket.emit("scene1", this.game.room, {
         jkl: {
-          J: cursores.left.isDown || jkl.J.isDown,
-          L: cursores.right.isDown || jkl.L.isDown,
+          J: jkl.J.isDown,
+          L: jkl.L.isDown,
+          K: jkl.K.isDown,
         },
        });
      } catch (e) {
@@ -857,7 +869,7 @@ class scene1 extends Phaser.Scene {
     this.caixa.setPosition(this.playerroxo.x, this.playerroxo.y);
 
     // Captura entrada do teclado
-    const cursors = this.input.keyboard.createCursorKeys();
+    //const cursors = this.input.keyboard.createCursorKeys();
     const wasd = this.input.keyboard.addKeys("W,S,A,D");
 
     // Captura entrada do gamepad
@@ -902,14 +914,27 @@ class scene1 extends Phaser.Scene {
       this.limites,
     );
 
-    if (this.estoutrabalhando === false) {
+    if (qe.E.isDown) { 
+
+
+
+      this.cameras.main.setBounds(10, 0, this.tilemap.widthInPixels);
+      this.cameras.main.startFollow(this.player2, false, 1, 0).zoom = 1.2;
+      
+      this.cameras.main.scrollY =
+      2348 - this.cameras.main.height / 2 - 120;
+
+    } else if (qe.Q.isDown) {
+
+      this.cameras.main.startFollow(this.playerroxo, true, 0.1, 0.1);
+
+      if (this.estoutrabalhando === false) {
       if (isOverlapLimites) {
         // Define as bounds da câmera baseado no sprite limites
         const limitesLeft = 40;
         const limitesTop = 950;
         const limitesRight = 1302;
         const limitesBottom = 1720;
-
         this.cameras.main.setBounds(
           limitesLeft,
           limitesTop,
@@ -919,7 +944,30 @@ class scene1 extends Phaser.Scene {
       }
       else if (!isOverlapLimites) {
         // Se não estiver mais sobre os limites, redefine as bounds para o tamanho total do mapa
-        this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, 735); //this.tilemap.heightInPixels);
+        this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, 735 ); //this.tilemap.heightInPixels);
+      }
+    }
+
+
+    }
+
+    if (this.estoutrabalhando === false) {
+      if (isOverlapLimites) {
+        // Define as bounds da câmera baseado no sprite limites
+        const limitesLeft = 40;
+        const limitesTop = 950;
+        const limitesRight = 1302;
+        const limitesBottom = 1720;
+        this.cameras.main.setBounds(
+          limitesLeft,
+          limitesTop,
+          limitesRight - limitesLeft,
+          limitesBottom - limitesTop,
+        );
+      }
+      else if (!isOverlapLimites) {
+        // Se não estiver mais sobre os limites, redefine as bounds para o tamanho total do mapa
+        this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, 735 ); //this.tilemap.heightInPixels);
       }
     }
 

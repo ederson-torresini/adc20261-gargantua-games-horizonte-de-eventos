@@ -15,7 +15,7 @@ class scene0 extends Phaser.Scene {
     this.cargaJp = 1000;
     this.cargaJPpercentage = this.cargaJp / 10;
     this.o2 = 100;
-    this.o2Ship = true; //1231 3351
+    this.o2Ship = true; //1231 335 1
     this.collectEng1 = false;
     this.collectEng2 = false;
     this.collectEng3 = false;
@@ -23,6 +23,7 @@ class scene0 extends Phaser.Scene {
     this.life = 6;
     this.enemyGravity = false;
     this.doorOpen = 0;
+    this.bullet = true;
   }
   preload() {
     this.load.setPath("assets/");
@@ -403,6 +404,11 @@ class scene0 extends Phaser.Scene {
       })
       .setScrollFactor(0);
 
+    this.laser = this.physics.add.group({
+      allowGravity: false,
+      immovable: true,
+    });
+
     this.engrenagens = this.physics.add.group({
       allowGravity: false,
       immovable: true,
@@ -764,6 +770,7 @@ class scene0 extends Phaser.Scene {
 
           this.score -= 1;
           this.scoreText.setText("Engrenagens: " + this.score + "/4");
+          this.collectEng5 = false;
         }
       }
     }, 500);
@@ -852,7 +859,7 @@ class scene0 extends Phaser.Scene {
       .setOrigin(0, 0);
     this.iaTypingEvent = null;
 
-    this.player = this.physics.add.sprite(92, 1066, "player", 3); //fase1:92, 1066/445, 911//fase2:108, 1836/1138, 1836//fase3: 69, 2496/1256,2356//fase4: 92,300//fase5:92, 3532//
+    this.player = this.physics.add.sprite(92,1066, "player", 3); //fase1:92, 1066/445, 911//fase2:108, 1836/1138, 1836//fase3: 69, 2496/1256,2356//fase4: 92,300//fase5:92, 3532//
     this.player.body.setSize(20, 40);
     this.cameras.main.startFollow(this.player, false, 1, 0).zoom = 1.2;
     this.cameras.main.scrollY =
@@ -950,7 +957,9 @@ class scene0 extends Phaser.Scene {
 
     this.physics.add.overlap(this.player, this.invisible2, () => {
       this.invisible2.disableBody(true, true);
+      this.energy = true;
       this.o2Ship = true;
+      this.lamp.setIntensity(0);
     });
 
     this.physics.add.overlap(this.player, this.invisibleH, () => {
@@ -1237,19 +1246,33 @@ class scene0 extends Phaser.Scene {
     const jkl = this.input.keyboard.addKeys("J,K,L");
 
     this.game.socket.on("scene1", (state) => {
-      const jklState = state.jkl || { J: false, L: false };
+      const jklState = state.jkl || { J: false, L: false, K: false };
       
       if (jklState.J) {
         this.torreta.setVelocityX(-170);
       } else if (jklState.L) {
         this.torreta.setVelocityX(170);
       } else {
-        this.torreta.setVelocityX(0);
+          this.torreta.setVelocityX(0);
+        }
+       if (jklState.K && this.bullet === true) {
+  
+        this.bullet = false;
+       
+        this.laser
+          .create(this.torreta.x, this.torreta.y, "torreta", 9) //873, 950 //400, 40
+          .setOrigin(0, 0)
+          .setVelocityY(200);
+        
+          setTimeout(() => {
+            this.bullet = true;
+          }, 1000);
+        
       }
-     
-    });
+        
+      });
     this.game.socket.on("scene1", (state) => {
-     this.doorOpen = state.doorOpen?.key ?? state.doorOpen;
+     this.doorOpen = state.doorOpen.key;
     });
   }
 
@@ -1287,7 +1310,9 @@ class scene0 extends Phaser.Scene {
   }
 
   update() {
+
     this.cargaJPpercentage = this.cargaJp / 10;
+
     if (this.doorOpen >= 4) {
       try {
         this.game.socket.emit("scene0", this.game.room, {
@@ -1303,13 +1328,15 @@ class scene0 extends Phaser.Scene {
 
     try {
       this.game.socket.emit("scene0", this.game.room, {
-        platforms: {
-          platform12X: this.platform12.x,
-          platform12Y: this.platform12.y,
+        platform12: {
+          x: this.platform12.x,
+          y: this.platform12.y,
 
-          platform15X: this.platform15.x,
-          platform15Y: this.platform15.y,
         },
+        platform15: {
+          x: this.platform15.x,
+          y: this.platform15.y,
+        }
       });
     } catch (e) {
       console.error("Error updating player:", e);
