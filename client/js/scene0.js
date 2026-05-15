@@ -24,7 +24,7 @@ class scene0 extends Phaser.Scene {
     this.enemyGravity = false;
     this.doorOpen = 0;
   }
-  preload() {
+  /*preload() {
     this.load.setPath("assets/");
 
     this.load.audio("passos", "walkamongus.mp3");
@@ -116,7 +116,7 @@ class scene0 extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 32,
     });
-  }
+  }*/
 
   create() {
     this.trilhasonora = this.sound
@@ -732,10 +732,10 @@ class scene0 extends Phaser.Scene {
     this.invisible2
       .setImmovable(true)
       .setPipeline("Light2D").body.allowGravity = false;
-    
-     this.torreta = this.physics.add.sprite(540, 1584, "torreta", 5);
-     this.torreta.setPipeline("Light2D").setImmovable(true).setScale(1.5);
-     this.torreta.body.allowGravity = false;
+
+    this.torreta = this.physics.add.sprite(540, 1584, "torreta", 5);
+    this.torreta.setPipeline("Light2D").setImmovable(true).setScale(1.5);
+    this.torreta.body.allowGravity = false;
 
     setInterval(() => {
       if (this.o2 < 100 && this.o2Ship === true) {
@@ -870,8 +870,6 @@ class scene0 extends Phaser.Scene {
       .addLight(this.player.x, this.player.y, 40)
       .setIntensity(0)
       .setColor(0xf5f5f5);
-
-   
 
     this.anims.create({
       key: "torretaidle",
@@ -1238,7 +1236,7 @@ class scene0 extends Phaser.Scene {
 
     this.game.socket.on("scene1", (state) => {
       const jklState = state.jkl || { J: false, L: false };
-      
+
       if (jklState.J) {
         this.torreta.setVelocityX(-170);
       } else if (jklState.L) {
@@ -1246,10 +1244,9 @@ class scene0 extends Phaser.Scene {
       } else {
         this.torreta.setVelocityX(0);
       }
-     
     });
     this.game.socket.on("scene1", (state) => {
-     this.doorOpen = state.doorOpen?.key ?? state.doorOpen;
+      this.doorOpen = state.doorOpen.key
     });
   }
 

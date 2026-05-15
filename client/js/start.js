@@ -3,6 +3,11 @@ class start extends Phaser.Scene {
     super("start");
   }
 
+  init() {
+    //let room = new URLSearchParams(location.search).get("room");
+    //if (room) this.game.room = room;
+  }
+
   preload() {
     this.load.image("capa", "assets/fundocapatitulo.png");
     this.load.image("playroxo", "assets/playerroxocapa2.png");
@@ -77,15 +82,17 @@ class start extends Phaser.Scene {
 
     // Click no player roxo abre scene1
     this.playerRoxo.on("pointerdown", () => {
-      this.scene.start("scene1");
+      //this.scene.start("scene1");
+      this.scene.stop("start");
+      this.scene.start("preloader", { startScene: "scene1" });
     });
 
     // Click no player vermelho abre scene0
     this.playerVermelho.on("pointerdown", () => {
-      this.scene.start("scene0");
+      //this.scene.start("scene0");
+      this.scene.stop("start");
+      this.scene.start("preloader", { startScene: "scene0" });
     });
-
-    
   }
 
   update() {
@@ -104,15 +111,19 @@ class start extends Phaser.Scene {
     if (jumpPressed) {
       this.scene.start("scene0");
     }
- 
+
     const qe = this.input.keyboard.addKeys("Q,E");
 
     if (qe.Q.isDown) {
-      this.scene.start("scene1");
+      //this.scene.start("scene1");
+      this.scene.stop("start");
+      this.scene.start("preloader", { startScene: "scene1" });
     }
 
     if (qe.E.isDown) {
-      this.scene.start("scene0");
+      //this.scene.start("scene0");
+      this.scene.stop("start");
+      this.scene.start("preloader", { startScene: "scene0" });
     }
   }
 }

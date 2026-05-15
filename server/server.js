@@ -1,5 +1,5 @@
-const { createServer } = require('http');
-const { Server } = require('socket.io');
+const { createServer } = require("http");
+const { Server } = require("socket.io");
 
 const httpServer = createServer();
 const io = new Server(httpServer, {
@@ -13,23 +13,46 @@ const io = new Server(httpServer, {
 });
 
 io.on("connection", (socket) => {
-  console.log(`Client connected: ${socket.id}`);
+  console.log("User connected:", socket.id);
 
   socket.on("join-room", (room) => {
     socket.join(room);
-    console.log(`Client joined room: ${room}`);
+    console.log(`User ${socket.id} joined room ${room}`);
+  });
+
+  socket.on("select-player", (room, player) => {
+    console.log(`Selected player ${player} in room ${room}`);
+    socket.to(room).emit("player-selected", player);
+  });
+
+  socket.on("start-game", (room, player) => {
+    console.log(`Game started in room ${room} by player ${player}`);
+    socket.to(room).emit("start-game", player);
+  });
+
+  socket.on("change-scene", (room, scene) => {
+    console.log(`Changing scene to ${scene} in room ${room}`);
+    socket.to(room).emit("change-scene", scene);
   });
 
   socket.on("scene0", (room, state) => {
-    socket.to(room).emit("scene0", state);
+    if (room) {
+      socket.to(room).emit("scene0", state);
+    } else {
+      socket.broadcast.emit("scene0", state);
+    }
   });
 
   socket.on("scene1", (room, state) => {
-    socket.to(room).emit("scene1", state);
+    if (room) {
+      socket.to(room).emit("scene1", state);
+    } else {
+      socket.broadcast.emit("scene1", state);
+    }
   });
 
   socket.on("disconnect", () => {
-    console.log(`Client disconnected: ${socket.id}`);
+    console.log("User disconnected:", socket.id);
   });
 });
 
