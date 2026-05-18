@@ -14,7 +14,7 @@ class scene0 extends Phaser.Scene {
     this.cargaJp = 1000;
     this.cargaJPpercentage = this.cargaJp / 10;
     this.o2 = 100;
-    this.o2Ship = true; //1231 3351
+    this.o2Ship = true; //1231 335 1
     this.collectEng1 = false;
     this.collectEng2 = false;
     this.collectEng3 = false;
@@ -22,6 +22,7 @@ class scene0 extends Phaser.Scene {
     this.life = 6;
     this.enemyGravity = false;
     this.doorOpen = 0;
+    this.bullet = true;
   }
   /*preload() {
     this.load.setPath("assets/");
