@@ -597,42 +597,42 @@ class scene1 extends Phaser.Scene {
     });
 
     this.platform51 = this.platforms
-      .create(160, 2228, "plataform")
-      //.setScrollFactor(0.99, 1)
+      .create(115, 3420 - 1184, "plataform")
+      .setScrollFactor(0.99, 1)
       .setPipeline("Light2D");
 
     this.platform52 = this.platforms
-      .create(814, 2303, "plataform")
-      //.setScrollFactor(0.99, 1)
+      .create(769, 3400 - 1184, "plataform")
+      .setScrollFactor(0.99, 1)
       .setPipeline("Light2D");
 
     this.platform53 = this.platforms
-      .create(886, 2208, "plataform")
-      //.setScrollFactor(0.99, 1)
+      .create(841, 3375 - 1184, "plataform")
+      .setScrollFactor(0.99, 1)
       .setPipeline("Light2D");
 
     this.platform54 = this.platforms
-      .create(1275, 2183, "plataform")
-      //.setScrollFactor(0.99, 1)
+      .create(1230, 3375 - 1184, "plataform")
+      .setScrollFactor(0.99, 1)
       .setPipeline("Light2D");
     
-    this.platforms.create(265, 2173, "plataform")
-      //.setScrollFactor(0.99, 1)
+    this.platforms.create(220, 3365 - 1184, "plataform")
+      .setScrollFactor(0.99, 1)
       .setPipeline("Light2D").body.allowGravity = false;
     
     this.platform12 = this.physics.add.sprite(361, 2233, "plataform");
     this.platform12
       .setImmovable(true)
-      //.setScrollFactor(0.99, 1)
+      .setScrollFactor(0.99, 1)
       .setPipeline("Light2D").body.allowGravity = false;
 
     this.platform15 = this.physics.add.sprite(976, 2183, "plataform");
     this.platform15
       .setImmovable(true)
-      //.setScrollFactor(0.99, 1)
+      .setScrollFactor(0.99, 1)
       .setPipeline("Light2D").body.allowGravity = false;
 
-    this.player2 = this.physics.add.sprite(113, 2340, "playerroxo", 7);
+    this.player2 = this.physics.add.sprite(113, 2340, "player");
     this.player2.body.allowGravity = false;
 
     //colisoes
@@ -787,8 +787,8 @@ class scene1 extends Phaser.Scene {
         this.player2.setPosition((state.player.x), (state.player.y - 1184));
       }
       
-        this.platform12.setPosition((state.platform12.x), (state.platform12.y - 1192));
-        this.platform15.setPosition((state.platform15.x), (state.platform15.y - 1192));
+        this.platform12.setPosition((state.platform12.x), (state.platform12.y - 1184));
+        this.platform15.setPosition((state.platform15.x), (state.platform15.y - 1184));
         
       
     });
