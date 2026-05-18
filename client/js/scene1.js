@@ -643,9 +643,9 @@ class scene1 extends Phaser.Scene {
       this.doorOpen = 4;
       try {
         this.game.socket.emit("scene1", this.game.room, {
-          doorOpen: {
+          doorOpen: /*{
             key: this.doorOpen,
-          },
+          },*/this.doorOpen,
         });
       } catch (e) {
         console.error("Error updating player:", e);
@@ -659,9 +659,9 @@ class scene1 extends Phaser.Scene {
       this.doorOpen = 1;
       try {
         this.game.socket.emit("scene1", this.game.room, {
-          doorOpen: {
+          doorOpen: /*{
             key: this.doorOpen,
-          },
+          },*/this.doorOpen,
         });
       } catch (e) {
         console.error("Error updating player:", e);
@@ -671,9 +671,9 @@ class scene1 extends Phaser.Scene {
       this.doorOpen = 3;
       try {
         this.game.socket.emit("scene1", this.game.room, {
-          doorOpen: {
+          doorOpen: /*{
             key: this.doorOpen,
-          },
+          },*/this.doorOpen,
         });
       } catch (e) {
         console.error("Error updating player:", e);
@@ -686,9 +686,9 @@ class scene1 extends Phaser.Scene {
       this.doorOpen = 2;
       try {
         this.game.socket.emit("scene1", this.game.room, {
-          doorOpen: {
+          doorOpen: /*{
             key: this.doorOpen,
-          },
+          },*/this.doorOpen,
         });
       } catch (e) {
         console.error("Error updating player:", e);
@@ -774,7 +774,7 @@ class scene1 extends Phaser.Scene {
       loop: true,
       callback: () => {
         this.positionText.setText(
-          `X: ${Math.round(this.player2.x)} Y: ${Math.round(this.player2.y)}`,
+          `X: ${Math.round(this.playerroxo.x)} Y: ${Math.round(this.playerroxo.y)}`,
         );
       },
     });

@@ -23,7 +23,53 @@ class scene0 extends Phaser.Scene {
     this.enemyGravity = false;
     this.doorOpen = 0;
     this.bullet = true;
+    this.platform12Interval = null;
+    this.platform15Interval = null;
+    this.movingTorreta = false;
   }
+
+  startPlatformMovement() {
+    if (this.fase5) {
+      return;
+    }
+
+    if (!this.platform12Interval) {
+      this.platform12.setVelocityX(150);
+      this.platform12Interval = setInterval(() => {
+        if (this.platform12 && !this.fase5) {
+          this.platform12.setVelocityX(this.platform12.body.velocity.x * -1);
+        }
+      }, 2200);
+    }
+
+    if (!this.platform15Interval) {
+      this.platform15.setVelocityX(150);
+      this.platform15Interval = setInterval(() => {
+        if (this.platform15 && !this.fase5) {
+          this.platform15.setVelocityX(this.platform15.body.velocity.x * -1);
+        }
+      }, 1300);
+    }
+  }
+
+  stopPlatformMovement() {
+    if (this.platform12Interval) {
+      clearInterval(this.platform12Interval);
+      this.platform12Interval = null;
+    }
+    if (this.platform15Interval) {
+      clearInterval(this.platform15Interval);
+      this.platform15Interval = null;
+    }
+
+    if (this.platform12) {
+      this.platform12.setVelocityX(0);
+    }
+    if (this.platform15) {
+      this.platform15.setVelocityX(0);
+    }
+  }
+
   /*preload() {
     this.load.setPath("assets/");
 
@@ -118,7 +164,7 @@ class scene0 extends Phaser.Scene {
     });
   }*/
 
-create() {
+  create() {
     this.trilhasonora = this.sound
       .add("trilhasonora", { loop: true, volume: 0.5 })
       .play();
@@ -345,7 +391,7 @@ create() {
         start: 0,
         end: 1,
       }),
-      frameRate: 4,
+      frameRate: 3,
       repeat: -1,
     });
 
@@ -404,6 +450,11 @@ create() {
       .setScrollFactor(0);
 
     this.laser = this.physics.add.group({
+      allowGravity: false,
+      immovable: true,
+    });
+
+    this.jetBag = this.physics.add.group({
       allowGravity: false,
       immovable: true,
     });
@@ -738,9 +789,19 @@ create() {
       .setImmovable(true)
       .setPipeline("Light2D").body.allowGravity = false;
     
-     this.torreta = this.physics.add.sprite(540, 1584, "torreta", 5);
-     this.torreta.setPipeline("Light2D").setImmovable(true).setScale(1.5);
-     this.torreta.body.allowGravity = false;
+    this.anims.create({
+      key: "torretaidle",
+      frames: this.anims.generateFrameNumbers("torreta", {
+        start: 0,
+        end: 5,
+      }),
+      frameRate: 4,
+      repeat: 0,
+    });
+
+    this.torreta = this.physics.add.sprite(540, 1584, "torreta", 0);
+    this.torreta.setPipeline("Light2D").setImmovable(true).setScale(1.5);
+    this.torreta.body.allowGravity = false;
 
     setInterval(() => {
       if (this.o2 < 100 && this.o2Ship === true) {
@@ -755,15 +816,6 @@ create() {
           .setVelocity(0, 0)
           .anims.play("idleRightJP");
         this.direction = true;
-
-        this.invisible.enableBody(true, 340, 3396, true, true);
-        this.platform12.setPosition(340, 3425).setVelocityX(0);
-        this.platform15.setPosition(955, 3375).setVelocityX(0);
-
-        this.o2 = 100;
-        this.fase5 = true;
-        this.life -= 1;
-
         if (this.collectEng5) {
           this.engrenagem5.enableBody(true, 531, 3340, true, true);
 
@@ -771,8 +823,35 @@ create() {
           this.scoreText.setText("Engrenagens: " + this.score + "/4");
           this.collectEng5 = false;
         }
+
+        this.o2 = 100;
+        this.fase5 = true;
+        this.stopPlatformMovement();
+        this.life -= 1;
       }
     }, 500);
+
+    /* setInterval(() => {
+  
+  if (this.fase5 === true) {
+
+    this.invisible.enableBody(true, 340, 3396, true, true);
+    this.platform12.setVelocityX(0).setPosition(340, 3425);
+    this.platform15.setVelocityX(0).setPosition(955, 3375);
+
+
+  } else if (this.fase5 === false) {
+
+    this.platform12.setVelocityX(150);
+        setInterval(() => {
+          this.platform12.setVelocityX(this.platform12.body.velocity.x * -1);
+        }, 2200);
+    this.platform15.setVelocityX(150);
+        setInterval(() => {
+          this.platform15.setVelocityX(this.platform15.body.velocity.x * -1);
+        }, 1300);
+  }
+}, 500);*/
 
     this.light21 = this.lights
       .addLight(this.door21.x, this.door21.y - 20, 40)
@@ -845,9 +924,9 @@ create() {
       "Olá, eu sou ... e estou aqui para\najudar vocês a sairem daqui.";
     const texto2 = "Você pode saltar nas paredes para\nir mais alto.";
     const texto3 =
-      "Você pode coletar as engrenagens\npara conseguir uma fuga melhor.";
+      "Você pode coletar os crachás para\nconseguir uma fuga melhor.";
     const texto4 =
-      "Porém mesmo que você não consiga\ncoletar as engrenagens vocês\nconseguiram sair daqui.";
+      "Porém mesmo que você não consiga\ncoletar os crachás vocês conseguem\nfugir daqui.";
     const texto5 = "Fuja deste alien até que o Roxo\nelimine ele.";
     const texto6 =
       "Assim você pode pegar o jetpack\ndele e para passar pela próxima\nsala.";
@@ -858,7 +937,7 @@ create() {
       .setOrigin(0, 0);
     this.iaTypingEvent = null;
 
-    this.player = this.physics.add.sprite(92,1066, "player", 3); //fase1:92, 1066/445, 911//fase2:108, 1836/1138, 1836//fase3: 69, 2496/1256,2356//fase4: 92,300//fase5:92, 3532//
+    this.player = this.physics.add.sprite(92, 1066, "player", 3); //fase1:92, 1066/445, 911//fase2:108, 1836/1138, 1836//fase3: 69, 2496/1256,2356//fase4: 92,300//fase5:92, 3532//
     this.player.body.setSize(20, 40);
     this.cameras.main.startFollow(this.player, false, 1, 0).zoom = 1.2;
     this.cameras.main.scrollY =
@@ -877,17 +956,6 @@ create() {
       .setIntensity(0)
       .setColor(0xf5f5f5);
 
-   
-
-    this.anims.create({
-      key: "torretaidle",
-      frames: this.anims.generateFrameNumbers("torreta", {
-        start: 5,
-        end: 5,
-      }),
-      frameRate: 10,
-      repeat: -1,
-    });
 
     this.physics.add.overlap(
       this.player,
@@ -938,20 +1006,24 @@ create() {
     //inimigo
     this.physics.add.collider(this.inimigo, this.layerPiso);
 
+    this.physics.add.collider(this.laser, this.layerPiso, () => {
+      this.laser.clear(true, true);
+    });
+
+    this.physics.add.collider(this.laser, this.inimigo, () => {
+      this.inimigo.disableBody(true, true);
+      this.laser.clear(true, true);
+      this.jetBag
+        .create(this.inimigo.x, this.inimigo.y, "jetBag")
+        .setScrollFactor(0.9, 1)
+        .setPipeline("Light2D")
+        .anims.play("jetBag-idle", true).body.allowGravity = false;
+    });
+
     this.physics.add.overlap(this.player, this.invisible, () => {
       this.invisible.disableBody(true, true);
       this.fase5 = false;
-
-      if (this.fase5 === false && this.energy === false) {
-        this.platform12.setVelocityX(150);
-        setInterval(() => {
-          this.platform12.setVelocityX(this.platform12.body.velocity.x * -1);
-        }, 2200);
-        this.platform15.setVelocityX(150);
-        setInterval(() => {
-          this.platform15.setVelocityX(this.platform15.body.velocity.x * -1);
-        }, 1300);
-      }
+      this.startPlatformMovement();
     });
 
     this.physics.add.overlap(this.player, this.invisible2, () => {
@@ -990,13 +1062,21 @@ create() {
       this.iaBox.anims.stop();
 
       this.typeIaText(texto, 50);
-      if (this.doorOpen != 1) {
-        this.iaBox.setVelocityX(100);
-        setTimeout(() => {
+      /*//if (this.doorOpen != 1) {
+        */this.iaBox.setVelocityX(100);
+        /*setTimeout(() => {
           this.iaBox.setVelocityX(0);
         }, 3237);
-      }
+      }*/
     });
+
+    this.physics.add.overlap(
+      this.player,
+      this.jetBag,
+      this.collectBag,
+      null,
+      this,
+    );
 
     /*this.physics.add.overlap(this.player, this.invisible3, () => {
       this.invisible3.disableBody(true, true);
@@ -1085,19 +1165,6 @@ create() {
             this.door12.once("animationcomplete", (anim, frame) => {
               if (anim.key === "close-door") {
                 this.light12.setColor(0xff0000);
-                this.jetBag = this.physics.add.sprite(595, 1584, "jetBag");
-                this.jetBag
-                  .setScrollFactor(0.9, 1)
-                  .setPipeline("Light2D")
-                  .setVelocityY(100).body.allowGravity = false;
-                this.physics.add.collider(this.jetBag, this.layerPiso);
-                this.physics.add.overlap(
-                  this.player,
-                  this.jetBag,
-                  this.collectBag,
-                  null,
-                  this,
-                );
               }
             });
           }
@@ -1174,6 +1241,7 @@ create() {
           if (anim.key === "open-door") {
             this.energy = false;
             this.fase5 = true;
+            this.stopPlatformMovement();
             this.o2Ship = false;
             try {
               this.game.socket.emit("scene0", this.game.room, {
@@ -1246,32 +1314,42 @@ create() {
 
     this.game.socket.on("scene1", (state) => {
       const jklState = state.jkl || { J: false, L: false, K: false };
-      
-      if (jklState.J) {
-        this.torreta.setVelocityX(-170);
-      } else if (jklState.L) {
-        this.torreta.setVelocityX(170);
-      } else {
+      if (this.movingTorreta) {
+        if (jklState.J) {
+          this.torreta.setVelocityX(-170);
+        } else if (jklState.L) {
+          this.torreta.setVelocityX(170);
+        } else {
           this.torreta.setVelocityX(0);
         }
-       if (jklState.K && this.bullet === true) {
-  
-        this.bullet = false;
-       
-        this.laser
-          .create(this.torreta.x, this.torreta.y, "torreta", 9) //873, 950 //400, 40
-          .setOrigin(0, 0)
-          .setVelocityY(200);
-        
+        if (jklState.K && this.bullet === true) {
+          this.bullet = false;
+
+          this.laser
+            .create(this.torreta.x - 15, this.torreta.y - 5, "torreta", 9) //873, 950 //400, 40
+            .setOrigin(0, 0)
+            .setSize(20, 10)
+            .setOffset(6, 15)
+            .setVelocityY(300);
+
           setTimeout(() => {
             this.bullet = true;
-          }, 1000);
-        
+          }, 1050);
+        }
       }
-        
-      });
+      
+     /* this.torreta.once("animationcomplete", (anim, frame) => {
+        if (anim.key === "torretaidle") {
+          this.movingTorreta = true;   
+        };
+      });*/
+    
+    });
+
     this.game.socket.on("scene1", (state) => {
-     this.doorOpen = state.doorOpen.key;
+      if (Object.prototype.hasOwnProperty.call(state, "doorOpen")) {
+        this.doorOpen = state.doorOpen;
+      }
     });
   }
 
@@ -1309,7 +1387,6 @@ create() {
   }
 
   update() {
-
     this.cargaJPpercentage = this.cargaJp / 10;
 
     if (this.doorOpen >= 4) {
@@ -1324,27 +1401,30 @@ create() {
         console.error("Error updating player:", e);
       }
     }
-
-    try {
-      this.game.socket.emit("scene0", this.game.room, {
-        platform12: {
-          x: this.platform12.x,
-          y: this.platform12.y,
-
-        },
-        platform15: {
-          x: this.platform15.x,
-          y: this.platform15.y,
-        }
-      });
-    } catch (e) {
-      console.error("Error updating player:", e);
+    if (this.fase5 === false && this.energy === false) {
+      try {
+        this.game.socket.emit("scene0", this.game.room, {
+          platform12: {
+            x: this.platform12.x,
+            y: this.platform12.y,
+          },
+          platform15: {
+            x: this.platform15.x,
+            y: this.platform15.y,
+          },
+        });
+      } catch (e) {
+        console.error("Error updating player:", e);
+      }
     }
-
     if (this.fase5 === false && this.energy === true) {
       this.lights.enable().setAmbientColor(0xe0f7ff);
     } else if (this.fase5 === true && this.energy === false) {
       this.lights.setAmbientColor(0x000000);
+
+      this.invisible.enableBody(true, 340, 3396, true, true);
+      this.platform12.setVelocityX(0).setPosition(340, 3425);
+      this.platform15.setVelocityX(0).setPosition(955, 3375);
     } else if (this.fase5 === false && this.energy === false) {
       this.lights.setAmbientColor(0x202020);
     }
@@ -1443,7 +1523,7 @@ create() {
         this.player.setVelocityY(-70);
         this.doubleJump = false;
         if (!this.player.body.blocked.down) {
-          this.cargaJp -= 30;
+          this.cargaJp -= 40;
           this.cargaJpText.setText("Cargas: " + this.cargaJPpercentage + "%");
         }
 
@@ -1545,6 +1625,12 @@ create() {
     }
     if (this.inimigo.body.blocked.down) {
       //se inimigo estiver no chão, ele segue o player
+      this.torreta.anims.play("torretaidle", true);
+      this.torreta.once("animationcomplete", (anim, frame) => {
+      if (anim.key === "torretaidle") {
+        this.movingTorreta = true;   
+        };
+      });
       setInterval(() => {
         if (this.inimigo.y === 1837) {
           if (this.player.x - this.inimigo.x > 50) {
