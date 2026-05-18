@@ -108,9 +108,6 @@ class start extends Phaser.Scene {
       jumpPressed = !!pad.X;
     }
 
-    if (jumpPressed) {
-      this.scene.start("scene0");
-    }
 
     const qe = this.input.keyboard.addKeys("Q,E");
 
@@ -120,7 +117,7 @@ class start extends Phaser.Scene {
       this.scene.start("preloader", { startScene: "scene1" });
     }
 
-    if (qe.E.isDown) {
+    if (qe.E.isDown || jumpPressed) {
       //this.scene.start("scene0");
       this.scene.stop("start");
       this.scene.start("preloader", { startScene: "scene0" });
