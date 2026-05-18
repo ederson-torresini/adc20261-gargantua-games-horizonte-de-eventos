@@ -1,4 +1,3 @@
-import start from "./start.js";
 class scene0 extends Phaser.Scene {
   constructor() {
     super("scene0");
@@ -118,7 +117,7 @@ class scene0 extends Phaser.Scene {
     });
   }*/
 
-  create() {
+create() {
     this.trilhasonora = this.sound
       .add("trilhasonora", { loop: true, volume: 0.5 })
       .play();
@@ -402,6 +401,11 @@ class scene0 extends Phaser.Scene {
         fill: "#000",
       })
       .setScrollFactor(0);
+
+    this.laser = this.physics.add.group({
+      allowGravity: false,
+      immovable: true,
+    });
 
     this.engrenagens = this.physics.add.group({
       allowGravity: false,
@@ -732,10 +736,10 @@ class scene0 extends Phaser.Scene {
     this.invisible2
       .setImmovable(true)
       .setPipeline("Light2D").body.allowGravity = false;
-
-    this.torreta = this.physics.add.sprite(540, 1584, "torreta", 5);
-    this.torreta.setPipeline("Light2D").setImmovable(true).setScale(1.5);
-    this.torreta.body.allowGravity = false;
+    
+     this.torreta = this.physics.add.sprite(540, 1584, "torreta", 5);
+     this.torreta.setPipeline("Light2D").setImmovable(true).setScale(1.5);
+     this.torreta.body.allowGravity = false;
 
     setInterval(() => {
       if (this.o2 < 100 && this.o2Ship === true) {
@@ -764,6 +768,7 @@ class scene0 extends Phaser.Scene {
 
           this.score -= 1;
           this.scoreText.setText("Engrenagens: " + this.score + "/4");
+          this.collectEng5 = false;
         }
       }
     }, 500);
@@ -852,7 +857,7 @@ class scene0 extends Phaser.Scene {
       .setOrigin(0, 0);
     this.iaTypingEvent = null;
 
-    this.player = this.physics.add.sprite(92, 1066, "player", 3); //fase1:92, 1066/445, 911//fase2:108, 1836/1138, 1836//fase3: 69, 2496/1256,2356//fase4: 92,300//fase5:92, 3532//
+    this.player = this.physics.add.sprite(92,1066, "player", 3); //fase1:92, 1066/445, 911//fase2:108, 1836/1138, 1836//fase3: 69, 2496/1256,2356//fase4: 92,300//fase5:92, 3532//
     this.player.body.setSize(20, 40);
     this.cameras.main.startFollow(this.player, false, 1, 0).zoom = 1.2;
     this.cameras.main.scrollY =
@@ -870,6 +875,8 @@ class scene0 extends Phaser.Scene {
       .addLight(this.player.x, this.player.y, 40)
       .setIntensity(0)
       .setColor(0xf5f5f5);
+
+   
 
     this.anims.create({
       key: "torretaidle",
@@ -948,7 +955,9 @@ class scene0 extends Phaser.Scene {
 
     this.physics.add.overlap(this.player, this.invisible2, () => {
       this.invisible2.disableBody(true, true);
+      this.energy = true;
       this.o2Ship = true;
+      this.lamp.setIntensity(0);
     });
 
     this.physics.add.overlap(this.player, this.invisibleH, () => {
@@ -1235,18 +1244,33 @@ class scene0 extends Phaser.Scene {
     const jkl = this.input.keyboard.addKeys("J,K,L");
 
     this.game.socket.on("scene1", (state) => {
-      const jklState = state.jkl || { J: false, L: false };
-
+      const jklState = state.jkl || { J: false, L: false, K: false };
+      
       if (jklState.J) {
         this.torreta.setVelocityX(-170);
       } else if (jklState.L) {
         this.torreta.setVelocityX(170);
       } else {
-        this.torreta.setVelocityX(0);
+          this.torreta.setVelocityX(0);
+        }
+       if (jklState.K && this.bullet === true) {
+  
+        this.bullet = false;
+       
+        this.laser
+          .create(this.torreta.x, this.torreta.y, "torreta", 9) //873, 950 //400, 40
+          .setOrigin(0, 0)
+          .setVelocityY(200);
+        
+          setTimeout(() => {
+            this.bullet = true;
+          }, 1000);
+        
       }
-    });
+        
+      });
     this.game.socket.on("scene1", (state) => {
-      this.doorOpen = state.doorOpen.key
+     this.doorOpen = state.doorOpen.key;
     });
   }
 
@@ -1284,7 +1308,9 @@ class scene0 extends Phaser.Scene {
   }
 
   update() {
+
     this.cargaJPpercentage = this.cargaJp / 10;
+
     if (this.doorOpen >= 4) {
       try {
         this.game.socket.emit("scene0", this.game.room, {
@@ -1300,13 +1326,15 @@ class scene0 extends Phaser.Scene {
 
     try {
       this.game.socket.emit("scene0", this.game.room, {
-        platforms: {
-          platform12X: this.platform12.x,
-          platform12Y: this.platform12.y,
+        platform12: {
+          x: this.platform12.x,
+          y: this.platform12.y,
 
-          platform15X: this.platform15.x,
-          platform15Y: this.platform15.y,
         },
+        platform15: {
+          x: this.platform15.x,
+          y: this.platform15.y,
+        }
       });
     } catch (e) {
       console.error("Error updating player:", e);
