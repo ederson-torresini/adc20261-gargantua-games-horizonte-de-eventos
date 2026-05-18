@@ -39,7 +39,7 @@ class scene0 extends Phaser.Scene {
         if (this.platform12 && !this.fase5) {
           this.platform12.setVelocityX(this.platform12.body.velocity.x * -1);
         }
-      }, 2200);
+      }, 2210);
     }
 
     if (!this.platform15Interval) {
