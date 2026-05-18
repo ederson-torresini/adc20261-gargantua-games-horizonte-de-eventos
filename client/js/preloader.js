@@ -56,6 +56,11 @@ class preloader extends Phaser.Scene {
       frameHeight: 51,
     });
 
+    this.load.spritesheet("nave", "naveet.png", {
+      frameWidth: 322,
+      frameHeight: 51,
+    });
+
     this.load.tilemapTiledJSON("todasfases", "mapasv4/todasfases.json");
 
     this.load.image("remasterized", "assets-usados/remasterized.png");

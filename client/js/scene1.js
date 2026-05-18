@@ -76,7 +76,7 @@ class scene1 extends Phaser.Scene {
 
     //adiciona o espaço ao fundo
     this.space = this.add.image("space1");
-    this.space.setOrigin(0, 0); //.setScrollFactor(0.1, 1);
+    this.space.setOrigin(0, 0).setScrollFactor(0.1, 1);
 
     //adiciona o tilemap da sala ortogonal
     this.tilemap = this.make.tilemap({ key: "faseortogonal" });
@@ -134,12 +134,7 @@ class scene1 extends Phaser.Scene {
       .setPipeline("Light2D")
       .setScrollFactor(0.9, 1);
 
-    this.physics.world.setBounds(
-      0,
-      0,
-      this.tilemap.widthInPixels,
-      this.tilemap.heightInPixels,
-    );
+      
 
     
     this.lights.enable().setAmbientColor(0xe0f7ff);

@@ -120,7 +120,7 @@ class start extends Phaser.Scene {
     if (qe.E.isDown || jumpPressed) {
       //this.scene.start("scene0");
       this.scene.stop("start");
-      this.scene.start("preloader", { startScene: "scene0" });
+      this.scene.start("preloader", { startScene: "scene2" });
     }
   }
 }
