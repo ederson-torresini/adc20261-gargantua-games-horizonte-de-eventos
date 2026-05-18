@@ -8,7 +8,7 @@ class scene1 extends Phaser.Scene {
     this.fase4 = true;
   }
 
-  preload() {
+  /*preload() {
     this.load.setPath("assets/");
 
     this.load.audio("passos", "walkamongus.mp3");
@@ -65,7 +65,7 @@ class scene1 extends Phaser.Scene {
       frameWidth: 117,
       frameHeight: 70,
     });
-  }
+  }*/
 
   create() {
     //adiciona trilha sonora e efeitos sonoros

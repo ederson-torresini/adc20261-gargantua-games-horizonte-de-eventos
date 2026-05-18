@@ -1,4 +1,3 @@
-import start from "./start.js";
 class scene0 extends Phaser.Scene {
   constructor() {
     super("scene0");
@@ -25,7 +24,7 @@ class scene0 extends Phaser.Scene {
     this.doorOpen = 0;
     this.bullet = true;
   }
-  preload() {
+  /*preload() {
     this.load.setPath("assets/");
 
     this.load.audio("passos", "walkamongus.mp3");
@@ -117,9 +116,9 @@ class scene0 extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 32,
     });
-  }
+  }*/
 
-  create() {
+create() {
     this.trilhasonora = this.sound
       .add("trilhasonora", { loop: true, volume: 0.5 })
       .play();
