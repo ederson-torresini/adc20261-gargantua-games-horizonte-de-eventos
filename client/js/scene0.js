@@ -1097,6 +1097,7 @@ class scene0 extends Phaser.Scene {
       this.direction = true;
       this.life -= 1;
       this.cargaJp = 1000;
+      this.cargaJPpercentage = 100;
       this.cargaJpText.setText("Cargas: " + this.cargaJPpercentage + "%");
       if (this.collectEng3 === true) {
         this.score -= 1;
@@ -1395,7 +1396,7 @@ class scene0 extends Phaser.Scene {
           player: {
             x: this.player.x,
             y: this.player.y,
-          //frame: this.player.frame.name,
+            animation: this.player.anims.currentAnim ? this.player.anims.currentAnim.key : null,
           },
         });
       } catch (e) {
@@ -1478,7 +1479,7 @@ class scene0 extends Phaser.Scene {
       }
     }
 
-    if (horizontal > 0) {
+    if (horizontal < 0) {
       this.player.setVelocityX(200);
       this.direction = true;
       if (this.player.body.velocity.y === 0 && this.jetPack === false) {
@@ -1486,7 +1487,7 @@ class scene0 extends Phaser.Scene {
       } else if (this.player.body.velocity.y === 0 && this.jetPack === true) {
         this.player.anims.play("walk-rightJp", true);
       }
-    } else if (horizontal < 0) {
+    } else if (horizontal > 0) {
       this.player.setVelocityX(-200);
       this.direction = false;
       if (this.player.body.velocity.y === 0 && this.jetPack === false) {
@@ -1503,13 +1504,13 @@ class scene0 extends Phaser.Scene {
 
       if (this.player.body.blocked.down) {
         this.doubleJump = false;
-        if (jumpPressed || vertical < 0) this.player.setVelocityY(-300);
+        if (jumpPressed || vertical > 0) this.player.setVelocityY(-300);
       }
 
       if (this.player.body.blocked.left || this.player.body.blocked.right) {
         if (
           this.player.body.velocity.x != 0 &&
-          jumpPressed &&
+          (jumpPressed || vertical > 0) &&
           !this.doubleJump
         ) {
           this.player.setVelocityY(-415);
@@ -1520,13 +1521,13 @@ class scene0 extends Phaser.Scene {
       this.physics.world.gravity.y = 50;
 
       if (
-        jumpPressed &&
+        (jumpPressed || vertical > 0) &&
         (this.player.body.blocked.down || (this.doubleJump && this.cargaJp > 0))
       ) {
         this.player.setVelocityY(-70);
         this.doubleJump = false;
         if (!this.player.body.blocked.down) {
-          this.cargaJp -= 40;
+          this.cargaJp -= 30;
           this.cargaJpText.setText("Cargas: " + this.cargaJPpercentage + "%");
         }
 
@@ -1535,7 +1536,7 @@ class scene0 extends Phaser.Scene {
         } else if (this.direction === false) {
           this.player.setFrame("61");
         }
-      } else if (!jumpPressed && this.player.body.velocity.y != 0) {
+      } else if (vertical === 0 && !jumpPressed && this.player.body.velocity.y != 0) {
         this.doubleJump = true;
 
         if (this.direction === true) {

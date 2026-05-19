@@ -296,6 +296,48 @@ class scene1 extends Phaser.Scene {
       repeat: 0,
     });
 
+    this.anims.create({
+      key: "walk-leftJp",
+      frames: this.anims.generateFrameNumbers("player", { start: 14, end: 20 }),
+      frameRate: 11,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "walk-rightJp",
+      frames: this.anims.generateFrameNumbers("player", { start: 21, end: 27 }),
+      frameRate: 11,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "idleRightJP",
+      frames: this.anims.generateFrameNumbers("player", { start: 2, end: 3 }),
+      frameRate: 3,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "idleLeftJP",
+      frames: this.anims.generateFrameNumbers("player", { start: 0, end: 1 }),
+      frameRate: 3,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "jumpJP",
+      frames: this.anims.generateFrameNumbers("player", { start: 10, end: 13 }),
+      frameRate: 6,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "jumpLJP",
+      frames: this.anims.generateFrameNumbers("player", { start: 5, end: 8 }),
+      frameRate: 6,
+      repeat: -1,
+    });
+
     //adicionar porta
     this.porta = this.physics.add.sprite(638, 719, "porta", 0);
     //this.porta.setAngle(180);
@@ -627,8 +669,8 @@ class scene1 extends Phaser.Scene {
       .setScrollFactor(0.99, 1)
       .setPipeline("Light2D").body.allowGravity = false;
 
-    this.player2 = this.physics.add.sprite(113, 2340, "player");
-    this.player2.body.allowGravity = false;
+    this.player2 = this.add.sprite(113, 2340, "player");
+    
 
     //colisoes
     this.physics.add.collider(this.playerroxo, this.layerPiso);
@@ -780,6 +822,8 @@ class scene1 extends Phaser.Scene {
       }
       if (state.player) {
         this.player2.setPosition((state.player.x), (state.player.y - 1184));
+        if (state.player.animation)
+        this.player2.anims.play(state.player.animation, true);
       }
       
         this.platform12.setPosition((state.platform12.x), (state.platform12.y - 1184));
