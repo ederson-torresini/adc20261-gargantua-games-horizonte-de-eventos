@@ -97,53 +97,48 @@ class scene1 extends Phaser.Scene {
     this.tilesetSpace1 = this.tilemap.addTilesetImage("space1");
 
     this.layerEspaco = this.tilemap
-      .createLayer("espaco", [this.tilesetSpace1])
-      .setPipeline("Light2D");
-    //.setScrollFactor(0.9, 1);
-
+    .createLayer("espaco", [this.tilesetSpace1])
+    .setPipeline("Light2D")
+    .setScrollFactor(0.9, 1);
+    
     this.layerPiso = this.tilemap
-      .createLayer("piso", [this.tilesetx1, this.tilesetRemasterized2])
-      .setPipeline("Light2D");
-    //.setScrollFactor(0.9, 1);
+    .createLayer("piso", [this.tilesetx1, this.tilesetRemasterized2])
+    .setPipeline("Light2D")
+    .setScrollFactor(0.9, 1);
 
     this.layerFundo = this.tilemap
-      .createLayer("fundo", [
-        this.tilesetRemasterized2,
-        this.tilesetRemasterizedEnfeites,
-      ])
-      .setPipeline("Light2D");
-    //.setScrollFactor(0.9, 1);
-
+      .createLayer("fundo", [this.tilesetRemasterized2,
+        this.tilesetRemasterizedEnfeites
+  ])
+  .setPipeline("Light2D")
+  .setScrollFactor(0.9, 1);
+    
     this.layerParede = this.tilemap
-      .createLayer("parede", [
-        this.tilesetx1,
-        this.tilesetRemasterizedEnfeites,
-        this.tilesetRemasterized2,
-      ])
-      .setPipeline("Light2D");
-    //.setScrollFactor(0.9, 1);
+      .createLayer("parede", [this.tilesetx1, this.tilesetRemasterizedEnfeites, this.tilesetRemasterized2])
+      .setPipeline("Light2D")
+      .setScrollFactor(0.9, 1);
 
     this.layerNave = this.tilemap
-      .createLayer("nave", [
-        this.tilesetRemasterized2,
-        this.tilesetRemasterizedEnfeites,
-      ])
-      .setPipeline("Light2D");
-    //.setScrollFactor(0.9, 1);
+      .createLayer("nave", [this.tilesetRemasterized2, this.tilesetRemasterizedEnfeites])
+      .setPipeline("Light2D")
+    .setScrollFactor(0.9, 1);
 
     this.layerEnfeites = this.tilemap
       .createLayer("enfeites", [this.tilesetRemasterizedEnfeites])
-      .setPipeline("Light2D");
-    //.setScrollFactor(0.9, 1);
+      .setPipeline("Light2D")
+    .setScrollFactor(0.9, 1);
 
     this.layerConserto = this.tilemap
       .createLayer("conserto", [
         this.tilesetRemasterized2,
         this.tilesetRemasterizedEnfeites,
       ])
-      .setPipeline("Light2D");
-    //.setScrollFactor(0.9, 1);
+      .setPipeline("Light2D")
+      .setScrollFactor(0.9, 1);
 
+      
+
+    
     this.lights.enable().setAmbientColor(0xe0f7ff);
 
     //animações
@@ -341,6 +336,48 @@ class scene1 extends Phaser.Scene {
       frames: this.anims.generateFrameNumbers("porta", { start: 7, end: 0 }),
       frameRate: 7,
       repeat: 0,
+    });
+
+    this.anims.create({
+      key: "walk-leftJp",
+      frames: this.anims.generateFrameNumbers("player", { start: 14, end: 20 }),
+      frameRate: 11,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "walk-rightJp",
+      frames: this.anims.generateFrameNumbers("player", { start: 21, end: 27 }),
+      frameRate: 11,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "idleRightJP",
+      frames: this.anims.generateFrameNumbers("player", { start: 2, end: 3 }),
+      frameRate: 3,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "idleLeftJP",
+      frames: this.anims.generateFrameNumbers("player", { start: 0, end: 1 }),
+      frameRate: 3,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "jumpJP",
+      frames: this.anims.generateFrameNumbers("player", { start: 10, end: 13 }),
+      frameRate: 6,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "jumpLJP",
+      frames: this.anims.generateFrameNumbers("player", { start: 5, end: 8 }),
+      frameRate: 6,
+      repeat: -1,
     });
 
     //adicionar porta
@@ -680,8 +717,8 @@ class scene1 extends Phaser.Scene {
       .setScrollFactor(0.99, 1)
       .setPipeline("Light2D").body.allowGravity = false;
 
-    this.player2 = this.physics.add.sprite(113, 2340, "player");
-    this.player2.body.allowGravity = false;
+    this.player2 = this.add.sprite(113, 2340, "player");
+    
 
     //colisoes
     this.physics.add.collider(this.playerroxo, this.layerPiso);
@@ -846,7 +883,7 @@ class scene1 extends Phaser.Scene {
         this.fase4 = state.fase4.key;
       }
       if (state.player) {
-        this.player2.setPosition(state.player.x, state.player.y - 1184);
+        this.player2.setPosition((state.player.x), (state.player.y - 1184));
       }
 
       this.platform12.setPosition(

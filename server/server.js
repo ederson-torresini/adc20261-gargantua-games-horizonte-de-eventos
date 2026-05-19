@@ -51,6 +51,14 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("scene2", (room, state) => {
+    if (room) {
+      socket.to(room).emit("scene2", state);
+    } else {
+      socket.broadcast.emit("scene2", state);
+    }
+  });
+
   socket.on("disconnect", () => {
     console.log("User disconnected:", socket.id);
   });
