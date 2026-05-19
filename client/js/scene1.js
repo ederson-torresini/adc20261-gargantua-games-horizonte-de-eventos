@@ -98,43 +98,47 @@ class scene1 extends Phaser.Scene {
     this.layerEspaco = this.tilemap
     .createLayer("espaco", [this.tilesetSpace1])
     .setPipeline("Light2D")
-    .setScrollFactor(0.9, 1);
+    //.setScrollFactor(0.9, 1);
     
     this.layerPiso = this.tilemap
     .createLayer("piso", [this.tilesetx1, this.tilesetRemasterized2])
     .setPipeline("Light2D")
-    .setScrollFactor(0.9, 1);
+    //.setScrollFactor(0.9, 1);
 
     this.layerFundo = this.tilemap
       .createLayer("fundo", [this.tilesetRemasterized2,
         this.tilesetRemasterizedEnfeites
   ])
   .setPipeline("Light2D")
-  .setScrollFactor(0.9, 1);
+  //.setScrollFactor(0.9, 1);
     
     this.layerParede = this.tilemap
       .createLayer("parede", [this.tilesetx1, this.tilesetRemasterizedEnfeites, this.tilesetRemasterized2])
       .setPipeline("Light2D")
-      .setScrollFactor(0.9, 1);
+    //  .setScrollFactor(0.9, 1);
 
     this.layerNave = this.tilemap
       .createLayer("nave", [this.tilesetRemasterized2, this.tilesetRemasterizedEnfeites])
       .setPipeline("Light2D")
-    .setScrollFactor(0.9, 1);
+    //.setScrollFactor(0.9, 1);
 
     this.layerEnfeites = this.tilemap
       .createLayer("enfeites", [this.tilesetRemasterizedEnfeites])
       .setPipeline("Light2D")
-    .setScrollFactor(0.9, 1);
+    //.setScrollFactor(0.9, 1);
 
     this.layerConserto = this.tilemap
       .createLayer("conserto", [this.tilesetRemasterized2,
         this.tilesetRemasterizedEnfeites
       ])
       .setPipeline("Light2D")
-      .setScrollFactor(0.9, 1);
+    //.setScrollFactor(0.9, 1);
+    
 
-      
+    this.layerFase5 = this.tilemap
+      .createLayer("fase5", [this.tilesetRemasterized2, this.tilesetRemasterizedEnfeites])
+      .setPipeline("Light2D")
+    .setScrollFactor(0.9, 1);
 
     
     this.lights.enable().setAmbientColor(0xe0f7ff);
