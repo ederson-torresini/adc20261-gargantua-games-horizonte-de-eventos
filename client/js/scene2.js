@@ -24,9 +24,29 @@ class scene2 extends Phaser.Scene {
     this.space = this.add.sprite(0, 0, "space1");
     this.space.setOrigin(0, 0).setScrollFactor(0.9, 0.9);
 
-    this.nave = this.physics.add.sprite(400, 1965, "nave").setScale(0.5)//.body.setGravity(0, 0)//.setAngle(90);
+    this.nave = this.physics.add.sprite(535, 1965, "nave").setScale(0.5)//.body.setGravity(0, 0)//.setAngle(90);
+    this.enemy = this.physics.add.group({
+      pipeline: "Light2D",
+    })
+
+    this.bullets = this.physics.add.group({
+      pipeline: "Light2D",
+    })
+
+    this.enemy1 = this.enemy.create(212, 1650, "nave").setScale(0.5).setAngle(180).setVelocityX(100);
+
+    setInterval(() => {
+      this.enemy1.setVelocityX(this.enemy1.body.velocity.x * -1);
+    }, 6800);
+
+    setInterval(() => { 
+      this.bullets.create(this.enemy1.x, this.enemy1.y, "torreta", 13).setSize(17,27).setVelocityY(200);
+    }, 1133);
+
+    //this.enemy1
 
     this.nave.setCollideWorldBounds(true);
+    //this.enemy.setCollideWorldBounds(true);
 
     this.cameras.main.startFollow(this.nave, true);
 

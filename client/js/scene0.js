@@ -1395,6 +1395,7 @@ class scene0 extends Phaser.Scene {
           player: {
             x: this.player.x,
             y: this.player.y,
+          //frame: this.player.frame.name,
           },
         });
       } catch (e) {
@@ -1453,10 +1454,12 @@ class scene0 extends Phaser.Scene {
         ? this.input.gamepad.getPad(0)
         : null;
     let horizontal = 0;
+    let vertical = 0;
     let jumpPressed = false;
 
     if (pad && pad.axes.length > 0) {
       horizontal = pad.axes[0].getValue();
+      vertical = pad.axes[1].getValue();
       jumpPressed = !!pad.X;
     }
 
@@ -1500,7 +1503,7 @@ class scene0 extends Phaser.Scene {
 
       if (this.player.body.blocked.down) {
         this.doubleJump = false;
-        if (jumpPressed) this.player.setVelocityY(-300);
+        if (jumpPressed || vertical < 0) this.player.setVelocityY(-300);
       }
 
       if (this.player.body.blocked.left || this.player.body.blocked.right) {
