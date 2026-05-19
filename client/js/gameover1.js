@@ -2,6 +2,7 @@ class gameover1 extends Phaser.Scene {
   constructor() {
     super("gameover1");
   }
+
   preload() {
     this.load.image("terminal", "assets/terminal.png");
   }
@@ -29,26 +30,46 @@ class gameover1 extends Phaser.Scene {
     );
     //this.terminal = this.add.image(200, 0, "terminal").setOrigin(0, 0);
 
-    const fullText = "SIMULAÇÃO FRACASSADA";
-    let displayedText = "";
-    let charIndex = 0;
+    const Text1 = "SIMULAÇÃO FRACASSADA";
+    const Text2 = "Você falhou.\nMais sorte da próxima vez";
 
-    this.text2 = this.add.text(325, 170, "", {
-      fontFamily: "news-gothic-bold",
+    this.text1 = this.add.text(325, 110, "", {
+      fontFamily: "sarpanchregular",
       fontSize: "33px",
       fill: "#63ff8a",
     });
 
-    const typeChar = () => {
-      if (charIndex < fullText.length) {
-        displayedText += fullText[charIndex];
-        this.text2.setText(displayedText);
-        charIndex++;
-        this.time.delayedCall(100, typeChar);
+    this.text2 = this.add.text(320, 200, "", {
+      fontFamily: "sarpanchregular",
+      fontSize: "25px",
+      fill: "#63ff8a",
+    });
+
+    let displayed1 = "";
+    let index1 = 0;
+    let displayed2 = "";
+    let index2 = 0;
+
+    const typeChar1 = () => {
+      if (index1 < Text1.length) {
+        displayed1 += Text1[index1++];
+        this.text1.setText(displayed1);
+        this.time.delayedCall(100, typeChar1, [], this);
+      } else {
+        // quando terminar o Text1, aguarda um pouco e inicia o segundo
+        this.time.delayedCall(600, typeChar2, [], this);
       }
     };
 
-    typeChar();
+    const typeChar2 = () => {
+      if (index2 < Text2.length) {
+        displayed2 += Text2[index2++];
+        this.text2.setText(displayed2);
+        this.time.delayedCall(80, typeChar2, [], this);
+      }
+    };
+
+    typeChar1();
   }
 
   update() {}

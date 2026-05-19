@@ -184,6 +184,15 @@ class preloader extends Phaser.Scene {
       frameWidth: 117,
       frameHeight: 70,
     });
+
+    this.load.spritesheet("vidasroxas", "vidasroxas.png", {
+      frameWidth: 48,
+      frameHeight: 16,
+    });
+
+    this.load.font("sarpanchregular", "sarpanchregular.otf");
+
+    this.load.font("sarpnchextrabold", "sarpanchextrabold.otf");
   }
 
   create() {

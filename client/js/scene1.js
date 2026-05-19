@@ -6,6 +6,9 @@ class scene1 extends Phaser.Scene {
     this.estoutrabalhando = true;
     this.doorOpen = 0;
     this.fase4 = true;
+    this.vida = 3;
+    this.invulnerable = false;
+    this.alienspresentes = 3;
   }
 
   /*preload() {
@@ -76,16 +79,14 @@ class scene1 extends Phaser.Scene {
 
     //adiciona o espaço ao fundo
     this.space = this.add.image("space1");
-    this.space.setOrigin(0, 0).setScrollFactor(0.1, 1);
+    this.space.setOrigin(0, 0); //.setScrollFactor(0.1, 1);
 
     //adiciona o tilemap da sala ortogonal
     this.tilemap = this.make.tilemap({ key: "faseortogonal" });
 
     //adiciona os tilesets utilizados
     //this.tilesetRemasterized = this.tilemap.addTilesetImage("remasterized");
-    this.tilesetRemasterized2 = this.tilemap.addTilesetImage(
-      "remasterized2",
-    );
+    this.tilesetRemasterized2 = this.tilemap.addTilesetImage("remasterized2");
     this.tilesetRemasterizedEnfeites = this.tilemap.addTilesetImage(
       "remasterizedEnfeites",
     );
@@ -94,49 +95,55 @@ class scene1 extends Phaser.Scene {
     this.tilesetNewPiskel = this.tilemap.addTilesetImage("NewPiskel");
     this.tilesetx1 = this.tilemap.addTilesetImage("tilesetx1");
     this.tilesetSpace1 = this.tilemap.addTilesetImage("space1");
-    
+
     this.layerEspaco = this.tilemap
-    .createLayer("espaco", [this.tilesetSpace1])
-    .setPipeline("Light2D")
-    .setScrollFactor(0.9, 1);
-    
+      .createLayer("espaco", [this.tilesetSpace1])
+      .setPipeline("Light2D");
+    //.setScrollFactor(0.9, 1);
+
     this.layerPiso = this.tilemap
-    .createLayer("piso", [this.tilesetx1, this.tilesetRemasterized2])
-    .setPipeline("Light2D")
-    .setScrollFactor(0.9, 1);
+      .createLayer("piso", [this.tilesetx1, this.tilesetRemasterized2])
+      .setPipeline("Light2D");
+    //.setScrollFactor(0.9, 1);
 
     this.layerFundo = this.tilemap
-      .createLayer("fundo", [this.tilesetRemasterized2,
-        this.tilesetRemasterizedEnfeites
-  ])
-  .setPipeline("Light2D")
-  .setScrollFactor(0.9, 1);
-    
+      .createLayer("fundo", [
+        this.tilesetRemasterized2,
+        this.tilesetRemasterizedEnfeites,
+      ])
+      .setPipeline("Light2D");
+    //.setScrollFactor(0.9, 1);
+
     this.layerParede = this.tilemap
-      .createLayer("parede", [this.tilesetx1, this.tilesetRemasterizedEnfeites, this.tilesetRemasterized2])
-      .setPipeline("Light2D")
-      .setScrollFactor(0.9, 1);
+      .createLayer("parede", [
+        this.tilesetx1,
+        this.tilesetRemasterizedEnfeites,
+        this.tilesetRemasterized2,
+      ])
+      .setPipeline("Light2D");
+    //.setScrollFactor(0.9, 1);
 
     this.layerNave = this.tilemap
-      .createLayer("nave", [this.tilesetRemasterized2, this.tilesetRemasterizedEnfeites])
-      .setPipeline("Light2D")
-    .setScrollFactor(0.9, 1);
+      .createLayer("nave", [
+        this.tilesetRemasterized2,
+        this.tilesetRemasterizedEnfeites,
+      ])
+      .setPipeline("Light2D");
+    //.setScrollFactor(0.9, 1);
 
     this.layerEnfeites = this.tilemap
       .createLayer("enfeites", [this.tilesetRemasterizedEnfeites])
-      .setPipeline("Light2D")
-    .setScrollFactor(0.9, 1);
+      .setPipeline("Light2D");
+    //.setScrollFactor(0.9, 1);
 
     this.layerConserto = this.tilemap
-      .createLayer("conserto", [this.tilesetRemasterized2,
-        this.tilesetRemasterizedEnfeites
+      .createLayer("conserto", [
+        this.tilesetRemasterized2,
+        this.tilesetRemasterizedEnfeites,
       ])
-      .setPipeline("Light2D")
-      .setScrollFactor(0.9, 1);
+      .setPipeline("Light2D");
+    //.setScrollFactor(0.9, 1);
 
-      
-
-    
     this.lights.enable().setAmbientColor(0xe0f7ff);
 
     //animações
@@ -281,6 +288,46 @@ class scene1 extends Phaser.Scene {
       repeat: -1,
     });
 
+    this.anims.create({
+      key: "vidascheias",
+      frames: this.anims.generateFrameNumbers("vidasroxas", {
+        start: 0,
+        end: 0,
+      }),
+      frameRate: 1,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "duasvidas",
+      frames: this.anims.generateFrameNumbers("vidasroxas", {
+        start: 1,
+        end: 1,
+      }),
+      frameRate: 1,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "umavida",
+      frames: this.anims.generateFrameNumbers("vidasroxas", {
+        start: 2,
+        end: 2,
+      }),
+      frameRate: 1,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "zerovidas",
+      frames: this.anims.generateFrameNumbers("vidasroxas", {
+        start: 3,
+        end: 3,
+      }),
+      frameRate: 1,
+      repeat: -1,
+    });
+
     //anim porta
     this.anims.create({
       key: "portaabrindo",
@@ -304,6 +351,11 @@ class scene1 extends Phaser.Scene {
     //adicionar segunda porta
     this.porta2 = this.physics.add.sprite(717, 1710, "porta", 0);
     this.porta2.body.allowGravity = false;
+
+    this.vidasroxas = this.physics.add.sprite(250, 130, "vidasroxas");
+    this.vidasroxas.setScrollFactor(0);
+    this.vidasroxas.anims.play("vidascheias");
+    this.vidasroxas.body.allowGravity = false;
 
     //faz um grupo para os bigbosses
     this.bigboss = this.physics.add.group({
@@ -573,7 +625,7 @@ class scene1 extends Phaser.Scene {
     this.ativaraliens.setImmovable(true);*/
 
     //adiciona o player roxo
-    this.playerroxo = this.physics.add.sprite(640, 448, "playerroxo"); //640,448 interior //650, 1437 exterior //spawn
+    this.playerroxo = this.physics.add.sprite(640, 448, "playerroxo"); //640,448 interior //650, 1640 exterior //spawn
     this.playerroxo.body.setSize(25, 10).setOffset(19, 52);
     this.playerroxo.body.allowGravity = false;
 
@@ -585,7 +637,7 @@ class scene1 extends Phaser.Scene {
     this.caixa.body.setSize(45, 55);
     this.caixa.body.allowGravity = false;
     //this.caixa.immovable = false;
-    
+
     this.platforms = this.physics.add.group({
       allowGravity: false,
       immovable: true,
@@ -610,11 +662,12 @@ class scene1 extends Phaser.Scene {
       .create(1230, 3375 - 1184, "plataform")
       .setScrollFactor(0.99, 1)
       .setPipeline("Light2D");
-    
-    this.platforms.create(220, 3365 - 1184, "plataform")
+
+    this.platforms
+      .create(220, 3365 - 1184, "plataform")
       .setScrollFactor(0.99, 1)
       .setPipeline("Light2D").body.allowGravity = false;
-    
+
     this.platform12 = this.physics.add.sprite(361, 2233, "plataform");
     this.platform12
       .setImmovable(true)
@@ -638,9 +691,10 @@ class scene1 extends Phaser.Scene {
       this.doorOpen = 4;
       try {
         this.game.socket.emit("scene1", this.game.room, {
-          doorOpen: /*{
+          doorOpen:
+            /*{
             key: this.doorOpen,
-          },*/this.doorOpen,
+          },*/ this.doorOpen,
         });
       } catch (e) {
         console.error("Error updating player:", e);
@@ -654,9 +708,10 @@ class scene1 extends Phaser.Scene {
       this.doorOpen = 1;
       try {
         this.game.socket.emit("scene1", this.game.room, {
-          doorOpen: /*{
+          doorOpen:
+            /*{
             key: this.doorOpen,
-          },*/this.doorOpen,
+          },*/ this.doorOpen,
         });
       } catch (e) {
         console.error("Error updating player:", e);
@@ -666,9 +721,10 @@ class scene1 extends Phaser.Scene {
       this.doorOpen = 3;
       try {
         this.game.socket.emit("scene1", this.game.room, {
-          doorOpen: /*{
+          doorOpen:
+            /*{
             key: this.doorOpen,
-          },*/this.doorOpen,
+          },*/ this.doorOpen,
         });
       } catch (e) {
         console.error("Error updating player:", e);
@@ -681,9 +737,10 @@ class scene1 extends Phaser.Scene {
       this.doorOpen = 2;
       try {
         this.game.socket.emit("scene1", this.game.room, {
-          doorOpen: /*{
+          doorOpen:
+            /*{
             key: this.doorOpen,
-          },*/this.doorOpen,
+          },*/ this.doorOpen,
         });
       } catch (e) {
         console.error("Error updating player:", e);
@@ -737,13 +794,23 @@ class scene1 extends Phaser.Scene {
       pipeline: "Light2D",
     });
 
-    this.inimigosaliens.create(452, 1323, "inimigo3").body.setSize(30, 37);
-    //this.inimigosaliens.create(1020, 1423, "inimigo3").body.setSize(30, 37);
+    var spawninimigosx = (50, 1260);
+    var spawninimigosy = (1200, 1400);
+
+
+    this.inimigosaliens.create(spawninimigosx, spawninimigosy, "inimigo3").body.setSize(30, 37); // 1260, 50,,1200, 1400
+    this.inimigosaliens.create(spawninimigosx, spawninimigosy, "inimigo3").body.setSize(30, 37);
     this.physics.add.collider(this.inimigosaliens, this.limitenorte);
     this.physics.add.collider(this.inimigosaliens, this.limitesul);
     this.physics.add.collider(this.inimigosaliens, this.limiteoeste);
     this.physics.add.collider(this.inimigosaliens, this.limiteleste);
-    this.physics.add.collider(this.caixa, this.inimigosaliens); //this.enemyAttack, null, this);
+    this.colliderAliensBox = this.physics.add.collider(
+      this.caixa,
+      this.inimigosaliens,
+      this.perdervida,
+      null,
+      this,
+    ); //this.enemyAttack, null, this);
 
     this.layerParede.setCollisionByProperty({ collides: true });
 
@@ -779,16 +846,20 @@ class scene1 extends Phaser.Scene {
         this.fase4 = state.fase4.key;
       }
       if (state.player) {
-        this.player2.setPosition((state.player.x), (state.player.y - 1184));
+        this.player2.setPosition(state.player.x, state.player.y - 1184);
       }
-      
-        this.platform12.setPosition((state.platform12.x), (state.platform12.y - 1184));
-        this.platform15.setPosition((state.platform15.x), (state.platform15.y - 1184));
-        
-      
+
+      this.platform12.setPosition(
+        state.platform12.x,
+        state.platform12.y - 1184,
+      );
+      this.platform15.setPosition(
+        state.platform15.x,
+        state.platform15.y - 1184,
+      );
     });
   }
-//fim create
+  //fim create
 
   /*ativarAliens() {
     this.ativaraliens.disableBody(true, true);
@@ -841,26 +912,24 @@ class scene1 extends Phaser.Scene {
   }*/
 
   update() {
-
     const cursores = this.input.keyboard.createCursorKeys();
     const qe = this.input.keyboard.addKeys("E, Q");
 
     //const cursores = this.input.keyboard.createCursorKeys();
     const jkl = this.input.keyboard.addKeys("J,K,L");
 
-     try {
-       this.game.socket.emit("scene1", this.game.room, {
+    try {
+      this.game.socket.emit("scene1", this.game.room, {
         jkl: {
           J: jkl.J.isDown,
           L: jkl.L.isDown,
           K: jkl.K.isDown,
         },
-       });
-     } catch (e) {
-       console.error("Error updating player:", e);
-     }
+      });
+    } catch (e) {
+      console.error("Error updating player:", e);
+    }
 
-    
     this.caixa.setPosition(this.playerroxo.x, this.playerroxo.y);
 
     // Captura entrada do teclado
@@ -909,41 +978,32 @@ class scene1 extends Phaser.Scene {
       this.limites,
     );
 
-    if (qe.E.isDown) { 
-
-
-
+    if (qe.E.isDown) {
       this.cameras.main.setBounds(10, 0, this.tilemap.widthInPixels);
       this.cameras.main.startFollow(this.player2, false, 1, 0).zoom = 1.2;
-      
-      this.cameras.main.scrollY =
-      2348 - this.cameras.main.height / 2 - 120;
 
+      this.cameras.main.scrollY = 2348 - this.cameras.main.height / 2 - 120;
     } else if (qe.Q.isDown) {
-
       this.cameras.main.startFollow(this.playerroxo, true, 0.1, 0.1);
 
       if (this.estoutrabalhando === false) {
-      if (isOverlapLimites) {
-        // Define as bounds da câmera baseado no sprite limites
-        const limitesLeft = 40;
-        const limitesTop = 950;
-        const limitesRight = 1302;
-        const limitesBottom = 1720;
-        this.cameras.main.setBounds(
-          limitesLeft,
-          limitesTop,
-          limitesRight - limitesLeft,
-          limitesBottom - limitesTop,
-        );
+        if (isOverlapLimites) {
+          // Define as bounds da câmera baseado no sprite limites
+          const limitesLeft = 40;
+          const limitesTop = 950;
+          const limitesRight = 1302;
+          const limitesBottom = 1720;
+          this.cameras.main.setBounds(
+            limitesLeft,
+            limitesTop,
+            limitesRight - limitesLeft,
+            limitesBottom - limitesTop,
+          );
+        } else if (!isOverlapLimites) {
+          // Se não estiver mais sobre os limites, redefine as bounds para o tamanho total do mapa
+          this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, 735); //this.tilemap.heightInPixels);
+        }
       }
-      else if (!isOverlapLimites) {
-        // Se não estiver mais sobre os limites, redefine as bounds para o tamanho total do mapa
-        this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, 735 ); //this.tilemap.heightInPixels);
-      }
-    }
-
-
     }
 
     if (this.estoutrabalhando === false) {
@@ -959,10 +1019,9 @@ class scene1 extends Phaser.Scene {
           limitesRight - limitesLeft,
           limitesBottom - limitesTop,
         );
-      }
-      else if (!isOverlapLimites) {
+      } else if (!isOverlapLimites) {
         // Se não estiver mais sobre os limites, redefine as bounds para o tamanho total do mapa
-        this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, 735 ); //this.tilemap.heightInPixels);
+        this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, 735); //this.tilemap.heightInPixels);
       }
     }
 
@@ -1027,26 +1086,73 @@ class scene1 extends Phaser.Scene {
       });
     }
   }
+
+  perdervida(caixa, alien) {
+    // Verifica se já está em cooldown de invencibilidade
+    if (this.invulnerable) {
+      return;
+    }
+
+    // Ativa invencibilidade e desativa colisão por 1 segundo
+    this.invulnerable = true;
+    this.colliderAliensBox.active = false;
+    this.vida = this.vida - 1;
+    
+    // Efeito de piscada do playerroxo (300ms visível/invisível, 1000ms total)
+    this.playerroxo.setVisible(false);
+    this.time.delayedCall(100, () => this.playerroxo.setVisible(true));
+    this.time.delayedCall(200, () => this.playerroxo.setVisible(false));
+    this.time.delayedCall(300, () => this.playerroxo.setVisible(true));
+    this.time.delayedCall(400, () => this.playerroxo.setVisible(true));
+    this.time.delayedCall(500, () => this.playerroxo.setVisible(false));
+    this.time.delayedCall(600, () => this.playerroxo.setVisible(true));
+    this.time.delayedCall(700, () => this.playerroxo.setVisible(false));
+    this.time.delayedCall(800, () => this.playerroxo.setVisible(true));
+    this.time.delayedCall(900, () => this.playerroxo.setVisible(false));
+    this.time.delayedCall(1000, () => this.playerroxo.setVisible(true));
+    
+    // Atualiza animação das vidas
+    if (this.vida === 3) {
+      this.vidasroxas.anims.play("vidascheias");
+      this.playerroxo.setPosition(690, 1640);
+    } else if (this.vida === 2) {
+      this.vidasroxas.anims.play("duasvidas");
+      this.playerroxo.setPosition(690, 1640);
+    } else if (this.vida === 1) {
+      this.vidasroxas.anims.play("umavida");
+      this.playerroxo.setPosition(690, 1640);
+    } else if (this.vida === 0) {
+      this.vidasroxas.anims.play("zerovidas");
+      this.inimigosaliens.setVelocity(0, 0);
+      this.time.delayedCall(1000, () => {
+        this.scene.start("gameover1");
+      });
+      return; // Não precisa reativar colisão se morreu
+    }
+
+    // Reativa colisão e invencibilidade após 1 segundo
+    this.time.delayedCall(1000, () => {
+      this.invulnerable = false;
+      this.colliderAliensBox.active = true;
+    });
+  }
+
   teletransporte() {
-  {
     if (this.fase4) {
       this.porta.anims.play("portaabrindo", true);
       this.time.delayedCall(1000, () => {
-        this.playerroxo.setPosition(650, 1437); //teletransporte para o exterior da nave
+        this.playerroxo.setPosition(690, 1640); //teletransporte para o exterior da nave
         this.porta.anims.play("portafechando", true);
       });
     }
   }
-  }
 
   teletransporte2() {
-    {
-      this.porta2.anims.play("portaabrindo", true);
-      this.time.delayedCall(1000, () => {
-        this.playerroxo.setPosition(640, 448); //teletransporte para o interior da nave
-        this.porta2.anims.play("portafechando", true);
-      });
-    }
+    this.porta2.anims.play("portaabrindo", true);
+    this.time.delayedCall(1000, () => {
+      this.playerroxo.setPosition(640, 448); //teletransporte para o interior da nave
+      this.porta2.anims.play("portafechando", true);
+    });
   }
 }
 
