@@ -99,26 +99,34 @@ class scene1 extends Phaser.Scene {
       .createLayer("espaco", [this.tilesetSpace1])
       .setPipeline("Light2D");
     //.setScrollFactor(0.9, 1);
-    
+
     this.layerPiso = this.tilemap
       .createLayer("piso", [this.tilesetx1, this.tilesetRemasterized2])
       .setPipeline("Light2D");
     //.setScrollFactor(0.9, 1);
 
     this.layerFundo = this.tilemap
-      .createLayer("fundo", [this.tilesetRemasterized2,
-      this.tilesetRemasterizedEnfeites
+      .createLayer("fundo", [
+        this.tilesetRemasterized2,
+        this.tilesetRemasterizedEnfeites,
       ])
       .setPipeline("Light2D");
     //.setScrollFactor(0.9, 1);
-    
+
     this.layerParede = this.tilemap
-      .createLayer("parede", [this.tilesetx1, this.tilesetRemasterizedEnfeites, this.tilesetRemasterized2])
+      .createLayer("parede", [
+        this.tilesetx1,
+        this.tilesetRemasterizedEnfeites,
+        this.tilesetRemasterized2,
+      ])
       .setPipeline("Light2D");
     //.setScrollFactor(0.9, 1);
 
     this.layerNave = this.tilemap
-      .createLayer("nave", [this.tilesetRemasterized2, this.tilesetRemasterizedEnfeites])
+      .createLayer("nave", [
+        this.tilesetRemasterized2,
+        this.tilesetRemasterizedEnfeites,
+      ])
       .setPipeline("Light2D");
     //.setScrollFactor(0.9, 1);
 
@@ -135,9 +143,6 @@ class scene1 extends Phaser.Scene {
       .setPipeline("Light2D");
     //.setScrollFactor(0.9, 1);
 
-      
-
-    
     this.lights.enable().setAmbientColor(0xe0f7ff);
 
     //animações
@@ -658,11 +663,6 @@ class scene1 extends Phaser.Scene {
     this.limites.setImmovable(true);
     this.limites.setSize(1280, 768);
 
-    //ativar aliens
-    /*this.ativaraliens = this.physics.add.sprite(717, 1484, "ativaraliens", 0);
-    this.ativaraliens.body.allowGravity = false;
-    this.ativaraliens.setImmovable(true);*/
-
     //adiciona o player roxo
     this.playerroxo = this.physics.add.sprite(640, 448, "playerroxo"); //640,448 interior //650, 1640 exterior //spawn
     this.playerroxo.body.setSize(25, 10).setOffset(19, 52);
@@ -720,7 +720,6 @@ class scene1 extends Phaser.Scene {
       .setPipeline("Light2D").body.allowGravity = false;
 
     this.player2 = this.add.sprite(113, 2340, "player");
-    
 
     //colisoes
     this.physics.add.collider(this.playerroxo, this.layerPiso);
@@ -818,15 +817,6 @@ class scene1 extends Phaser.Scene {
       this.physics.add.collider(this.playerroxo, this.limiteleste);
     }
 
-    //ativar aliens
-    /*this.physics.add.overlap(
-      this.playerroxo,
-      this.ativaraliens,
-      this.ativarAliens,
-      null,
-      this,
-      );*/
-
     this.inimigosaliens = this.physics.add.group({
       allowGravity: false,
       immovable: false,
@@ -839,10 +829,17 @@ class scene1 extends Phaser.Scene {
     for (let i = 0; i < 3; i++) {
       spawninimigosx = Phaser.Math.Between(87, 1260);
       spawninimigosy = Phaser.Math.Between(1300, 1400);
-      this.inimigosaliens.create(spawninimigosx, spawninimigosy, "inimigo3").body.setSize(30, 37); // 1260, 50,,1200, 1400
+      const enemy = this.inimigosaliens.create(
+        spawninimigosx,
+        spawninimigosy,
+        "inimigo3",
+      );
+      enemy.body.setSize(30, 37);
+      enemy.lastDirection = "horizontal";
+      enemy.lastFlipX = false;
+      enemy.isAttacking = false;
     }
-   // this.inimigosaliens.create(spawninimigosx, spawninimigosy, "inimigo3").body.setSize(30, 37); // 1260, 50,,1200, 1400
-    
+
     this.physics.add.collider(this.inimigosaliens, this.limitenorte);
     this.physics.add.collider(this.inimigosaliens, this.limitesul);
     this.physics.add.collider(this.inimigosaliens, this.limiteoeste);
@@ -889,79 +886,26 @@ class scene1 extends Phaser.Scene {
         this.fase4 = state.fase4.key;
       }
       if (state.player) {
-        this.player2.setPosition((state.player.x), (state.player.y - 1184));
-     //   this.player2.sprite.anims.play(state.player.animation, true);
+        this.player2.setPosition(state.player.x, state.player.y - 1184);
+        //   this.player2.sprite.anims.play(state.player.animation, true);
       }
-      
-      if (state.player.animation) { 
-      this.player2.anims.play(state.player.animation, true);
-    }
+
+      if (state.player.animation) {
+        this.player2.anims.play(state.player.animation, true);
+      }
 
       this.platform12.setPosition(
-        (state.platform12.x),
-        (state.platform12.y - 1184),
+        state.platform12.x,
+        state.platform12.y - 1184,
       );
       this.platform15.setPosition(
-        (state.platform15.x),
-        (state.platform15.y - 1184),
+        state.platform15.x,
+        state.platform15.y - 1184,
       );
     });
-  }//fim create
-
-
-
-  /*ativarAliens() {
-    this.ativaraliens.disableBody(true, true);
-
-    this.inimigosaliens = this.physics.add.group({
-      allowGravity: false,
-      immovable: false,
-      pipeline: "Light2D",
-    });
-
-    this.inimigosaliens.create(452, 1323, "inimigo3");
-    this.inimigosaliens.create(1020, 1423, "inimigo3");
-
-    this.physics.add.collider(this.playerroxo, this.inimigosaliens);
-    this.physics.add.collider(this.inimigosaliens, this.inimigosaliens);
-    this.physics.add.collider(this.inimigosaliens, this.limitenorte);
-    this.physics.add.collider(this.inimigosaliens, this.limitesul);
-    this.physics.add.collider(this.inimigosaliens, this.limiteleste);
-    this.physics.add.collider(this.inimigosaliens, this.limiteoeste);
-    this.physics.add.collider(
-      this.playerroxo,
-      this.inimigosaliens,
-      this.enemyAttack,
-      null,
-      this,
-    );
-  }
-
-  enemyAttack(caixa, enemy) {
-
-    // Para o movimento do inimigo
-    enemy.setVelocity(0, 0);
-
-    // Calcula a direção em relação ao player
-    const dx = caixa.x - enemy.x;
-    const dy = caixa.y - enemy.y;
-
-    // Escolhe animação baseado na direção predominante
-    if (Math.abs(dx) > Math.abs(dy)) {
-      // Movimento horizontal predominante
-      enemy.anims.play("enemyAtaque", true);
-      enemy.setFlipX(dx > 0);
-    } else if (dy < 0) {
-      // Player está acima
-      enemy.anims.play("enemyAtaqueCima", true);
-    } else {
-      // Player está abaixo
-      enemy.anims.play("enemyAtaqueBaixo", true);
-    }
-  }*/
+  } //fim create
 
   update() {
-
     if (this.fase4) {
       try {
         this.game.socket.emit("scene1", this.game.room, {
@@ -1103,7 +1047,7 @@ class scene1 extends Phaser.Scene {
     } else if (horizontal < -0.1) {
       this.playerroxo.anims.play("andaresquerda", true);
     } else if (vertical > 0.1) {
-      this.playerroxo.anims.play("andarfrente", true); // assumindo que "andarfrente" é para baixo, ajustar se necessário
+      this.playerroxo.anims.play("andarfrente", true); // assumindo que "andarfrente" é para baixo
     } else if (vertical < -0.1) {
       this.playerroxo.anims.play("andarcostas", true);
     } else {
@@ -1123,35 +1067,66 @@ class scene1 extends Phaser.Scene {
     }
 
     // Movimento dos inimigos aliens
-      if (this.inimigosaliens) {
-       this.inimigosaliens.children.each((enemy) => {
-         const dx = this.playerroxo.x - enemy.x;
-         const dy = this.playerroxo.y - enemy.y;
-         const distance = Math.sqrt(dx * dx + dy * dy);
-         if (distance > 0) {
-           enemy.setVelocityX((dx / distance) * 80);
-           enemy.setVelocityY((dy / distance) * 80);
- 
-           // Escolhe animação conforme direção predominante
-           if (Math.abs(dx) > Math.abs(dy)) {
-             enemy.anims.play("enemyWalk", true);
-             enemy.setFlipX(dx > 0);
-           } else if (dy < 0) {
-             enemy.anims.play("enemyWalkCima", true);
-             enemy.setFlipX(false);
-           } else {
-             enemy.anims.play("enemyWalkBaixo", true);
-             enemy.setFlipX(false);
-           }
-         } else {
-           enemy.setVelocity(0);
-           enemy.anims.stop();
-         }
-       });
-     }
-  }// fim update
+    if (this.inimigosaliens) {
+      this.inimigosaliens.children.each((enemy) => {
+        const dx = this.playerroxo.x - enemy.x;
+        const dy = this.playerroxo.y - enemy.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const isTouchingCaixa = this.physics.overlap(enemy, this.caixa);
 
-  
+        if (distance > 0) {
+          enemy.setVelocityX((dx / distance) * 80);
+          enemy.setVelocityY((dy / distance) * 80);
+        } else {
+          enemy.setVelocity(0, 0);
+        }
+
+        if (Math.abs(dx) > Math.abs(dy)) {
+          enemy.lastDirection = "horizontal";
+          enemy.lastFlipX = dx > 0;
+        } else if (dy < 0) {
+          enemy.lastDirection = "up";
+        } else {
+          enemy.lastDirection = "down";
+        }
+
+        if (isTouchingCaixa) {
+          enemy.isAttacking = true;
+        } else {
+          enemy.isAttacking = false;
+        }
+
+        if (enemy.isAttacking) {
+          if (enemy.lastDirection === "horizontal") {
+            enemy.anims.play("enemyAtaque", true);
+            enemy.setFlipX(enemy.lastFlipX);
+            enemy.setVelocity(0, 0);
+          } else if (enemy.lastDirection === "up") {
+            enemy.anims.play("enemyAtaqueCima", true);
+            enemy.setFlipX(false);
+            enemy.setVelocity(0, 0);
+          } else {
+            enemy.anims.play("enemyAtaqueBaixo", true);
+            enemy.setFlipX(false);
+            enemy.setVelocity(0, 0);
+          }
+        } else if (distance > 0) {
+          if (Math.abs(dx) > Math.abs(dy)) {
+            enemy.anims.play("enemyWalk", true);
+            enemy.setFlipX(dx > 0);
+          } else if (dy < 0) {
+            enemy.anims.play("enemyWalkCima", true);
+            enemy.setFlipX(false);
+          } else {
+            enemy.anims.play("enemyWalkBaixo", true);
+            enemy.setFlipX(false);
+          }
+        } else {
+          enemy.anims.stop();
+        }
+      });
+    }
+  } // fim update
 
   perdervida(caixa, alien) {
     // Verifica se já está em cooldown de invencibilidade
@@ -1163,7 +1138,7 @@ class scene1 extends Phaser.Scene {
     this.invulnerable = true;
     this.colliderAliensBox.active = false;
     this.vida = this.vida - 1;
-    
+
     // Efeito de piscada do playerroxo (300ms visível/invisível, 1000ms total)
     //this.playerroxo.setVisible(false);
     this.time.delayedCall(100, () => this.playerroxo.setVisible(true));
@@ -1189,15 +1164,14 @@ class scene1 extends Phaser.Scene {
     this.time.delayedCall(1000, () => this.vidasroxas.setVisible(true));
 
     // Atualiza animação das vidas
-    https: if (this.vida === 3) {
+    if (this.vida === 3) {
       this.vidasroxas.anims.play("vidascheias");
-      this.playerroxo.setPosition(690, 1640);
     } else if (this.vida === 2) {
       this.vidasroxas.anims.play("duasvidas");
-      this.playerroxo.setPosition(690, 1640);
+      //this.playerroxo.setPosition(111, 1573);
     } else if (this.vida === 1) {
       this.vidasroxas.anims.play("umavida");
-      this.playerroxo.setPosition(690, 1640);
+      //this.playerroxo.setPosition(111, 1573);
     } else if (this.vida === 0) {
       this.vidasroxas.anims.play("zerovidas");
       this.inimigosaliens.setVelocity(0, 0);
@@ -1232,10 +1206,6 @@ class scene1 extends Phaser.Scene {
       this.fase4 = false;
     });
   }
-
-
-
-
-}//fim 
+} //fim
 
 export default scene1;

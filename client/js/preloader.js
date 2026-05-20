@@ -27,8 +27,10 @@ class preloader extends Phaser.Scene {
     );
     this.cameras.main.setBackgroundColor("#000000");
 
-    this.add.rectangle(650, 300, 468, 32).setStrokeStyle(1, 0x62d997);
-    const bar = this.add.rectangle(650 - 230, 300, 4, 28, 0x38a669);
+    this.add.rectangle(550, 300, 468, 32).setStrokeStyle(1, 0x62d997).setScale(0.8);
+    const bar = this.add
+      .rectangle(596 - 230, 300, 4, 28, 0x38a669)
+      .setScale(0.8);
 
     this.load.on("progress", (progress) => {
       bar.width = 4 + 460 * progress;
