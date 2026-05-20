@@ -884,15 +884,20 @@ class scene1 extends Phaser.Scene {
       }
       if (state.player) {
         this.player2.setPosition((state.player.x), (state.player.y - 1184));
+     //   this.player2.sprite.anims.play(state.player.animation, true);
       }
+      
+      if (state.player.animation) { 
+      this.player2.anims.play(state.player.animation, true);
+    }
 
       this.platform12.setPosition(
-        state.platform12.x,
-        state.platform12.y - 1184,
+        (state.platform12.x),
+        (state.platform12.y - 1184),
       );
       this.platform15.setPosition(
-        state.platform15.x,
-        state.platform15.y - 1184,
+        (state.platform15.x),
+        (state.platform15.y - 1184),
       );
     });
   }
@@ -949,6 +954,21 @@ class scene1 extends Phaser.Scene {
   }*/
 
   update() {
+
+    if (this.fase4) {
+      try {
+        this.game.socket.emit("scene1", this.game.room, {
+          playerroxo: {
+            x: this.playerroxo.x,
+            y: this.playerroxo.y,
+            //animation: this.playerroxo.anims.currentAnim ? this.playerroxo.anims.currentAnim.key : null,
+          },
+        });
+      } catch (e) {
+        console.error("Error updating player:", e);
+      }
+    }
+
     const cursores = this.input.keyboard.createCursorKeys();
     const qe = this.input.keyboard.addKeys("E, Q");
 
@@ -1189,6 +1209,7 @@ class scene1 extends Phaser.Scene {
     this.time.delayedCall(1000, () => {
       this.playerroxo.setPosition(640, 448); //teletransporte para o interior da nave
       this.porta2.anims.play("portafechando", true);
+      this.fase4 = false;
     });
   }
 }
